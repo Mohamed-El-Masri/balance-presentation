@@ -1,0 +1,1107 @@
+/* الهيكل الأساسي للهيرو - تحسين التكامل مع الهيدر */
+.hero {
+  height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('/src/assets/hero-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  /* إزالة padding-top وسيتم تعيينها ديناميكياً من خلال JS بناءً على ارتفاع الهيدر */
+  overflow: hidden;
+  transition: background-position 0.5s ease;
+  will-change: background-position;
+  margin-top: 0; /* تأكيد عدم وجود هوامش علوية */
+}
+
+/* تحسين طبقات الخلفية المختلفة */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  z-index: 1;
+}
+
+/* تعديل بقية طبقات الخلفية وتأثيراتها */
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 2;
+  opacity: 0.6; /* خفض قليلاً لتحسين التباين */
+}
+
+.glow-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%; /* زيادة مساحة التوهج */
+  height: 400px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(200, 176, 154, 0.2) 0%,
+    rgba(200, 176, 154, 0) 70%
+  );
+  z-index: 2;
+  filter: blur(80px); /* زيادة الضبابية */
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* محتوى الهيرو - تحسين الأبعاد والمساحات */
+.hero-content {
+  text-align: center;
+  max-width: 1100px; /* زيادة العرض قليلاً */
+  width: 90%;
+  padding: 3.5rem; /* زيادة المساحة الداخلية */
+  z-index: 10;
+  position: relative;
+  opacity: 0;
+  transition: all 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transform: translateY(20px);
+  background: rgba(0, 0, 0, 0.3); /* تخفيف الخلفية قليلاً */
+  border-radius: 24px; /* زيادة التقويس */
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 0;
+}
+
+/* تعديلات المحتوى المبسط */
+.hero-content.simplified {
+  padding: 3rem;
+  max-width: 900px; /* تصغير العرض قليلاً بعد إزالة العناصر */
+}
+
+.hero-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* شارة في أعلى المحتوى - إضافة الشعار */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px; /* زيادة المسافة بين الشعار والنص */
+  background: rgba(200, 176, 154, 0.3);
+  color: #fff;
+  border-radius: 40px;
+  padding: 0.6rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 1.8rem;
+  border: 1px solid rgba(200, 176, 154, 0.5);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* زر زجاجي للشعار */
+.badge-logo-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85); /* خلفية فاتحة */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8),
+    inset 0 0 0 2px rgba(200, 176, 154, 0.2);
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.badge-logo-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+.badge-logo-container:hover {
+  transform: scale(1.05);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 1),
+    inset 0 0 0 2px rgba(200, 176, 154, 0.3);
+}
+
+/* تعديل الشعار نفسه للظهور بشكل أفضل على الخلفية الفاتحة */
+.badge-logo {
+  height: 22px; /* تصغير قليلاً ليناسب الزر */
+  max-width: 100%;
+  filter: 
+    brightness(0.1) /* داكن جداً للظهور بشكل جيد على الخلفية الفاتحة */
+    contrast(1.2)
+    drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  transform: scale(1.1);
+  position: relative;
+  z-index: 2;
+  animation: none; /* إزالة النبض للمظهر الأكثر احترافية */
+}
+
+/* أثر تفاعلي عند التحويم */
+.badge-logo-container:hover .badge-logo {
+  filter: 
+    brightness(0) /* أسود تماماً عند التحويم */
+    contrast(1.3)
+    drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* تأثير النبض الخفيف للشعار */
+@keyframes subtle-pulse {
+  0% {
+    filter: 
+      brightness(1.2) 
+      contrast(1.15) 
+      drop-shadow(0 0 3px rgba(255, 255, 255, 0.5))
+      drop-shadow(0 0 8px rgba(200, 176, 154, 0.4));
+  }
+  100% {
+    filter: 
+      brightness(1.3) 
+      contrast(1.2) 
+      drop-shadow(0 0 4px rgba(255, 255, 255, 0.6))
+      drop-shadow(0 0 12px rgba(200, 176, 154, 0.6));
+  }
+}
+
+/* تأثير الوميض المتحرك خلف الشارة */
+.badge::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  transform: rotate(30deg);
+  animation: badge-glint 8s linear infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes badge-glint {
+  0% {
+    transform: rotate(0deg) translateX(-100%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.3;
+  }
+  30% {
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(25deg) translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* تنسيق العنوان الرئيسي - تقسيم أفضل */
+.hero h1 {
+  font-size: 3.5rem;
+  line-height: 1.2;
+  margin-bottom: 0.8rem;
+  font-weight: 700;
+  text-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    0 10px 30px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+}
+
+.hero h1 .highlight {
+  display: block;
+  color: var(--secondary-color);
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+/* تأثير الكتابة المتحركة - تحسين المظهر */
+.typed-container {
+  height: 2.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.typed-text {
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #fff;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.typed-container {
+  margin-bottom: 1.5rem;
+}
+
+.typed-text {
+  font-family: 'Arial', sans-serif; /* خط مناسب للإنجليزية */
+  font-size: 1.7rem;
+  font-weight: 500;
+  color: var(--secondary-color); /* لجعله أكثر بروزاً */
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.5px;
+}
+
+.cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.5em;
+  background-color: #fff;
+  vertical-align: text-bottom;
+  animation: blink 0.8s infinite;
+  margin-right: 2px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* تحسين النص الفرعي */
+.hero-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 2.2rem;
+  font-weight: 300;
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.95);
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-subtitle {
+  margin-bottom: 2.5rem; /* زيادة المسافة بعد إزالة العناصر التالية */
+  max-width: 95%; /* جعل النص أعرض قليلاً */
+}
+
+/* تنسيق السمات - تحسين التصميم */
+.hero-features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 2.8rem;
+}
+
+.feature-tag {
+  padding: 0.8rem 1.3rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  font-size: 1.05rem;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  user-select: none;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.feature-tag:hover {
+  background: rgba(200, 176, 154, 0.25);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+  margin-left: 10px;
+  font-style: normal;
+}
+
+/* أزرار الهيرو */
+.hero-cta {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.hero-btn {
+  font-size: 1.1rem;
+  padding: 1rem 2.5rem;
+  font-weight: 500;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.primary-btn {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  box-shadow: 0 10px 25px rgba(200, 176, 154, 0.4);
+}
+
+.secondary-btn {
+  background-color: transparent;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero-btn:hover {
+  transform: translateY(-5px);
+}
+
+.primary-btn:hover {
+  background-color: #d8c0aa;
+  box-shadow: 0 15px 30px rgba(200, 176, 154, 0.5);
+}
+
+.secondary-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.hero-btn::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: -50px;
+  width: 30px;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(35deg);
+  transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+  opacity: 0.3;
+}
+
+.hero-btn:hover::before {
+  left: 120%;
+  transition-duration: 0.7s;
+}
+
+.btn-icon {
+  margin-right: 10px;
+  transition: transform 0.3s ease;
+}
+
+.hero-btn:hover .btn-icon {
+  transform: translateX(5px);
+}
+
+/* المؤشرات الإحصائية */
+.metrics {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  position: relative;
+  padding-top: 20px;
+}
+
+.metrics {
+  padding-top: 25px;
+  gap: 50px; /* زيادة المسافة بين الإحصائيات */
+}
+
+.metrics::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 25%;
+  width: 50%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
+.metrics::before {
+  width: 60%; /* جعل الخط الفاصل أطول */
+  left: 20%;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.metric-number {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--secondary-color);
+  line-height: 1;
+}
+
+.metric-number {
+  font-size: 2.5rem; /* زيادة حجم الأرقام */
+}
+
+.metric-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 5px;
+}
+
+.metric-label {
+  font-size: 1rem;
+  margin-top: 8px;
+}
+
+/* تحسينات العدادات الرقمية */
+.metric-number.counter {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.metric-number.counter .value {
+  display: inline-block;
+  min-width: 50px; /* حد أدنى للعرض لتجنب القفز أثناء الحساب */
+  text-align: center;
+  position: relative;
+  font-variant-numeric: tabular-nums; /* لمنع تغير عرض الأرقام */
+}
+
+.metric-number.counter .plus,
+.metric-number.counter .percent {
+  font-size: 0.7em;
+  opacity: 0.9;
+  margin-right: 2px;
+  position: relative;
+  top: -0.3em;
+}
+
+/* توهج أثناء العد */
+@keyframes counting-glow {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(200, 176, 154, 0.3);
+    color: var(--secondary-color);
+  }
+  50% {
+    text-shadow: 0 0 12px rgba(200, 176, 154, 0.7);
+    color: #d8c0aa;
+  }
+}
+
+.counter .value {
+  animation: counting-glow 1.5s ease-in-out infinite;
+}
+
+/* تأثير بصري للرقم الأخير أثناء تغييره */
+@keyframes digit-change {
+  0% {
+    transform: translateY(-3px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* تأثير لتغيير شكل الرقم بعد اكتمال العد */
+.counter.completed .value {
+  animation: completed-bounce 0.5s ease-in-out;
+}
+
+@keyframes completed-bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* تحسينات العدادات الرقمية - تأثيرات متقدمة */
+.metric-number.counter {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  min-height: 50px; /* ارتفاع ثابت لمنع تغير حجم العنصر أثناء العد */
+}
+
+.metric-number.counter .value {
+  display: inline-block;
+  min-width: 50px;
+  text-align: center;
+  position: relative;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 10px rgba(200, 176, 154, 0.2);
+  transform: translateZ(0); /* تحسين الأداء */
+  will-change: contents; /* إشعار المتصفح بتغير المحتوى */
+}
+
+.metric-number.counter .plus,
+.metric-number.counter .percent {
+  font-size: 0.7em;
+  opacity: 0.9;
+  margin-right: 2px;
+  position: relative;
+  top: -0.3em;
+  color: var(--secondary-color);
+}
+
+/* توهج متحرك عند العد */
+@keyframes counting-glow {
+  0% {
+    text-shadow: 0 0 8px rgba(200, 176, 154, 0.3);
+    color: var(--secondary-color);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(200, 176, 154, 0.7), 0 0 5px rgba(255, 255, 255, 0.5);
+    color: #e6d2c0;
+  }
+  100% {
+    text-shadow: 0 0 8px rgba(200, 176, 154, 0.3);
+    color: var(--secondary-color);
+  }
+}
+
+/* تأثير العد المتحرك */
+.counter .value {
+  animation: counting-glow 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 2px rgba(200, 176, 154, 0.3));
+}
+
+/* تأثير المحافظة على شكل موحد للأرقام */
+.counter .value {
+  font-feature-settings: "tnum";
+  letter-spacing: -0.03em;
+}
+
+/* تأثير إتمام العد */
+.counter.completed .value {
+  animation: completed-pulse 0.6s ease-in-out forwards;
+}
+
+@keyframes completed-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+    text-shadow: 0 0 20px rgba(200, 176, 154, 0.8), 0 0 10px rgba(255, 255, 255, 0.7);
+  }
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 15px rgba(200, 176, 154, 0.5), 0 0 5px rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* تأثير الجاذبية عند إتمام العد */
+.counter.completed {
+  animation: bounce-in 0.5s ease-out forwards;
+}
+
+@keyframes bounce-in {
+  0% { 
+    transform: translateY(0);
+  }
+  20% { 
+    transform: translateY(-10px);
+  }
+  40% { 
+    transform: translateY(0);
+  }
+  60% { 
+    transform: translateY(-5px);
+  }
+  80% { 
+    transform: translateY(0);
+  }
+}
+
+/* تحسين تنسيق العلامات الإضافية (% و +) */
+.metric-number.counter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* تنسيق مشترك للعلامات */
+.metric-number.counter .percent,
+.metric-number.counter .plus {
+  font-size: 1.2rem;  /* حجم أصغر قليلاً من الرقم */
+  font-weight: 500;
+  margin-right: 2px;
+  color: var(--secondary-color);
+  opacity: 0.9;
+  position: relative;
+  display: inline-block;
+}
+
+/* موضع علامة النسبة المئوية */
+.metric-number.counter .percent {
+  top: 0;
+  margin-right: 3px;
+  vertical-align: super; /* محاذاة الرمز للأعلى قليلاً */
+}
+
+/* موضع علامة الزائد */
+.metric-number.counter .plus {
+  font-size: 1.6rem; /* حجم أكبر */
+  font-weight: 600;
+  margin-right: 4px;
+  color: var(--secondary-color);
+  vertical-align: middle; /* محاذاة وسطية */
+  position: relative;
+  top: -2px; /* تعديل طفيف للموضع */
+  line-height: 1;
+  opacity: 0.95;
+}
+
+/* تعديل عرض القيمة للمحافظة على المحاذاة */
+.metric-number.counter .value {
+  display: inline-block;
+  min-width: auto; /* السماح بالعرض الطبيعي */
+  position: relative;
+}
+
+/* تعديلات للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .metric-number.counter {
+    min-height: 40px;
+  }
+  
+  .metric-number.counter .value {
+    min-width: 40px;
+  }
+  
+  .metric-number.counter .percent,
+  .metric-number.counter .plus {
+    font-size: 1rem;
+  }
+
+  .badge-logo-container {
+    width: 34px;
+    height: 34px;
+    padding: 6px;
+  }
+  
+  .badge-logo {
+    height: 19px;
+  }
+  
+  .metric-number.counter .plus {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .metric-number.counter .plus,
+  .metric-number.counter .percent {
+    font-size: 0.6em;
+    top: -0.2em;
+  }
+  
+  .metric-number.counter .percent,
+  .metric-number.counter .plus {
+    font-size: 0.9rem;
+  }
+
+  .badge-logo-container {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+  }
+  
+  .badge-logo {
+    height: 16px;
+  }
+  
+  .metric-number.counter .plus {
+    font-size: 1.2rem;
+  }
+}
+
+/* تحسينات أداء الرسومات المتحركة */
+@media (prefers-reduced-motion: reduce) {
+  .metric-number.counter .value,
+  .counter.completed .value,
+  .counter.completed {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* مؤشر التمرير للأسفل */
+.scroll-indicator {
+  position: absolute;
+  bottom: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.8;
+}
+
+.scroll-indicator {
+  bottom: 130px;
+}
+
+.scroll-indicator:hover {
+  opacity: 1;
+  transform: translateX(-50%) translateY(5px);
+}
+
+.scroll-text {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.scroll-arrows {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.scroll-arrow {
+  width: 15px;
+  height: 15px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(-45deg);
+}
+
+.scroll-arrows .scroll-arrow:nth-child(1) {
+  animation: scroll-arrow-animation 2s infinite 0s;
+}
+
+.scroll-arrows .scroll-arrow:nth-child(2) {
+  animation: scroll-arrow-animation 2s infinite 0.3s;
+  opacity: 0.7;
+}
+
+.scroll-arrows .scroll-arrow:nth-child(3) {
+  animation: scroll-arrow-animation 2s infinite 0.6s;
+  opacity: 0.4;
+}
+
+/* تأثيرات الجسيمات */
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: float 20s infinite linear;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.2);
+}
+
+/* تحسين الموجة */
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  z-index: 3;
+}
+
+.wave-svg {
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 120px;
+  fill: var(--light-bg);
+  transform-origin: center bottom;
+  animation: wave-animation 18s linear infinite alternate;
+}
+
+/* تنسيقات التحريك */
+@keyframes float {
+  0% {
+    transform: translate(0, 0) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(100px, -120px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes scroll-arrow-animation {
+  0% {
+    transform: rotate(-45deg) translate(0, 0);
+    opacity: 0.8;
+  }
+  50% {
+    transform: rotate(-45deg) translate(5px, 5px);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(-45deg) translate(0, 0);
+    opacity: 0.8;
+  }
+}
+
+/* تأثيرات حركة العناصر */
+.animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease, transform 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay-1 {
+  transition-delay: 0.3s;
+}
+
+.delay-2 {
+  transition-delay: 0.6s;
+}
+
+.delay-3 {
+  transition-delay: 0.9s;
+}
+
+.delay-4 {
+  transition-delay: 1.2s;
+}
+
+.delay-5 {
+  transition-delay: 1.5s;
+}
+
+/* استجابة الشاشات */
+@media (max-width: 992px) {
+  .hero h1 {
+    font-size: 2.8rem;
+  }
+  
+  .typed-text {
+    font-size: 1.3rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .hero-content {
+    max-width: 700px;
+    padding: 2rem;
+  }
+  
+  .metrics {
+    gap: 25px;
+  }
+}
+
+@media (max-width: 992px) {
+  .typed-text {
+    font-size: 1.5rem;
+  }
+  
+  .metrics {
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  
+  .typed-text {
+    font-size: 1.1rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-content {
+    max-width: 90%;
+    padding: 2rem 1.5rem;
+  }
+  
+  .hero-features {
+    margin-bottom: 1.5rem;
+    gap: 10px;
+  }
+  
+  .feature-tag {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .hero-cta {
+    gap: 15px;
+  }
+  
+  .hero-btn {
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+  }
+  
+  .metrics {
+    gap: 20px;
+  }
+  
+  .metric-number {
+    font-size: 1.8rem;
+  }
+  
+  .metric-label {
+    font-size: 0.8rem;
+  }
+  
+  .scroll-indicator {
+    bottom: 100px;
+  }
+
+  .badge-logo {
+    height: 22px;
+    animation: none; /* إيقاف الأنيميشن في الشاشات الصغيرة لتحسين الأداء */
+  }
+}
+
+@media (max-width: 768px) {
+  .typed-text {
+    font-size: 1.2rem;
+  }
+  
+  .metrics {
+    gap: 30px;
+  }
+  
+  .metric-number {
+    font-size: 2rem;
+  }
+
+  .metric-number.counter .value {
+    min-width: 40px;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-content {
+    padding: 1.5rem;
+  }
+  
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+  
+  .typed-text {
+    font-size: 1rem;
+  }
+  
+  .badge {
+    font-size: 0.8rem;
+    padding: 0.4rem 1rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .feature-tag {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.8rem;
+  }
+  
+  .scroll-indicator {
+    display: none;
+  }
+  
+  .metrics {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .badge-logo {
+    height: 20px;
+    filter: brightness(1.2) contrast(1.15) drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+  }
+}
+
+/* تعديلات للوضع الداكن */
+[data-theme='dark'] .wave-svg {
+  fill: var(--alt-bg);
+}
+
+[data-theme='dark'] .glow-overlay {
+  opacity: 0.4;
+}
+
+/* تحسين لمعالجة مشكلة الأداء في المتصفحات القديمة */
+@supports not (backdrop-filter: blur(10px)) {
+  .hero-content {
+    background: rgba(0, 0, 0, 0.7); /* خلفية أغمق للمتصفحات التي لا تدعم تأثير الضبابية */
+  }
+}

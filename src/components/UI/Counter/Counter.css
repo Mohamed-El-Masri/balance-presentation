@@ -1,0 +1,53 @@
+.counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.3s ease;
+  font-variant-numeric: tabular-nums;
+}
+
+.counter-value {
+  position: relative;
+  animation: counting-glow 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 2px rgba(200, 176, 154, 0.3));
+  will-change: contents;
+}
+
+/* توهج متحرك عند العد */
+@keyframes counting-glow {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(200, 176, 154, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(200, 176, 154, 0.7), 0 0 5px rgba(255, 255, 255, 0.5);
+    color: #e6d2c0;
+  }
+}
+
+/* تأثير إتمام العد */
+.counter.completed .counter-value {
+  animation: completed-pulse 0.6s ease-in-out forwards;
+}
+
+@keyframes completed-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+    text-shadow: 0 0 20px rgba(200, 176, 154, 0.8), 0 0 10px rgba(255, 255, 255, 0.7);
+  }
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 15px rgba(200, 176, 154, 0.5), 0 0 5px rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* تعديلات للشاشات الصغيرة */
+@media (prefers-reduced-motion: reduce) {
+  .counter .counter-value,
+  .counter.completed .counter-value {
+    animation: none;
+  }
+}

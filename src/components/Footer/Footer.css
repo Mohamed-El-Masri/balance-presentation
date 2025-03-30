@@ -1,0 +1,207 @@
+.footer {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 4rem 0 2rem;
+  position: relative;
+}
+
+/* إضافة شكل زخرفي في أعلى الفوتر */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(45deg, transparent 33.333%, var(--primary-color) 33.333%, var(--primary-color) 66.667%, transparent 66.667%), linear-gradient(-45deg, transparent 33.333%, var(--primary-color) 33.333%, var(--primary-color) 66.667%, transparent 66.667%);
+  background-size: 20px 20px;
+  background-position: 0 0;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-section h3 {
+  color: white;
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.footer-section h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 40px;
+  height: 2px;
+  background-color: var(--secondary-color);
+}
+
+.footer-section.about p {
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-section.links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section.links li {
+  margin-bottom: 0.75rem;
+}
+
+.footer-section.links a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  position: relative;
+  padding-right: 15px;
+}
+
+.footer-section.links a::before {
+  content: '←';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.footer-section.links a:hover {
+  color: var(--secondary-color);
+  padding-right: 20px;
+}
+
+.footer-section.links a:hover::before {
+  opacity: 1;
+  transform: translateY(-50%) translateX(-5px);
+}
+
+.contact-info p {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.contact-icon {
+  margin-left: 0.75rem;
+  font-style: normal;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+}
+
+.social-links {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.social-link:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-3px);
+}
+
+.footer-bottom {
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.partners {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.partner-logo {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  height: 60px;
+  transition: all 0.3s ease;
+}
+
+.partner-logo:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+}
+
+.partner-img {
+  max-width: 100%;
+  max-height: 100%;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
+.copyright {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.copyright p {
+  margin: 0.3rem 0;
+}
+
+/* الاستجابة للشاشات المختلفة */
+@media (max-width: 768px) {
+  .footer {
+    padding: 3rem 0 1.5rem;
+  }
+  
+  .footer-content {
+    gap: 2rem;
+  }
+  
+  .partner-logo {
+    height: 50px;
+    min-width: 100px;
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* دعم الوضع الداكن */
+[data-theme='dark'] .footer {
+  background-color: #1e2124;
+}
+
+[data-theme='dark'] .partner-logo {
+  background-color: rgba(255, 255, 255, 0.05);
+}
