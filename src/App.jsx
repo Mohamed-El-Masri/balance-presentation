@@ -3,7 +3,6 @@ import './App.css';
 import Header from './components/Header/Header';
 import Hero from './components/Hero/Hero';
 import Overview from './components/Overview/Overview';
-import MapSection from './components/MapSection/MapSection';
 import Statistics from './components/Statistics/Statistics';
 import Properties from './components/Properties/Properties';
 import Footer from './components/Footer/Footer';
@@ -112,7 +111,7 @@ function App() {
         <div className="main-content">
           <Hero />
           <Overview stats={stats} />
-          <MapSection properties={propertiesData} />
+          
           <Statistics />
           <Properties properties={propertiesData} />
         </div>
