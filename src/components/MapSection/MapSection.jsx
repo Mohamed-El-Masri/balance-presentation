@@ -9,8 +9,10 @@ const API_URL = 'https://areainsights.googleapis.com/v1:computeInsights';
 function MapSection() {
     const mapContainerRef = useRef(null); // Reference to the map container
     const [insights, setInsights] = useState([]);
+    const [filterType, setFilterType] = useState(''); // Add state for filter type
     const activeMarkerRef = useRef(null); // Reference to store the active marker
     const infoWindowRef = useRef(null); // Reference to store the InfoWindow
+    const mapRef = useRef(null); // Reference to store the map instance
 
     useEffect(() => {
         async function loadGoogleMapsAPI() {
@@ -58,7 +60,12 @@ function MapSection() {
                             'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.location,places.types',
                         },
                         body: JSON.stringify({
-                            includedTypes: ['restaurant', 'cafe'],
+                            includedTypes: [
+                                'corporate_office',    // مكاتب شركات
+                                'lodging',             // فنادق
+                                'apartment_complex',   // مجمعات سكنية
+                                'real_estate_agency'   // وكالات عقارات
+                            ],
                             locationRestriction: {
                                 circle: {
                                     center: { latitude: lat, longitude: lng },
@@ -69,12 +76,13 @@ function MapSection() {
                     }
                 );
                 const data = await response.json();
-                console.log('API Response:', data); // Log the API response
-                setInsights(data.places || []); // Update insights
+                console.log('API Response:', data); // طباعة الاستجابة في الكونسول
+                setInsights(data.places || []); // تحديث البيانات
             } catch (error) {
                 console.error('Error fetching nearby places:', error);
             }
         }
+        
 
         async function initializeMap() {
             try {
@@ -88,6 +96,9 @@ function MapSection() {
                     center: { lat: 24.492583, lng: 46.926167 }, // Default center (Riyadh)
                     zoom: 12,
                 });
+
+                // Store the map instance in the ref
+                mapRef.current = map;
 
                 // Initialize InfoWindow
                 infoWindowRef.current = new google.maps.InfoWindow();
@@ -176,15 +187,72 @@ function MapSection() {
         initializeMap();
     }, []);
 
+    function handleFilterChange(event) {
+        setFilterType(event.target.value); // Update the filter type
+    }
+
+    const filteredInsights = insights.filter((insight) =>
+        filterType ? insight.types.includes(filterType) : true
+    ); // Apply filter to insights
+
     console.log('Insights State:', insights); // Log the insights state
 
     return (
         <section className="map-section"> {/* Use a section tag for consistency */}
             <div className="container"> {/* Add a container div for alignment */}
-                <h2 className="section-title">Explore Nearby Places</h2> {/* Add a title for better context */}
+                <h2 className="section-title">استكشف الأماكن القريبة</h2> {/* Update title to Arabic */}
                 <div className="map-section-content"> {/* Add a content wrapper for better layout */}
                     <div className="insights-list-wrapper fixed-width"> {/* Add a class for fixed width */}
-                        <InsightsList insights={insights} /> {/* Pass insights to the new component */}
+                        <div className="filter-wrapper" style={{ marginBottom: '20px', textAlign: 'right' }}> {/* Add inline styles for better alignment */}
+                            <label htmlFor="filter" style={{ marginRight: '10px', fontWeight: 'bold' }}>تصفية حسب النوع:</label> {/* Arabic label */}
+                            <select
+                                id="filter"
+                                value={filterType}
+                                onChange={handleFilterChange}
+                                style={{
+                                    padding: '8px',
+                                    fontSize: '14px',
+                                    borderRadius: '5px',
+                                    border: '1px solid #ccc',
+                                    outline: 'none',
+                                }} // Add custom styles for dropdown
+                            >
+                                <option value="">الكل</option>
+                                <option value="corporate_office">مكاتب شركات</option>
+                                <option value="lodging">فنادق</option>
+                                <option value="apartment_complex">مجمعات سكنية</option>
+                                <option value="real_estate_agency">وكالات عقارات</option>
+                            </select>
+                        </div>
+                        <InsightsList 
+                            insights={filteredInsights} 
+                            onPlaceClick={(place) => {
+                                console.log('Selected place:', place);
+                                const { location } = place;
+
+                                // Validate latitude and longitude before proceeding
+                                if (mapRef.current && location?.latitude && location?.longitude) {
+                                    // Center the map on the selected place
+                                    mapRef.current.setCenter({ lat: parseFloat(location.latitude), lng: parseFloat(location.longitude) });
+
+                                    // Remove the previous active marker if it exists
+                                    if (activeMarkerRef.current) {
+                                        activeMarkerRef.current.setMap(null);
+                                    }
+
+                                    // Create a new marker at the selected place's location
+                                    activeMarkerRef.current = new google.maps.Marker({
+                                        position: { lat: parseFloat(location.latitude), lng: parseFloat(location.longitude) },
+                                        map: mapRef.current,
+                                        title: place.displayName?.text || 'Selected Place',
+                                    });
+
+                                    console.log('Marker created at:', location);
+                                } else {
+                                    console.error('Invalid latitude or longitude:', place);
+                                }
+                            }} 
+                        />
                     </div>
                     <div
                         ref={mapContainerRef}

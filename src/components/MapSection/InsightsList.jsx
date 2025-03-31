@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function InsightsList({ insights }) {
+function InsightsList({ insights, onPlaceClick = () => {} }) {
     const [activeFilter, setActiveFilter] = useState('all');
 
     const filters = [
@@ -25,7 +25,7 @@ function InsightsList({ insights }) {
     return (
         <div style={{ padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
             <h2 style={{ textAlign: 'center', color: '#333', marginBottom: '20px', fontSize: '24px', fontWeight: 'bold' }}>Nearby Places</h2>
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', gap: '10px' }}>
+            {/* <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', gap: '10px' }}>
                 {filters.map((filter) => (
                     <button
                         key={filter.value}
@@ -38,7 +38,7 @@ function InsightsList({ insights }) {
                         {filter.label}
                     </button>
                 ))}
-            </div>
+            </div> */}
             <ul
                 style={{
                     listStyleType: 'none',
@@ -68,6 +68,7 @@ function InsightsList({ insights }) {
                             animation: 'fadeIn 0.5s ease-in-out forwards',
                             animationDelay: `${index * 0.1}s`, // Staggered animation
                         }}
+                        onClick={() => onPlaceClick(place)} // Trigger callback on click
                         onMouseEnter={(e) => {
                             e.currentTarget.style.transform = 'scale(1.02)';
                             e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
