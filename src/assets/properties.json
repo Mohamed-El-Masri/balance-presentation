@@ -16,7 +16,8 @@
             "area": "2,559.87",
             "block": "16",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'33.3\"N 46°55'34.2\"E"
+            "latitude": 24.492583,
+            "longitude": 46.926167
         }
     },
     {
@@ -35,7 +36,8 @@
             "plotNumber": "913",
             "area": "2,499.11",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'29.8\"N 46°55'29.6\"E"
+            "latitude": 24.491611,
+            "longitude": 46.924889
         }
     },
     {
@@ -54,7 +56,8 @@
             "plotNumber": "915",
             "area": "2,466.41",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'28.2\"N 46°55'27.3\"E"
+            "latitude": 24.491167,
+            "longitude": 46.924250
         }
     },
     {
@@ -73,7 +76,8 @@
             "plotNumber": "922",
             "area": "2,411.49",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'23.3\"N 46°55'18.7\"E"
+            "latitude": 24.489806,
+            "longitude": 46.921861
         }
     },
     {
@@ -92,7 +96,8 @@
             "plotNumber": "929",
             "area": "2,656.72",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'19.4\"N 46°55'08.9\"E"
+            "latitude": 24.488722,
+            "longitude": 46.919139
         }
     },
     {
@@ -111,7 +116,8 @@
             "plotNumber": "930",
             "area": "2,651.09",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'18.9\"N 46°55'07.5\"E"
+            "latitude": 24.488583,
+            "longitude": 46.918750
         }
     },
     {
@@ -130,7 +136,8 @@
             "plotNumber": "932",
             "area": "2,656.72",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'17.8\"N 46°55'04.6\"E"
+            "latitude": 24.488278,
+            "longitude": 46.917944
         }
     },
     {
@@ -149,7 +156,8 @@
             "plotNumber": "923",
             "area": "2,401.29",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'24.5\"N 46°55'16.6\"E"
+            "latitude": 24.490139,
+            "longitude": 46.921278
         }
     },
     {
@@ -168,7 +176,8 @@
             "plotNumber": "933",
             "area": "2,659.67",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'17.3\"N 46°55'03.1\"E"
+            "latitude": 24.488139,
+            "longitude": 46.917528
         }
     },
     {
@@ -188,7 +197,8 @@
             "block": "16",
             "area": "2,543.27",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'34.3\"N 46°55'32.3\"E"
+            "latitude": 24.492861,
+            "longitude": 46.925639
         }
     },
     {
@@ -207,7 +217,8 @@
             "plotNumber": "924",
             "area": "2,406.06",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'22.2\"N 46°55'16.1\"E"
+            "latitude": 24.489500,
+            "longitude": 46.921139
         }
     },
     {
@@ -226,7 +237,8 @@
             "plotNumber": "916",
             "area": "2,456.62",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'29.2\"N 46°55'25.3\"E"
+            "latitude": 24.491444,
+            "longitude": 46.923694
         }
     },
     {
@@ -245,7 +257,8 @@
             "plotNumber": "921",
             "area": "2,414.5",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'25.7\"N 46°55'19.2\"E"
+            "latitude": 24.490472,
+            "longitude": 46.921972
         }
     },
     {
@@ -264,7 +277,8 @@
             "plotNumber": "912",
             "area": "2,514.02",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'30.6\"N 46°55'30.8\"E"
+            "latitude": 24.491833,
+            "longitude": 46.925222
         }
     },
     {
@@ -284,7 +298,8 @@
             "block": "16",
             "area": "2,485.42",
             "propertyType": "قطعة الارض",
-            "coordinates": "24°29'29.0\"N 46°55'28.5\"E"
+            "latitude": 24.491389,
+            "longitude": 46.924583
         }
     }
 ]

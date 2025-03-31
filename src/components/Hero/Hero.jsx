@@ -6,9 +6,9 @@ const Hero = () => {
   const heroRef = useRef(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [typedText, setTypedText] = useState('');
-  const fullText = 'Balance Real Estate Company ';
-  const typingSpeed = 80;
-  const typingDelay = 1200;
+  const fullText = 'Balance Real Estate Company';  // Removed the extra space at the end
+  const typingSpeed = 100; // Slightly slower for better visibility
+  const typingDelay = 800; // Start typing sooner
   
   // إضافة متغيرات حالة للعدادات
   const [plotCount, setPlotCount] = useState(0);
@@ -41,13 +41,19 @@ const Hero = () => {
 
     window.addEventListener('scroll', handleScroll);
     
-    // تأخير بدء الكتابة للحصول على تأثير أفضل
+    // Fixed typing animation without undefined issues
     const startTypingTimeout = setTimeout(() => {
-      let i = 0;
+      // Reset typed text to make sure we start fresh
+      setTypedText('');
+      
+      const textArray = fullText.split('');
+      let currentIndex = 0;
+      
       const typingInterval = setInterval(() => {
-        if (i < fullText.length) {
-          setTypedText(prev => prev + fullText.charAt(i));
-          i++;
+        if (currentIndex < textArray.length) {
+          // Add each character one by one
+          setTypedText(prevText => textArray.slice(0, currentIndex + 1).join(''));
+          currentIndex++;
         } else {
           clearInterval(typingInterval);
         }
@@ -180,7 +186,7 @@ const Hero = () => {
       
       {/* محتوى الهيرو الرئيسي - تم تبسيطه */}
       <div className={`hero-content ${isVisible ? 'visible' : ''} simplified`}>
-        <div className="badge animate fade-in">
+        <div className="badge animate fade-in badge-container">
           <div className="badge-logo-container">
             <img src="https://modon.gov.sa/Style%20Library/ar-sa/Core%20Styles/images/logo.png" alt="شعار مدن" className="badge-logo" />
           </div>
@@ -193,7 +199,11 @@ const Hero = () => {
         </h1>
         
         <div className="typed-container animate fade-in delay-1">
-          <p className="typed-text">{typedText}<span className="cursor">|</span></p>
+          <p className="typed-text">
+            {/* Clean rendering of just the typed text */}
+            {typedText}
+            <span className="cursor" style={{ animation: 'blink 1s step-end infinite' }}>|</span>
+          </p>
         </div>
         
         <p className="hero-subtitle animate fade-in delay-2">

@@ -1,0 +1,867 @@
+.map-section-hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #f0f4f8, #d9e2ec);
+    padding: 60px 20px;
+    min-height: 100vh; /* Min-height instead of fixed height for better responsiveness */
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* تحسين القسم الرئيسي */
+.map-section {
+    padding: 50px 0;
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.container {
+    width: 92%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.section-title, .section-subtitle {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.section-subtitle {
+    margin-bottom: 40px;
+    color: #666;
+}
+
+/* تحسين تناسق ارتفاعات المكونات */
+.map-section-content {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 1400px;
+    height: 600px; /* ارتفاع ثابت للمحتوى بالكامل */
+    min-height: 500px;
+}
+
+.insights-list-container {
+    flex: 1;
+    min-width: 250px; /* Minimum width */
+    max-width: 350px; /* Increased max-width */
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.5s ease-in-out;
+    overflow-y: auto;
+ 
+    max-height: 70vh; /* Use viewport height for better scaling */
+}
+
+.insight-item{
+    cursor: pointer;
+}
+/* تصميم محترف للقسم الجانبي بالخريطة */
+.insights-list-wrapper {
+    flex: 1;
+    width: 30%;
+    max-width: 320px;
+    min-width: 280px;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    border: 1px solid rgba(0,0,0,0.05);
+    height: 100%; /* جعل الارتفاع مساويًا للخريطة */
+    display: flex;
+    flex-direction: column;
+}
+
+.insights-list-wrapper ::second-child {
+  height: 100%;
+}
+
+.map-container {
+    flex: 2;
+    width: 70%;
+    height: 100%; /* جعل الارتفاع مساويًا للقائمة */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: none;
+}
+
+/* Responsive adjustments for different screen sizes */
+@media (max-width: 992px) {
+    .map-section-content {
+        max-width: 95%;
+    }
+    
+    .insights-list-container {
+        max-width: 300px;
+    }
+
+    .insights-list-wrapper {
+        min-width: 250px;
+        width: 35%;
+    }
+    
+    .map-container {
+        width: 65%;
+    }
+}
+
+@media (max-width: 768px) {
+    .map-section-hero {
+        padding: 40px 15px;
+    }
+    
+    .map-section-content {
+        height: auto; /* استعادة الارتفاع التلقائي للأجهزة المحمولة */
+        flex-direction: column;
+    }
+    
+    .insights-list-container {
+        max-width: 100%;
+        max-height: 300px; /* Shorter on mobile to leave room for map */
+        order: 2; /* Move insights below map on mobile */
+    }
+    
+    .map-container {
+        max-width: 100%;
+        height: 60vh;
+        min-height: 400px;
+        order: 1; /* Move map above insights on mobile */
+    }
+
+    .insights-list-wrapper {
+        width: 100%;
+        max-width: 100%;
+        order: 2;
+        max-height: 380px;
+        height: auto; /* استعادة الارتفاع التلقائي */
+    }
+    
+    .map-container {
+        width: 100%;
+        height: 60vh;
+        min-height: 400px;
+        order: 1;
+    }
+    
+    /* تحسين المسافات في الشاشات المتوسطة */
+    .section-subtitle {
+        margin-bottom: 25px;
+    }
+    
+    .map-section {
+        padding: 30px 0;
+    }
+
+    .insights-container {
+        height: calc(100% - 45px); /* تعديل للأجهزة المحمولة */
+    }
+}
+
+@media (max-width: 576px) {
+    .map-section-hero {
+        padding: 30px 10px;
+    }
+    
+    .insights-list-container {
+        padding: 15px;
+        max-height: 250px;
+    }
+    
+    .map-container {
+        height: 45vh;
+        min-height: 250px;
+    }
+
+    .map-container {
+        height: 50vh;
+        min-height: 300px;
+    }
+    
+    .insights-list-wrapper {
+        max-height: 300px;
+    }
+    
+    .map-section {
+        padding: 20px 0;
+    }
+    
+    .container {
+        width: 96%;
+    }
+    
+    .filter-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .filter-wrapper label {
+        margin-bottom: 5px;
+    }
+}
+
+/* Handle landscape orientation on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .map-section-hero {
+        padding: 20px 10px;
+        min-height: 120vh; /* More space in landscape */
+    }
+    
+    .map-section-content {
+        flex-direction: row; /* Keep horizontal in landscape */
+    }
+    
+    .insights-list-container {
+        max-height: 80vh;
+        max-width: 40%;
+        order: 1; /* Reset ordering */
+    }
+    
+    .map-container {
+        height: 80vh;
+        order: 2; /* Reset ordering */
+    }
+
+    .map-section-content {
+        flex-direction: row;
+    }
+    
+    .insights-list-wrapper {
+        width: 35%;
+        max-width: 35%;
+        order: 1;
+        height: 70vh;
+        max-height: none;
+    }
+    
+    .map-container {
+        width: 65%;
+        order: 2;
+        height: 70vh;
+    }
+}
+
+/* Slide-in animation */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Animation for mobile direction */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Apply different animation for mobile */
+@media (max-width: 768px) {
+    .insights-list-container {
+        animation: slideUp 0.5s ease-in-out;
+    }
+
+    .insights-list-wrapper {
+        animation: slideUp 0.5s ease-in-out;
+    }
+}
+
+/* تعديلات للشاشات الكبيرة */
+@media (min-width: 1400px) {
+    .map-section-content {
+        height: 650px; /* زيادة الارتفاع للشاشات الكبيرة جداً */
+    }
+    
+    .map-container {
+        min-height: 650px;
+    }
+}
+
+/* تصميم رأس القائمة مع العنوان والفلترة */
+.filter-wrapper {
+    padding: 15px 20px;
+    background: linear-gradient(to bottom, #f9f9f9, #ffffff);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    margin-bottom: 0 !important;
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0; /* منع الانكماش */
+}
+
+.filter-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.04), transparent);
+    z-index: 1;
+}
+
+.filter-wrapper label {
+    display: block;
+    margin-bottom: 8px !important;
+    color: #444;
+    font-size: 0.95rem;
+    font-weight: 600 !important;
+}
+
+.filter-wrapper select {
+    width: 100%;
+    padding: 10px 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(0,0,0,0.15) !important;
+    background-color: #fff;
+    color: #333;
+    font-size: 0.9rem !important;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 12px center;
+    padding-left: 35px !important;
+    direction: rtl;
+    cursor: pointer;
+}
+
+.filter-wrapper select:focus {
+    border-color: rgba(0,0,0,0.3) !important;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+    outline: none;
+}
+
+.filter-wrapper select:hover {
+    border-color: rgba(0,0,0,0.25) !important;
+}
+
+/* تحسين محتوى القائمة */
+.insights-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 60px); /* طرح ارتفاع الـ filter-wrapper تقريبًا */
+    overflow: hidden;
+}
+
+/* تصميم محتوى القائمة */
+.insights-list-wrapper > div:nth-child(2) {
+    height: calc(100% - 90px);
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.insights-list-wrapper h2 {
+    font-size: 1.2rem !important;
+    margin: 0 0 10px !important;
+    padding: 12px 20px 8px;
+    color: #333;
+    text-align: center;
+    font-weight: 600 !important;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+    position: relative;
+    flex-shrink: 0; /* منع الانكماش */
+}
+
+.insights-list-wrapper h2::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 35%;
+    width: 30%;
+    height: 2px;
+    background-color: var(--secondary-color, #C8B09A);
+    border-radius: 2px;
+}
+
+/* تحسين قائمة العناصر */
+.insights-list-wrapper .insights-list {
+    list-style-type: none;
+    padding: 8px 10px !important;
+    margin: 0;
+    overflow-y: auto; /* تمكين التمرير العمودي */
+    flex-grow: 1; /* السماح بالتمدد ليملأ المساحة المتبقية */
+    max-height: none !important; /* إزالة الارتفاع الأقصى السابق */
+    height: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,0.2) rgba(0,0,0,0.05);
+}
+
+/* تصميم قائمة العناصر */
+.insights-list-wrapper ul {
+    max-height: calc(100% - 60px) !important;
+    padding: 8px 10px !important;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,0.2) rgba(0,0,0,0.05);
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+/* تصميم شريط التمرير */
+.insights-list-wrapper ul::-webkit-scrollbar {
+    width: 5px;
+}
+
+.insights-list-wrapper ul::-webkit-scrollbar-track {
+    background-color: rgba(0,0,0,0.03);
+    border-radius: 10px;
+}
+
+.insights-list-wrapper ul::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.15);
+    border-radius: 10px;
+}
+
+.insights-list-wrapper ul::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0,0,0,0.25);
+}
+
+/* تصميم عناصر القائمة */
+.insights-list-wrapper li {
+    padding: 15px !important;
+    margin-bottom: 10px !important;
+    background-color: #fff !important;
+    border: 1px solid rgba(0,0,0,0.08) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04) !important;
+    transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.insights-list-wrapper li:hover {
+    transform: translateY(-2px) scale(1.01) !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08) !important;
+    border-color: rgba(0,0,0,0.12) !important;
+}
+
+.insights-list-wrapper li:active {
+    transform: translateY(0) scale(0.99) !important;
+}
+
+.insights-list-wrapper li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background-color: var(--secondary-color, #C8B09A);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.insights-list-wrapper li:hover::before {
+    opacity: 1;
+}
+
+/* تصميم نصوص العناصر */
+.insights-list-wrapper li strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #222;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    line-height: 1.4;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: relative;
+    padding-right: 20px;
+}
+
+.insights-list-wrapper li strong::after {
+    content: "\2192";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    color: var(--secondary-color, #C8B09A);
+}
+
+.insights-list-wrapper li:hover strong::after {
+    opacity: 1;
+    transform: translate(5px, -50%);
+}
+
+.insights-list-wrapper li p {
+    margin: 0;
+    color: #666 !important;
+    font-size: 0.85rem !important;
+    line-height: 1.5;
+}
+
+/* حالة عدم وجود بيانات */
+.no-insights-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* يشغل كامل المساحة */
+    padding: 20px;
+    text-align: center;
+}
+
+.no-insights-message p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* حالة عدم وجود بيانات */
+.insights-list-wrapper > div > p {
+    padding: 20px;
+    color: #666;
+    font-size: 0.95rem;
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* تأثير التحميل والظهور */
+@keyframes listItemAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.insights-list-wrapper li {
+    animation: listItemAppear 0.4s ease forwards;
+    opacity: 0;
+}
+
+.insights-list-wrapper li:nth-child(1) { animation-delay: 0.1s; }
+.insights-list-wrapper li:nth-child(2) { animation-delay: 0.2s; }
+.insights-list-wrapper li:nth-child(3) { animation-delay: 0.3s; }
+.insights-list-wrapper li:nth-child(4) { animation-delay: 0.4s; }
+.insights-list-wrapper li:nth-child(5) { animation-delay: 0.5s; }
+.insights-list-wrapper li:nth-child(n+6) { animation-delay: 0.6s; }
+
+/* تحسينات للشاشات المختلفة */
+@media (max-width: 992px) {
+    .insights-list-wrapper {
+        max-width: 300px;
+        min-width: 260px;
+    }
+}
+
+@media (max-width: 768px) {
+    .insights-list-wrapper {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 10px;
+        max-height: 380px;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        margin-top: -10px;
+        z-index: 10;
+    }
+    
+    .filter-wrapper {
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .filter-wrapper label {
+        margin-bottom: 0 !important;
+        margin-left: 5px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+    
+    .filter-wrapper select {
+        flex: 1;
+    }
+
+    .insights-list-wrapper h2 {
+        padding: 10px;
+        font-size: 1.1rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .insights-list-wrapper {
+        max-height: 320px;
+    }
+    
+    .filter-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 15px;
+    }
+    
+    .filter-wrapper label {
+        margin-bottom: 6px !important;
+    }
+    
+    .insights-list-wrapper li {
+        padding: 12px !important;
+    }
+    
+    .insights-list-wrapper li strong {
+        font-size: 0.95rem !important;
+    }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .insights-list-wrapper {
+        max-height: none;
+        height: 70vh;
+    }
+    
+    .insights-list-wrapper ul {
+        max-height: calc(70vh - 120px) !important;
+    }
+}
+
+/* ===== تنسيقات الوضع الداكن لسيكشن الخريطة ===== */
+[data-theme='dark'] .map-section {
+    background-color: #121212; /* خلفية داكنة للقسم بالكامل */
+}
+
+[data-theme='dark'] .section-title, 
+[data-theme='dark'] .section-subtitle {
+    color: #e0e0e0; /* لون فاتح للعناوين والنصوص */
+}
+
+[data-theme='dark'] .section-subtitle {
+    color: #aaaaaa; /* لون رمادي فاتح للنص الفرعي */
+}
+
+/* تعديلات حاوية الخريطة والقائمة */
+[data-theme='dark'] .map-section-content {
+    background: transparent;
+    box-shadow: none;
+}
+
+/* تصميم قائمة المعلومات */
+[data-theme='dark'] .insights-list-wrapper {
+    background-color: #1e1e1e;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* تصميم رأس القائمة والفلترة */
+[data-theme='dark'] .filter-wrapper {
+    background: linear-gradient(to bottom, #252525, #1e1e1e);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .filter-wrapper::after {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.03), transparent);
+}
+
+[data-theme='dark'] .filter-wrapper label {
+    color: #d0d0d0;
+}
+
+[data-theme='dark'] .filter-wrapper select {
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+[data-theme='dark'] .filter-wrapper select:focus {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .filter-wrapper select:hover {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* تصميم العنوان */
+[data-theme='dark'] .insights-list-wrapper h2 {
+    color: #e0e0e0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+/* تصميم شريط التمرير */
+[data-theme='dark'] .insights-list-wrapper ul::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme='dark'] .insights-list-wrapper ul::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme='dark'] .insights-list-wrapper ul::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* تصميم عناصر القائمة */
+[data-theme='dark'] .insights-list-wrapper li {
+    background-color: #252525 !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme='dark'] .insights-list-wrapper li:hover {
+    background-color: #2c2c2c !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* تصميم نصوص العناصر */
+[data-theme='dark'] .insights-list-wrapper li strong {
+    color: #e0e0e0;
+}
+
+[data-theme='dark'] .insights-list-wrapper li p {
+    color: #aaaaaa !important;
+}
+
+/* حالة عدم وجود بيانات */
+[data-theme='dark'] .no-insights-message p,
+[data-theme='dark'] .insights-list-wrapper > div > p {
+    color: #aaaaaa;
+}
+
+/* تصميم خرائط جوجل في الوضع الداكن */
+[data-theme='dark'] .map-container {
+    filter: brightness(0.85) contrast(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* لتحسين تجربة المستخدم عند تغيير السمة */
+.map-section, 
+.map-section-content,
+.insights-list-wrapper,
+.insights-list-wrapper li,
+.filter-wrapper,
+.map-container {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+/* تحسين معلومات المكان عند النقر عليه في الخريطة */
+[data-theme='dark'] .gm-style .gm-style-iw-c {
+    background-color: #252525 !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme='dark'] .gm-style .gm-style-iw-d {
+    background-color: #252525 !important;
+}
+
+[data-theme='dark'] .gm-style .gm-style-iw-t::after {
+    background: #252525 !important;
+}
+
+/* تعديل أزرار العمل في InfoWindow */
+/* [data-theme='dark'] .btn-success {
+    background-color: #1e6d48 !important;
+    border-color: #164a32 !important;
+}
+
+[data-theme='dark'] .btn-success:hover {
+    background-color: #27895c !important;
+    border-color: #1e6d48 !important;
+} */
+
+/* ===== تحسين نافذة معلومات الخريطة في الوضع الداكن ===== */
+
+/* نافذة المعلومات الرئيسية */
+[data-theme='dark'] .gm-style-iw.gm-style-iw-c {
+    background-color: #252525 !important;
+    color: #e0e0e0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* محتوى النافذة */
+[data-theme='dark'] .gm-style-iw-d {
+    background-color: #252525 !important;
+}
+
+/* السهم الذي يشير إلى الموقع */
+[data-theme='dark'] .gm-style-iw-t::after {
+    background: #252525 !important;
+    box-shadow: -2px 2px 2px 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+/* زر الإغلاق */
+[data-theme='dark'] .gm-ui-hover-effect {
+    filter: invert(1) !important;
+}
+
+/* تعديل المحتوى المخصص داخل النافذة */
+[data-theme='dark'] .gm-style-iw-d > div {
+    background-color: #252525 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* العنوان والنصوص */
+[data-theme='dark'] .gm-style-iw-d strong {
+    color: #e0e0e0 !important;
+}
+
+[data-theme='dark'] .gm-style-iw-d div div {
+    color: #aaa !important;
+}
+
+/* الزر الأخضر */
+/* [data-theme='dark'] .gm-style-iw-d .btn-success {
+    background-color: #1e6d48 !important;
+    border-color: #164a32 !important;
+    color: #e0e0e0 !important;
+}
+
+[data-theme='dark'] .gm-style-iw-d .btn-success:hover {
+    background-color: #27895c !important;
+    border-color: #1e6d48 !important;
+}
+
+[data-theme='dark'] .gm-style-iw-d .btn-success:focus {
+    box-shadow: 0 0 0 3px rgba(30, 109, 72, 0.3) !important;
+}
+ */
+
+[data-theme='dark'] .gm-style .gm-style-iw-d::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: #252525;
+}
+
+[data-theme='dark'] .gm-style .gm-style-iw-d::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 5px;
+}
+
+[data-theme='dark'] .gm-style .gm-style-iw-d::-webkit-scrollbar-track {
+    background-color: #252525;
+}
+
+
+[data-theme='dark'] .gm-style .gm-style-iw-tc::after {
+    background-color: #252525;
+}

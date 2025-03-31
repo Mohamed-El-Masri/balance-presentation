@@ -258,11 +258,11 @@ const Overview = ({ stats: propStats }) => {
         <div className="quick-actions" role="navigation" aria-label="روابط سريعة">
           <div 
             className="quick-action-btn" 
-            onClick={() => document.getElementById('map').scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => document.getElementById('map-section-title').scrollIntoView({ behavior: 'smooth' })}
             tabIndex="0"
             role="button"
             aria-label="انتقل إلى قسم الخريطة"
-            onKeyPress={(e) => e.key === 'Enter' && document.getElementById('map').scrollIntoView({ behavior: 'smooth' })}
+            onKeyPress={(e) => e.key === 'Enter' && document.getElementById('map-section-title').scrollIntoView({ behavior: 'smooth' })}
           >
             <div className="quick-action-icon" aria-hidden="true">🗺️</div>
             <span>استكشف الخريطة</span>

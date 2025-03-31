@@ -9,7 +9,7 @@ import Footer from './components/Footer/Footer';
 import Spinner from './components/UI/Spinner/Spinner'; // مكون جديد للتحميل
 import ErrorBoundary from './components/UI/ErrorBoundary/ErrorBoundary'; // مكون جديد لمعالجة الأخطاء
 import properties from './assets/properties.json';
-
+import MapSection from './components/MapSection/MapSection';
 function App() {
   const [propertiesData, setPropertiesData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -111,7 +111,7 @@ function App() {
         <div className="main-content">
           <Hero />
           <Overview stats={stats} />
-          
+          <MapSection  />
           <Statistics />
           <Properties properties={propertiesData} />
         </div>
