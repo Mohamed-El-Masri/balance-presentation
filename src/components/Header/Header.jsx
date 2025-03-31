@@ -8,7 +8,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
   const [activeSection, setActiveSection] = useState('hero');
   
   // استخدام useRef لمنع إعادة الحسابات غير الضرورية
-  const sectionsRef = useRef(['hero', 'overview', 'map', 'statistics', 'properties']);
+  const sectionsRef = useRef(['hero', 'overview', 'map-section-title', 'statistics', 'properties']);
   const scrollTimeoutRef = useRef(null);
   
   // تحديد القسم النشط بطريقة أكثر كفاءة
@@ -161,9 +161,9 @@ const Header = ({ toggleTheme, currentTheme }) => {
             </li>
             <li>
               <a 
-                href="#map" 
-                onClick={(e) => smoothScroll(e, 'map')}
-                className={activeSection === 'map' ? 'active' : ''}
+                href="#map-section-title" 
+                onClick={(e) => smoothScroll(e, 'map-section-title')}
+                className={activeSection === 'map-section-title' ? 'active' : ''}
               >
                 الخريطة
               </a>
