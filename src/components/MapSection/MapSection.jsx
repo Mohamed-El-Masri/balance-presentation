@@ -83,6 +83,7 @@ function MapSection() {
             }
         }
         
+        
 
         async function initializeMap() {
             try {
