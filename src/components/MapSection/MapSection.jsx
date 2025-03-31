@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import InsightsList from './InsightsList'; // Import the new component
+import properties from '../../assets/properties.json'; // Import JSON data
 import './MapSection.css'; // Import CSS for styling
 
 const MAPS_API_KEY = 'AIzaSyAl7W7vp4Jj09LEO3lKO-UBolbcDimAWbo'; // Replace with your actual API key
 const API_URL = 'https://areainsights.googleapis.com/v1:computeInsights';
- 
+
 function MapSection() {
     const mapContainerRef = useRef(null); // Reference to the map container
     const [insights, setInsights] = useState([]);
+    const activeMarkerRef = useRef(null); // Reference to store the active marker
+    const infoWindowRef = useRef(null); // Reference to store the InfoWindow
 
     useEffect(() => {
         async function loadGoogleMapsAPI() {
@@ -82,29 +85,83 @@ function MapSection() {
                 }
 
                 const map = new google.maps.Map(mapContainerRef.current, {
-                    center: { lat: 37.7749, lng: -122.4194 }, // Default center (San Francisco)
+                    center: { lat: 24.492583, lng: 46.926167 }, // Default center (Riyadh)
                     zoom: 12,
                 });
 
-                let activeMarker = null; // Variable to store the active marker
+                // Initialize InfoWindow
+                infoWindowRef.current = new google.maps.InfoWindow();
 
-                // Add click listener to the map
+                // Add markers from JSON data
+                properties.forEach((property) => {
+                    const marker = new google.maps.Marker({
+                        position: {
+                            lat: property.property.latitude,
+                            lng: property.property.longitude,
+                        },
+                        map,
+                        title: property.property.propertyId,
+                    });
+
+                    // Add click listener to show tooltip
+                    marker.addListener('click', () => {
+                        const content = document.createElement('div');
+                        content.style.fontFamily = 'Arial, sans-serif';
+                        content.style.textAlign = 'left';
+                        content.style.padding = '10px';
+                        content.style.borderRadius = '8px';
+                        content.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+                        content.style.backgroundColor = '#f9f9f9';
+
+                        const title = document.createElement('strong');
+                        title.textContent = property.property.propertyId;
+                        title.style.fontSize = '16px';
+                        title.style.color = '#333';
+                        content.appendChild(title);
+
+                        const details = document.createElement('div');
+                        details.style.marginTop = '8px';
+                        details.style.fontSize = '14px';
+                        details.style.color = '#555';
+                        details.innerHTML = `
+                            ${property.property.city}, ${property.property.neighborhood}<br />
+                            Area: ${property.property.area} m²
+                        `;
+                        content.appendChild(details);
+
+                        const button = document.createElement('button');
+                        button.textContent = 'Get Nearby Places';
+                        button.className = 'btn btn-success'; // Use Bootstrap classes for styling
+                        button.style.marginTop = '12px';
+                        button.style.padding = '8px 16px';
+                        button.style.fontSize = '14px';
+                        button.onclick = () => {
+                            fetchNearbyPlaces(property.property.latitude, property.property.longitude);
+                        };
+                        content.appendChild(button);
+
+                        infoWindowRef.current.setContent(content);
+                        infoWindowRef.current.open(map, marker);
+                    });
+                });
+
+                // Add click listener to the map for creating new markers
                 map.addListener('click', (event) => {
                     const { latLng } = event;
 
-                    // Remove the old marker if it exists
-                    if (activeMarker) {
-                        activeMarker.setMap(null);
+                    // Remove the previous active marker if it exists
+                    if (activeMarkerRef.current) {
+                        activeMarkerRef.current.setMap(null);
                     }
 
                     // Create a new marker at the clicked location
-                    activeMarker = new google.maps.Marker({
+                    activeMarkerRef.current = new google.maps.Marker({
                         position: latLng,
                         map,
-                        title: 'Selected Location',
+                        title: 'New Marker',
                     });
 
-                    console.log('Marker set at:', latLng.toJSON());
+                    console.log('New marker set at:', latLng.toJSON());
 
                     // Fetch nearby places for the clicked location
                     fetchNearbyPlaces(latLng.lat(), latLng.lng());
@@ -126,7 +183,7 @@ function MapSection() {
             <div className="container"> {/* Add a container div for alignment */}
                 <h2 className="section-title">Explore Nearby Places</h2> {/* Add a title for better context */}
                 <div className="map-section-content"> {/* Add a content wrapper for better layout */}
-                      <div className="insights-list-wrapper fixed-width"> {/* Add a class for fixed width */}
+                    <div className="insights-list-wrapper fixed-width"> {/* Add a class for fixed width */}
                         <InsightsList insights={insights} /> {/* Pass insights to the new component */}
                     </div>
                     <div
@@ -134,7 +191,6 @@ function MapSection() {
                         className="map-container" // Add a class for styling
                         aria-label="Interactive map"
                     ></div>
-                  
                 </div>
             </div>
         </section>
