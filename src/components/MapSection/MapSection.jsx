@@ -93,8 +93,8 @@ function MapSection() {
                 }
 
                 const map = new google.maps.Map(mapContainerRef.current, {
-                    center: { lat: 24.492583, lng: 46.926167 }, // Default center (Riyadh)
-                    zoom: 12,
+                    center: { lat: 24.490472, lng: 46.921972 }, 
+                    zoom: 16.10,
                 });
 
                 // Store the map instance in the ref
