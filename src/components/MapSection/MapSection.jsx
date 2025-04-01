@@ -69,7 +69,7 @@ function MapSection() {
                             locationRestriction: {
                                 circle: {
                                     center: { latitude: lat, longitude: lng },
-                                    radius: 5000,
+                                    radius: 5000, // 10 km
                                 },
                             },
                         }),
