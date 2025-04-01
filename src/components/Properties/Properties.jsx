@@ -94,7 +94,9 @@ const Properties = ({ properties }) => {
       ]
     // استخراج الرقم من معرف العقار (على افتراض أن المعرف هو "deed-X")
     const idNumber = propertyId.replace(/\D/g, '');
+
     return `${imgUrls[idNumber % imgUrls.length]}`;
+
   };
   
   // تبديل حالة العرض بملء الشاشة
