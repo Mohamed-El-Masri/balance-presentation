@@ -257,7 +257,7 @@ nav {
     right: -100%;
     width: 80%;
     max-width: 300px;
-    height: 100%;
+    height: fit-content;
     background-color: var(--primary-color);
     padding: 80px 2rem 2rem;
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
