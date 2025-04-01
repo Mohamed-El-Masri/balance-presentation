@@ -3,7 +3,7 @@ import InsightsList from './InsightsList'; // Import the new component
 import properties from '../../assets/properties.json'; // Import JSON data
 import './MapSection.css'; // Import CSS for styling
 
-const MAPS_API_KEY = 'AIzaSyAl7W7vp4Jj09LEO3lKO-UBolbcDimAWbo'; // Replace with your actual API key
+const MAPS_API_KEY = 'AIzaSyAl7W7vp4Jj09LEO3lKO-UBolbcDimAWb'; // Replace with your actual API key
 const API_URL = 'https://areainsights.googleapis.com/v1:computeInsights';
 
 function MapSection() {
