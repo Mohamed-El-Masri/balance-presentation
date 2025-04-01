@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { formatNumber } from './StatisticsUtils';
 
 const StatCard = ({ icon, value, label, index = 0, type = 'industrial', isPercentage = false }) => {
@@ -49,14 +48,18 @@ const StatCard = ({ icon, value, label, index = 0, type = 'industrial', isPercen
     ? `${formatNumber(displayValue)}%` 
     : formatNumber(displayValue);
 
+  // تحسين عرض الأيقونة داخل البطاقة
   return (
     <div 
       className={`stats-module__stat-item ${type} ${isAnimated ? 'animated' : ''}`}
       style={{ "--stat-index": index }}
     >
-      <span className={`stats-module__stat-icon ${type}`}>
-        {icon}
-      </span>
+      {/* تحسين عرض الأيقونة */}
+      {icon && (
+        <div className={`stats-module__stat-icon ${type}`}>
+          {icon}
+        </div>
+      )}
       <div className="stats-module__stat-content">
         <span className="stats-module__stat-value">
           {displayText}
@@ -65,15 +68,6 @@ const StatCard = ({ icon, value, label, index = 0, type = 'industrial', isPercen
       </div>
     </div>
   );
-};
-
-StatCard.propTypes = {
-  icon: PropTypes.node.isRequired,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  label: PropTypes.string.isRequired,
-  index: PropTypes.number,
-  type: PropTypes.string,
-  isPercentage: PropTypes.bool
 };
 
 export default StatCard;

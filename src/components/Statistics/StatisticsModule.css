@@ -39,6 +39,8 @@
   margin-left: 8px;
   font-size: 1.1rem;
   color: inherit;
+  display: inline-block; /* ضمان العرض الصحيح */
+  vertical-align: middle;
 }
 
 .stats-module__tab:hover {
@@ -52,12 +54,7 @@
 }
 
 .stats-module__tab-indicator {
-  position: absolute;
-  bottom: 0;
-  height: 2px;
-  background-color: var(--secondary-color, #C8B09A);
-  transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  z-index: 2;
+  display: none;
 }
 
 /* ===== محتوى القسم ===== */
@@ -170,6 +167,12 @@
   margin-bottom: 1rem;
   font-size: 1.5rem;
   transition: all 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.05); /* لون خلفية افتراضي */
+}
+
+.stats-module__stat-icon svg {
+  font-size: 1.5rem;
+  display: block;
 }
 
 .stats-module__stat-item:hover .stats-module__stat-icon {
@@ -241,6 +244,7 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(0, 0, 0, 0.04);
   position: relative;
+  min-height: 350px; /* ضمان وجود مساحة كافية للرسم البياني */
 }
 
 .stats-module__chart-title {
@@ -253,6 +257,9 @@
 .stats-module__chart-wrapper {
   height: 280px;
   position: relative;
+  width: 100%;
+  overflow: hidden;
+  visibility: visible !important; /* ضمان رؤية الرسوم البيانية */
 }
 
 .stats-module__chart-loading {
@@ -262,22 +269,22 @@
   right: 0;
   bottom: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 8px;
-  flex-direction: column;
-  gap: 15px;
-  color: var(--text-color, #555);
+  z-index: 5;
 }
 
 .stats-module__loading-indicator {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(0, 0, 0, 0.1);
+  border: 4px solid rgba(0, 0, 0, 0.1);
   border-radius: 50%;
   border-top-color: var(--secondary-color, #C8B09A);
   animation: spin 1s linear infinite;
+  margin-bottom: 10px;
 }
 
 @keyframes spin {
@@ -697,4 +704,10 @@
 .stats-module__trend-value {
   font-size: 1.1rem;
   margin-left: 8px;
+}
+
+/* التأكد من وضوح عناصر canvas الخاصة بالرسوم البيانية */
+canvas {
+  display: block !important;
+  visibility: visible !important;
 }

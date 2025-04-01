@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// Eliminamos la importación de PropTypes
 import { Line, Bar } from 'react-chartjs-2';
 import { getChartOptions } from './ChartConfig';
 import { FaTimes } from 'react-icons/fa';
@@ -120,12 +120,13 @@ const ZoomedChart = ({ zoomedChart, closeZoomedChart, chartData, activeTab, isDa
   );
 };
 
-ZoomedChart.propTypes = {
-  zoomedChart: PropTypes.string,
-  closeZoomedChart: PropTypes.func.isRequired,
-  chartData: PropTypes.object,
-  activeTab: PropTypes.string.isRequired,
-  isDarkMode: PropTypes.bool
-};
+// Eliminamos la definición de PropTypes
+// ZoomedChart.propTypes = {
+//   zoomedChart: PropTypes.string,
+//   closeZoomedChart: PropTypes.func.isRequired,
+//   chartData: PropTypes.object,
+//   activeTab: PropTypes.string.isRequired,
+//   isDarkMode: PropTypes.bool
+// };
 
 export default ZoomedChart;

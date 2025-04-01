@@ -12,37 +12,18 @@ import {
   Legend,
   Filler
 } from 'chart.js';
-// Comentamos temporalmente la importación de iconos
-// import { FaBuilding, FaHome, FaHotel, FaPercentage, FaUsers, FaChartLine, FaInfoCircle } from 'react-icons/fa';
+import { FaBuilding, FaHome, FaHotel, FaPercentage, FaUsers, FaChartLine, FaInfoCircle } from 'react-icons/fa';
 import './StatisticsModule.css';
 import statsData from '../../assets/statistics.json';
 import { getChartOptions } from './ChartConfig';
 import { formatNumber } from './StatisticsUtils';
-// Ajustamos las importaciones que pueden depender de react-icons
-// import ChartActions from './ChartActions';
-// import ZoomedChart from './ZoomedChart';
-// import StatCard from './StatCard';
+import ChartActions from './ChartActions';
+import ZoomedChart from './ZoomedChart';
+import StatCard from './StatCard';
+import ExamplesSection from './ExamplesSection';
+import statsDataDetailed from '../../assets/statistics-detailed.json';
 
-// Componentes simples para reemplazar temporalmente
-const SimpleIcon = ({ type }) => <span className={`simple-icon ${type}`}>{type.charAt(0).toUpperCase()}</span>;
-const SimpleChartActions = ({ chartType, handleZoomChart, downloadChartImage }) => (
-  <div className="stats-module__chart-actions">
-    <button onClick={() => handleZoomChart(chartType)}>🔍</button>
-    <button onClick={() => downloadChartImage(chartType)}>⬇️</button>
-  </div>
-);
-const SimpleStatCard = ({ value, label, index, isPercentage }) => (
-  <div className="stats-module__stat-item" style={{ "--stat-index": index || 0 }}>
-    <div className="stats-module__stat-content">
-      <span className="stats-module__stat-value">
-        {isPercentage ? `${value}%` : formatNumber(value)}
-      </span>
-      <span className="stats-module__stat-label">{label}</span>
-    </div>
-  </div>
-);
-
-// Registramos los componentes de Chart.js
+// Registramos los componentes de Chart.jsالكود يتم تنفيذه قبل عرض أي رسوم بيانية
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -237,29 +218,32 @@ const Statistics = () => {
   
   // تحسين تحميل وعرض الرسوم البيانية
   useEffect(() => {
-    if (isAnimating) return;
+    // نقوم بالتحميل فقط عند التشغيل الأولي أو عند إعادة الدخول للصفحة
+    // وليس عند التبديل بين التبويبات (لأننا نعالجها في handleTabChange)
+    if (isAnimating && chartData) return;
     
     setIsAnimating(true);
     setChartReady(false);
     
-    const prepareChartsWithDelay = async () => {
+    console.log("Preparing chart data for tab:", activeTab);
+    
+    const prepareInitialCharts = async () => {
       try {
-        // تحضير البيانات للرسوم البيانية
-        const newChartData = prepareChartData(activeTab);
-        
-        // التأكد من أن البيانات جاهزة قبل عرضها
-        if (!newChartData) {
-          console.error('فشل تحميل بيانات الرسوم البيانية لـ', activeTab);
+        // تأكد من وجود بيانات للتبويب المختار
+        if (!statsData[activeTab] || !statsData[activeTab].chartData) {
+          console.error('بيانات الرسوم البيانية غير متوفرة للتبويب:', activeTab);
           setChartData(null);
-          setChartReady(false);
+          setChartReady(true);
           setIsAnimating(false);
           return;
         }
         
-        // تحديث بيانات الرسم البياني
+        // تحضير البيانات للرسوم البيانية
+        const newChartData = prepareChartData(activeTab);
+        console.log("Chart data prepared:", !!newChartData);
         setChartData(newChartData);
         
-        // تأخير ظهور الرسم البياني للحصول على تأثير انتقالي أفضل
+        // إظهار الرسم البياني بعد تحضير البيانات
         setTimeout(() => {
           setChartReady(true);
           setIsAnimating(false);
@@ -267,60 +251,67 @@ const Statistics = () => {
       } catch (error) {
         console.error('خطأ في تحضير الرسوم البيانية:', error);
         setChartData(null);
-        setChartReady(false);
+        setChartReady(true);
         setIsAnimating(false);
       }
     };
     
-    // تأخير قصير قبل تحضير البيانات للسماح بإتمام التأثيرات الانتقالية
-    const timer = setTimeout(() => {
-      prepareChartsWithDelay();
-    }, 400);
+    // تنفيذ مباشر بدون تأخير للتحميل الأولي
+    prepareInitialCharts();
     
-    return () => clearTimeout(timer);
-  }, [activeTab, prepareChartData, isAnimating]);
+    return () => {}; // لا نحتاج إلى تنظيف هنا
+  }, [/* فقط عند التركيب الأولي */]);
   
   // التعامل مع تغيير التبويب
   const handleTabChange = (tab) => {
     if (tab === activeTab || isAnimating) return;
     
+    // تعيين حالة التحريك
     setIsAnimating(true);
     
-    // حفظ الحالة القديمة للرجوع إليها إذا حدثت مشكلة
-    const previousTab = activeTab;
-    
-    // تأثير تلاشي محتوى التبويب الحالي
+    // إخفاء المحتوى الحالي
     if (statsContentRef.current) {
-      statsContentRef.current.classList.add('stats-module__content--fadeout');
       statsContentRef.current.style.opacity = '0';
       statsContentRef.current.style.transform = 'translateY(20px)';
     }
     
-    // تغيير التبويب بعد انتهاء التأثير
+    // تغيير التبويب بعد فترة قصيرة
     setTimeout(() => {
+      // تغيير التبويب النشط
       setActiveTab(tab);
       
-      // تأخير قصير قبل ظهور المحتوى الجديد
+      // تأكيد أننا أعدنا تعيين حالة جاهزية الرسم البياني
+      setChartReady(false);
+      
+      // تحضير البيانات فوراً بعد تغيير التبويب (مهم)
+      if (statsData[tab]?.chartData) {
+        const newChartData = prepareChartData(tab);
+        setChartData(newChartData);
+      }
+      
+      // إعادة عرض المحتوى 
       setTimeout(() => {
         if (statsContentRef.current) {
           statsContentRef.current.style.opacity = '1';
           statsContentRef.current.style.transform = 'translateY(0)';
-          statsContentRef.current.classList.remove('stats-module__content--fadeout');
-        }
-        
-        // تأخير إلغاء حالة التحريك
-        setTimeout(() => {
+          
+          // تعيين الرسم البياني كجاهز بعد انتهاء انتقال المحتوى
+          setTimeout(() => {
+            setChartReady(true);
+            setIsAnimating(false);
+          }, 150);
+        } else {
+          setChartReady(true);
           setIsAnimating(false);
-        }, 300);
+        }
       }, 50);
-    }, 300);
+    }, 250);
   };
   
   // تنزيل الرسم البياني كصورة
   const downloadChartImage = (chartType) => {
     const chart = chartRefs.current[chartType];
     if (!chart) return;
-    
     const link = document.createElement('a');
     link.download = `${activeTab}-${chartType}-chart.png`;
     link.href = chart.toBase64Image('image/png', 1.0);
@@ -343,16 +334,14 @@ const Statistics = () => {
   const handleChartClick = (event, chartType) => {
     const chart = chartRefs.current[chartType];
     if (!chart) return;
-    
-    // تم تبسيط هذه الوظيفة لتجنب استخدام getElementsAtEvent
-    // سيتم تمييز السنة من خلال دالة أخرى
     setHighlightedYear(null);
   };
   
-  // إقران مراجع الرسوم البيانية
+  // تحسين إقران مراجع الرسوم البيانية لتصحيح المشكلة
   const setChartRef = (ref, chartType) => {
     if (ref) {
       chartRefs.current[chartType] = ref;
+      console.log(`Chart reference set for: ${chartType}`);
     }
   };
   
@@ -361,17 +350,22 @@ const Statistics = () => {
     return statsData[activeTab] || {};
   }, [activeTab]);
   
+  // استيراد الأمثلة من ملف البيانات المفصلة
+  const examples = useMemo(() => {
+    if (!statsDataDetailed[activeTab] || !statsDataDetailed[activeTab].examples) {
+      return [];
+    }
+    return statsDataDetailed[activeTab].examples;
+  }, [activeTab]);
+  
   // تحديد اتجاه النمو استنادًا إلى البيانات
   const getTrend = (tabData) => {
     if (!tabData?.chartData?.usage) return null;
-    
     const usageData = tabData.chartData.usage;
     if (usageData.length < 2) return null;
-    
     const latest = usageData[usageData.length - 1];
     const previous = usageData[usageData.length - 2];
     const diff = latest - previous;
-    
     return {
       direction: diff >= 0 ? 'positive' : 'negative',
       percentage: Math.abs(Math.round(diff))
@@ -380,6 +374,13 @@ const Statistics = () => {
   
   // استخراج اتجاه النمو للتبويب الحالي
   const currentTrend = useMemo(() => getTrend(statsData[activeTab]), [activeTab]);
+  
+  // تحقق من عرض الرسوم البيانية عندما تكون جاهزة
+  useEffect(() => {
+    if (chartReady && chartData) {
+      console.log("Charts should be visible now. Data and ready state confirmed.");
+    }
+  }, [chartReady, chartData]);
   
   // تحسين تنسيق وعرض المكونات
   const renderTabContent = () => {
@@ -407,22 +408,22 @@ const Statistics = () => {
           {/* المنشآت الصناعية */}
           {activeTab === 'industrial' && (
             <>
-              <SimpleStatCard
+              <StatCard 
                 value={stats.total}
                 label="عدد المنشآت"
                 index={0}
               />
-              <SimpleStatCard
+              <StatCard 
                 value={stats.workers}
                 label="عدد العمال"
                 index={1}
               />
-              <SimpleStatCard
+              <StatCard 
                 value={stats.warehouses}
                 label="المستودعات"
                 index={2}
               />
-              <SimpleStatCard
+              <StatCard 
                 value={stats.occupancy}
                 label="نسبة الإشغال"
                 index={3}
@@ -430,26 +431,25 @@ const Statistics = () => {
               />
             </>
           )}
-          
           {/* السكن النموذجي */}
           {activeTab === 'residential' && (
             <>
-              <SimpleStatCard
+              <StatCard 
                 value={stats.complexes}
                 label="المجمعات السكنية"
                 index={0}
               />
-              <SimpleStatCard
+              <StatCard 
                 value={stats.capacity}
                 label="السعة السكنية"
                 index={1}
               />
-              <SimpleStatCard
+              <StatCard 
                 value={stats.demand}
                 label="مستوى الطلب"
                 index={2}
               />
-              <SimpleStatCard
+              <StatCard 
                 value={stats.occupancy}
                 label="نسبة الإشغال"
                 index={3}
@@ -457,26 +457,25 @@ const Statistics = () => {
               />
             </>
           )}
-          
           {/* الفنادق */}
           {activeTab === 'hotels' && (
             <>
-              <SimpleStatCard
+              <StatCard 
                 value={stats.total}
                 label="عدد الفنادق"
                 index={0}
               />
-              <SimpleStatCard
+              <StatCard 
                 value={stats.guests}
                 label="عدد النزلاء"
                 index={1}
               />
-              <SimpleStatCard
+              <StatCard 
                 value={stats.rooms}
                 label="الغرف المتاحة"
                 index={2}
               />
-              <SimpleStatCard
+              <StatCard 
                 value={stats.occupancy}
                 label="نسبة الإشغال"
                 index={3}
@@ -485,8 +484,6 @@ const Statistics = () => {
             </>
           )}
         </div>
-        
-        {/* محتوى التحليل ملخص */}
         <div className="stats-module__analysis">
           <h3>التحليل</h3>
           <p>
@@ -494,24 +491,22 @@ const Statistics = () => {
             {activeTab === 'residential' && 'يوجد طلب متزايد على المجمعات السكنية مع ارتفاع في معدلات الإشغال خلال السنوات الأخيرة، مما يشير إلى فرصة استثمارية واعدة.'}
             {activeTab === 'hotels' && 'تعاني الفنادق من انخفاض في معدلات الإشغال مقارنة بالقطاعات الأخرى، مما يدعم توجه تحويل الرخص من فندقي إلى سكني.'}
           </p>
-          
           {/* إضافة مؤشر الاتجاه مع أنيميشن متحرك */}
           {currentTrend && (
-            <div className={`stats-module__trend ${currentTrend.direction}`} style={{
-              animation: 'fadeInUp 0.5s forwards',
+            <div className={`stats-module__trend stats-module__trend--${currentTrend.direction}`} style={{
+              opacity: 0,
+              animation: 'fadeIn 0.5s forwards',
               animationDelay: '0.6s',
-              opacity: 0
             }}>
-              <span className="stats-module__trend-value">
-                {currentTrend.direction === 'positive' ? '↗' : '↘'} {currentTrend.percentage}%
-              </span>
               <span className="stats-module__trend-label">
                 {currentTrend.direction === 'positive' ? 'نمو سنوي' : 'انخفاض سنوي'}
+              </span>
+              <span className="stats-module__trend-value">
+                {currentTrend.direction === 'positive' ? '↗' : '↘'} {currentTrend.percentage}%
               </span>
             </div>
           )}
         </div>
-        
         {/* الرسوم البيانية */}
         <div className="stats-module__charts">
           <div className="stats-module__chart-container">
@@ -521,7 +516,7 @@ const Statistics = () => {
                 <Line 
                   ref={(ref) => setChartRef(ref, 'line')}
                   data={chartData.line} 
-                  options={{
+                  options={{ 
                     ...getChartOptions(isDarkMode, 'line'),
                     animation: {
                       duration: 800,
@@ -544,19 +539,18 @@ const Statistics = () => {
                 </div>
               )}
             </div>
-            <SimpleChartActions 
+            <ChartActions 
               chartType="line" 
               handleZoomChart={handleZoomChart} 
               downloadChartImage={downloadChartImage} 
             />
           </div>
-          
           <div className="stats-module__chart-container">
             <h3 className="stats-module__chart-title">
               {activeTab === 'industrial' 
-                ? 'المنشآت المستغلة'
+                ? 'المنشآت المستغلة' 
                 : activeTab === 'residential'
-                  ? 'الوحدات السكنية'
+                  ? 'الوحدات السكنية' 
                   : 'الفنادق المستغلة'}
             </h3>
             <div className="stats-module__chart-wrapper">
@@ -564,7 +558,7 @@ const Statistics = () => {
                 <Bar 
                   ref={(ref) => setChartRef(ref, 'bar')}
                   data={chartData.bar} 
-                  options={{
+                  options={{ 
                     ...getChartOptions(isDarkMode, 'bar'),
                     animation: {
                       duration: 1000,
@@ -581,13 +575,41 @@ const Statistics = () => {
                 </div>
               )}
             </div>
-            <SimpleChartActions
+            <ChartActions 
               chartType="bar" 
               handleZoomChart={handleZoomChart} 
               downloadChartImage={downloadChartImage} 
             />
           </div>
         </div>
+        {/* إضافة قسم الأمثلة */}
+        <ExamplesSection activeTab={activeTab} examples={examples} />
+        {zoomedChart && chartData && (
+          <div className="stats-module__zoom-overlay" onClick={closeZoomedChart}>
+            <div className="stats-module__zoom-content" onClick={(e) => e.stopPropagation()}>
+              <button className="stats-module__zoom-close" onClick={closeZoomedChart}>✖</button>
+              <h3>
+                {zoomedChart === 'line' ? 'نسبة الإشغال عبر السنوات' : 
+                  activeTab === 'industrial' ? 'المنشآت المستغلة' :
+                  activeTab === 'residential' ? 'الوحدات السكنية' :
+                  'الفنادق المستغلة'}
+              </h3>
+              <div className="stats-module__zoom-chart">
+                {zoomedChart === 'line' ? (
+                  <Line 
+                    data={chartData.line} 
+                    options={getChartOptions(isDarkMode, 'line')}
+                  />
+                ) : (
+                  <Bar 
+                    data={chartData.bar} 
+                    options={getChartOptions(isDarkMode, 'bar')}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   };
@@ -597,62 +619,37 @@ const Statistics = () => {
       <div className="container">
         <h2 className="section-title">الإحصاءات والتحليلات</h2>
         <p className="section-subtitle">مؤشرات وتحليلات تفصيلية لمساعدتك في اتخاذ قرار الاستثمار</p>
-        
         <div className="stats-module">
           <div className="stats-module__tabs" ref={tabsRef}>
             <button 
               className={`stats-module__tab ${activeTab === 'industrial' ? 'active' : ''}`} 
               onClick={() => handleTabChange('industrial')}
+              type="button"
             >
-              <span>🏭</span>
+              <FaBuilding />
               <span>المنشآت الصناعية</span>
             </button>
             <button 
               className={`stats-module__tab ${activeTab === 'residential' ? 'active' : ''}`} 
               onClick={() => handleTabChange('residential')}
-            >
-              <span>🏠</span>
+              type="button">
+                 <FaHome />
               <span>الوحدات السكنية</span>
+          
             </button>
+            
+             
             <button 
               className={`stats-module__tab ${activeTab === 'hotels' ? 'active' : ''}`} 
               onClick={() => handleTabChange('hotels')}
+              type="button"
             >
-              <span>🏨</span>
+              <FaHotel />
               <span>الفنادق</span>
             </button>
             <div className="stats-module__tab-indicator" style={tabIndicatorStyle}></div>
           </div>
-          
           {renderTabContent()}
-          
-          {/* Modal de zoom simplificado - Corregido */}
-          {zoomedChart && chartData && (
-            <div className="stats-module__zoom-overlay" onClick={closeZoomedChart}>
-              <div className="stats-module__zoom-content" onClick={(e) => e.stopPropagation()}>
-                <button className="stats-module__zoom-close" onClick={closeZoomedChart}>✖</button>
-                <h3>
-                  {zoomedChart === 'line' ? 'نسبة الإشغال عبر السنوات' : 
-                   activeTab === 'industrial' ? 'المنشآت المستغلة' :
-                   activeTab === 'residential' ? 'الوحدات السكنية' :
-                   'الفنادق المستغلة'}
-                </h3>
-                <div className="stats-module__zoom-chart">
-                  {zoomedChart === 'line' ? (
-                    <Line 
-                      data={chartData.line} 
-                      options={getChartOptions(isDarkMode, 'line')}
-                    />
-                  ) : (
-                    <Bar 
-                      data={chartData.bar} 
-                      options={getChartOptions(isDarkMode, 'bar')}
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </section>
