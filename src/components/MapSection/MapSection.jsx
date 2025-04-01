@@ -3,7 +3,7 @@ import InsightsList from './InsightsList'; // Import the new component
 import properties from '../../assets/properties.json'; // Import JSON data
 import './MapSection.css'; // Import CSS for styling
 
-const MAPS_API_KEY = 'AIzaSyAl7W7vp4Jj09LEO3lKO-UBolbcDimAWbo'; // Replace with your actual API key
+const MAPS_API_KEY = 'AIzaSyBb7zIoQBrl3GWQ2E4DyJ677ZVDtkQu'; // Replace with your actual API key
 const API_URL = 'https://areainsights.googleapis.com/v1:computeInsights';
 
 function MapSection() {
@@ -13,6 +13,7 @@ function MapSection() {
     const activeMarkerRef = useRef(null); // Reference to store the active marker
     const infoWindowRef = useRef(null); // Reference to store the InfoWindow
     const mapRef = useRef(null); // Reference to store the map instance
+    const searchBoxRef = useRef(null); // Reference for the search box
 
     useEffect(() => {
         async function loadGoogleMapsAPI() {
@@ -176,6 +177,53 @@ function MapSection() {
 
                     // Fetch nearby places for the clicked location
                     fetchNearbyPlaces(latLng.lat(), latLng.lng());
+                });
+
+                // Add search box functionality
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = 'Search for a location...';
+                input.style.position = 'absolute';
+                input.style.top = '10px';
+                input.style.left = '50%';
+                input.style.transform = 'translateX(-50%)';
+                input.style.padding = '8px';
+                input.style.width = '300px';
+                input.style.border = '1px solid #ccc';
+                input.style.borderRadius = '5px';
+                input.style.zIndex = '5';
+                mapContainerRef.current.appendChild(input);
+
+                const searchBox = new google.maps.places.SearchBox(input);
+                searchBoxRef.current = searchBox;
+
+                mapRef.current.addListener('bounds_changed', () => {
+                    searchBox.setBounds(mapRef.current.getBounds());
+                });
+
+                searchBox.addListener('places_changed', () => {
+                    const places = searchBox.getPlaces();
+                    if (places.length === 0) return;
+
+                    // Clear the previous active marker
+                    if (activeMarkerRef.current) {
+                        activeMarkerRef.current.setMap(null);
+                    }
+
+                    const place = places[0];
+                    if (!place.geometry || !place.geometry.location) return;
+
+                    // Center the map on the searched location
+                    mapRef.current.setCenter(place.geometry.location);
+
+                    // Create a marker for the searched location
+                    activeMarkerRef.current = new google.maps.Marker({
+                        position: place.geometry.location,
+                        map: mapRef.current,
+                        title: place.name,
+                    });
+
+                    console.log('Searched location:', place);
                 });
 
                 console.info('Google Map initialized successfully');
