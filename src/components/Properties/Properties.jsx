@@ -75,7 +75,7 @@ const Properties = ({ properties }) => {
   const getDocumentImagePath = (propertyId) => {
     // استخراج الرقم من معرف العقار (على افتراض أن المعرف هو "deed-X")
     const idNumber = propertyId.replace(/\D/g, '');
-    return `/public/documents/deed-${idNumber}-thumb.jpg`;
+    return ` https://github.com/Mohamed-El-Masri/balance-presentation/blob/main/public/documents/deed-${idNumber}-thumb.jpg`;
   };
   
   // تبديل حالة العرض بملء الشاشة
