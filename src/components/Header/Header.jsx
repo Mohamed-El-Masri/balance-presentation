@@ -135,7 +135,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
             <img src="https://almajdiahinvestment.sa/storage/r6KO9mDQNojA5Cwk1r18GE5vD13K3P-metabG9nby1oLnBuZw==-.png" alt="شعار الماجدة" className="logo-img" />
           </div>
           <div className="logo-wrapper">
-            <img src="/src/assets/Balance - logo.png" alt="شعار شركة بالنس" className="logo-img" />
+            <img src="https://github.com/Mohamed-El-Masri/balance-presentation/blob/main/src/assets/Balance%20-%20logo.png" alt="شعار شركة بالنس" className="logo-img" />
           </div>
         </div>
         
@@ -214,3 +214,9 @@ const Header = ({ toggleTheme, currentTheme }) => {
 };
 
 export default Header;
+
+
+
+
+
+

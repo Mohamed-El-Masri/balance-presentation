@@ -73,9 +73,28 @@ const Properties = ({ properties }) => {
   
   // الحصول على مسار صورة الوثيقة
   const getDocumentImagePath = (propertyId) => {
+
+    const imgUrls = [
+
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509781/deed-1-thumb_dn7rmv.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509783/deed-2-thumb_zhgyqk.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509781/deed-3-thumb_ztlbht.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509784/deed-4-thumb_mbtmfl.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509786/deed-5-thumb_r358yx.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509783/deed-6-thumb_vhw26k.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509786/deed-7-thumb_m40rcz.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509785/deed-8-thumb_b96krr.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509785/deed-9-thumb_hicwlu.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509788/deed-10-thumb_eszp1c.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509786/deed-11-thumb_zqkaoq.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509787/deed-12-thumb_jmvqib.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509788/deed-13-thumb_cys6ty.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509789/deed-14-thumb_n5mbwm.jpg",
+      "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509789/deed-15-thumb_ausi3o.jpg"
+      ]
     // استخراج الرقم من معرف العقار (على افتراض أن المعرف هو "deed-X")
     const idNumber = propertyId.replace(/\D/g, '');
-    return `/public/documents/deed-${idNumber}-thumb.jpg`;
+    return `${imgUrls[idNumber % imgUrls.length]}`;
   };
   
   // تبديل حالة العرض بملء الشاشة
