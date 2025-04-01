@@ -3,11 +3,17 @@
 :root {
   /* الألوان الرئيسية */
   --primary-color: #565F58;
+  --primary-color-rgb: 86, 95, 88;
   --secondary-color: #C8B09A;
+  --secondary-color-rgb: 200, 176, 154;
   --light-bg: #F8F9FA;
+  --light-bg-rgb: 248, 249, 250;
   --alt-bg: #F0F2F5;
+  --alt-bg-rgb: 240, 242, 245;
   --text-color: #343A40;
+  --text-color-rgb: 52, 58, 64;
   --light-text: #6C757D;
+  --light-text-rgb: 108, 117, 125;
   
   /* قياسات */
   --header-height: 80px;

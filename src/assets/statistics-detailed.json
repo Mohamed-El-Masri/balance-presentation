@@ -1,0 +1,159 @@
+{
+  "industrial": {
+    "total": 28,
+    "warehouses": 42,
+    "workers": 1240,
+    "occupancy": 87,
+    "area": 145000,
+    "chartData": {
+      "land": [35, 42, 65, 28, 45],
+      "usage": [75, 85, 92, 81, 90],
+      "years": ["2019", "2020", "2021", "2022", "2023"]
+    },
+    "examples": [
+      {
+        "id": "IND-001",
+        "name": "مصنع الإنتاج الصناعي الأول",
+        "area": 12500,
+        "workers": 320,
+        "capacity": 350,
+        "occupancyRate": 91,
+        "location": "المدينة الصناعية الثانية - الرياض",
+        "established": 2018,
+        "type": "مصنع إنتاج"
+      },
+      {
+        "id": "IND-002",
+        "name": "مجمع التخزين اللوجستي",
+        "area": 18700,
+        "workers": 215,
+        "capacity": 250,
+        "occupancyRate": 86,
+        "location": "المدينة الصناعية الأولى - الرياض",
+        "established": 2019,
+        "type": "مستودعات"
+      },
+      {
+        "id": "IND-003",
+        "name": "مصنع المنتجات البلاستيكية",
+        "area": 9800,
+        "workers": 180,
+        "capacity": 200,
+        "occupancyRate": 90,
+        "location": "المدينة الصناعية الثانية - الرياض",
+        "established": 2017,
+        "type": "مصنع إنتاج"
+      }
+    ]
+  },
+  "residential": {
+    "complexes": 8,
+    "capacity": 960,
+    "occupancy": 76,
+    "demand": "high",
+    "area": 87500,
+    "chartData": {
+      "land": [12, 18, 24, 32, 38],
+      "usage": [68, 72, 78, 75, 86],
+      "years": ["2019", "2020", "2021", "2022", "2023"]
+    },
+    "examples": [
+      {
+        "id": "RES-001",
+        "name": "مجمع الواحة السكني",
+        "area": 12800,
+        "units": 120,
+        "occupiedUnits": 105,
+        "occupancyRate": 87.5,
+        "location": "المنطقة الشرقية - المدينة الصناعية",
+        "established": 2019,
+        "amenities": ["مسبح", "صالة رياضية", "حديقة", "موقف سيارات"],
+        "roomTypes": [
+          {"type": "استديو", "count": 40, "area": 45},
+          {"type": "غرفة واحدة", "count": 60, "area": 75},
+          {"type": "غرفتين", "count": 20, "area": 120}
+        ]
+      },
+      {
+        "id": "RES-002",
+        "name": "مجمع النخيل السكني",
+        "area": 15400,
+        "units": 145,
+        "occupiedUnits": 115,
+        "occupancyRate": 79.3,
+        "location": "المنطقة الغربية - المدينة الصناعية",
+        "established": 2020,
+        "amenities": ["حديقة", "ملعب أطفال", "أمن 24 ساعة", "موقف سيارات"],
+        "roomTypes": [
+          {"type": "استديو", "count": 50, "area": 40},
+          {"type": "غرفة واحدة", "count": 65, "area": 70},
+          {"type": "غرفتين", "count": 30, "area": 110}
+        ]
+      }
+    ]
+  },
+  "hotels": {
+    "total": 12,
+    "rooms": 840,
+    "occupancy": 38,
+    "averageRating": 3.4,
+    "guests": 230,
+    "area": 65000,
+    "chartData": {
+      "land": [22, 25, 18, 15, 12],
+      "usage": [65, 58, 42, 38, 36],
+      "years": ["2019", "2020", "2021", "2022", "2023"]
+    },
+    "examples": [
+      {
+        "id": "HOT-001",
+        "name": "فندق الصناعية بلازا",
+        "stars": 4,
+        "rooms": 120,
+        "occupiedRooms": 46,
+        "occupancyRate": 38.3,
+        "averageRating": 3.7,
+        "location": "المدينة الصناعية الثانية - الرياض",
+        "established": 2017,
+        "facilities": ["مطعم", "قاعة اجتماعات", "خدمة الغرف", "واي فاي مجاني"],
+        "roomTypes": [
+          {"type": "غرفة قياسية", "count": 80, "price": 290},
+          {"type": "جناح عائلي", "count": 30, "price": 450},
+          {"type": "جناح فاخر", "count": 10, "price": 750}
+        ]
+      },
+      {
+        "id": "HOT-002",
+        "name": "فندق مدن إن",
+        "stars": 3,
+        "rooms": 85,
+        "occupiedRooms": 32,
+        "occupancyRate": 37.6,
+        "averageRating": 3.2,
+        "location": "المدينة الصناعية الأولى - الرياض",
+        "established": 2018,
+        "facilities": ["مواقف سيارات", "مطعم", "واي فاي مجاني"],
+        "roomTypes": [
+          {"type": "غرفة قياسية", "count": 65, "price": 220},
+          {"type": "غرفة مزدوجة", "count": 20, "price": 350}
+        ]
+      },
+      {
+        "id": "HOT-003",
+        "name": "فندق المهندسين",
+        "stars": 3,
+        "rooms": 70,
+        "occupiedRooms": 25,
+        "occupancyRate": 35.7,
+        "averageRating": 3.1,
+        "location": "المدينة الصناعية الثالثة - الرياض",
+        "established": 2019,
+        "facilities": ["مطعم", "خدمة الغرف", "واي فاي مجاني"],
+        "roomTypes": [
+          {"type": "غرفة قياسية", "count": 50, "price": 240},
+          {"type": "غرفة مزدوجة", "count": 20, "price": 380}
+        ]
+      }
+    ]
+  }
+}

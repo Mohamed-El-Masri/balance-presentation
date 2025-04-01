@@ -8,7 +8,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
   const [activeSection, setActiveSection] = useState('hero');
   
   // استخدام useRef لمنع إعادة الحسابات غير الضرورية
-  const sectionsRef = useRef(['hero', 'overview', 'map', 'statistics', 'properties']);
+  const sectionsRef = useRef(['hero', 'overview', 'map-section-title', 'statistics', 'properties']);
   const scrollTimeoutRef = useRef(null);
   
   // تحديد القسم النشط بطريقة أكثر كفاءة
@@ -135,7 +135,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
             <img src="https://almajdiahinvestment.sa/storage/r6KO9mDQNojA5Cwk1r18GE5vD13K3P-metabG9nby1oLnBuZw==-.png" alt="شعار الماجدة" className="logo-img" />
           </div>
           <div className="logo-wrapper">
-            <img src="/src/assets/Balance - logo.png" alt="شعار شركة بالنس" className="logo-img" />
+            <img src="https://res.cloudinary.com/dk2cdwufj/image/upload/v1743511083/Balance_-_logo_l3yjqs.png" alt="شعار شركة بالنس" className="logo-img" />
           </div>
         </div>
         
@@ -161,9 +161,9 @@ const Header = ({ toggleTheme, currentTheme }) => {
             </li>
             <li>
               <a 
-                href="#map" 
-                onClick={(e) => smoothScroll(e, 'map')}
-                className={activeSection === 'map' ? 'active' : ''}
+                href="#map-section-title" 
+                onClick={(e) => smoothScroll(e, 'map-section-title')}
+                className={activeSection === 'map-section-title' ? 'active' : ''}
               >
                 الخريطة
               </a>
@@ -214,3 +214,9 @@ const Header = ({ toggleTheme, currentTheme }) => {
 };
 
 export default Header;
+
+
+
+
+
+

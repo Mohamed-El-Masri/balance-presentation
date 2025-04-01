@@ -96,7 +96,13 @@
 .hero-content.visible {
   opacity: 1;
   transform: translateY(0);
-}
+  display: flex;
+  flex-direction: column;
+  }
+  .badge-container {
+   width: fit-content;
+   align-self: center;
+  }
 
 /* شارة في أعلى المحتوى - إضافة الشعار */
 .badge {
@@ -170,6 +176,16 @@
   position: relative;
   z-index: 2;
   animation: none; /* إزالة النبض للمظهر الأكثر احترافية */
+}
+
+/* Ensure text rendering is optimized */
+.typed-text {
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-family: 'Arial', sans-serif; /* Use a web-safe font */
+  letter-spacing: 0.5px; /* Add slight spacing between letters */
+  text-rendering: optimizeLegibility; /* Improve text rendering */
+  -webkit-font-smoothing: antialiased; /* Better font smoothing */
 }
 
 /* أثر تفاعلي عند التحويم */
@@ -257,37 +273,40 @@
 .typed-container {
   height: 2.2rem;
   margin-bottom: 1.2rem;
+  color: var(--secondary-color);
+  text-shadow: rgba(0, 0, 0, 0.5) 0px 2px 5px;
 }
 
-.typed-text {
-  font-size: 1.6rem;
-  font-weight: 400;
-  color: #fff;
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+.cursor {
+  display: inline-block;
+  width: 3px;
+  margin-left: 2px;
+
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from, to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .typed-container {
   margin-bottom: 1.5rem;
 }
 
-.typed-text {
-  font-family: 'Arial', sans-serif; /* خط مناسب للإنجليزية */
-  font-size: 1.7rem;
-  font-weight: 500;
-  color: var(--secondary-color); /* لجعله أكثر بروزاً */
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  letter-spacing: 0.5px;
-}
-
 .cursor {
   display: inline-block;
   width: 3px;
   height: 1.5em;
-  background-color: #fff;
+  
   vertical-align: text-bottom;
   animation: blink 0.8s infinite;
   margin-right: 2px;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+ 
 }
 
 @keyframes blink {
@@ -432,32 +451,27 @@
   gap: 40px;
   position: relative;
   padding-top: 20px;
+  min-width: 88px;
 }
 
-.metrics {
-  padding-top: 25px;
-  gap: 50px; /* زيادة المسافة بين الإحصائيات */
-}
+
 
 .metrics::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 25%;
-  width: 50%;
+  left: 20%;
+  width: 60%;
   height: 1px;
   background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
 }
 
-.metrics::before {
-  width: 60%; /* جعل الخط الفاصل أطول */
-  left: 20%;
-}
 
 .metric {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-width: 88px;
 }
 
 .metric-number {
@@ -1080,8 +1094,7 @@
   
   .metrics {
     flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    
   }
 
   .badge-logo {

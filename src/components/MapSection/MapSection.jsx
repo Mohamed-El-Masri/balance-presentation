@@ -70,7 +70,7 @@ function MapSection() {
                             locationRestriction: {
                                 circle: {
                                     center: { latitude: lat, longitude: lng },
-                                    radius: 5000,
+                                    radius: 5000, // 10 km
                                 },
                             },
                         }),
@@ -84,6 +84,7 @@ function MapSection() {
             }
         }
         
+        
 
         async function initializeMap() {
             try {
@@ -93,13 +94,31 @@ function MapSection() {
                     return;
                 }
 
+                // Determine if we're on mobile
+                const isMobile = window.innerWidth <= 768;
+                
+                // Use zoom level 6 for mobile, otherwise use the original zoom
+                const zoomLevel = isMobile ? 14.8: 16.7;
+                
                 const map = new google.maps.Map(mapContainerRef.current, {
-                    center: { lat: 24.492583, lng: 46.926167 }, // Default center (Riyadh)
-                    zoom: 12,
+                    center: { lat: 24.490472, lng: 46.921972 }, // Keep the same center
+                    zoom: zoomLevel, // Apply responsive zoom
                 });
 
                 // Store the map instance in the ref
                 mapRef.current = map;
+                
+                // Add resize event listener to adjust zoom when screen size changes
+                window.addEventListener('resize', () => {
+                    const currentIsMobile = window.innerWidth <= 768;
+                    if (currentIsMobile && map.getZoom() > 10) {
+                        // If we're now on mobile but zoom is still high
+                        map.setZoom(14.8);
+                    } else if (!currentIsMobile && map.getZoom() < 10) {
+                        // If we're now on desktop but zoom is still low
+                        map.setZoom(16.7);
+                    }
+                });
 
                 // Initialize InfoWindow
                 infoWindowRef.current = new google.maps.InfoWindow();
@@ -115,43 +134,59 @@ function MapSection() {
                         title: property.property.propertyId,
                     });
 
-                    // Add click listener to show tooltip
+                    // تحسين إنشاء محتوى نافذة المعلومات
                     marker.addListener('click', () => {
                         const content = document.createElement('div');
                         content.style.fontFamily = 'Arial, sans-serif';
-                        content.style.textAlign = 'left';
-                        content.style.padding = '10px';
+                        content.style.textAlign = 'right';  // توجيه النص للعربية
+                        content.style.padding = '12px';
                         content.style.borderRadius = '8px';
-                        content.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-                        content.style.backgroundColor = '#f9f9f9';
-
+                        content.style.minHeight = '100%';
+                        content.className = 'map-info-content';  // إضافة class للتحكم به من CSS
+                        
+                        // التحقق من الوضع الداكن وتطبيق الألوان المناسبة
+                        const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+                        if (isDarkMode) {
+                            content.style.backgroundColor = '#252525';
+                            content.style.color = '#e0e0e0';
+                            content.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.3)';
+                        } else {
+                            content.style.backgroundColor = '#f9f9f9';
+                            content.style.color = '#333';
+                            content.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+                        }
+                    
                         const title = document.createElement('strong');
                         title.textContent = property.property.propertyId;
                         title.style.fontSize = '16px';
-                        title.style.color = '#333';
+                        title.style.color = isDarkMode ? '#e0e0e0' : '#333';
+                        title.style.display = 'block';
+                        title.style.marginBottom = '10px';
                         content.appendChild(title);
-
+                    
                         const details = document.createElement('div');
-                        details.style.marginTop = '8px';
                         details.style.fontSize = '14px';
-                        details.style.color = '#555';
+                        details.style.color = isDarkMode ? '#aaaaaa' : '#555';
+                        details.style.marginBottom = '15px';
                         details.innerHTML = `
                             ${property.property.city}, ${property.property.neighborhood}<br />
-                            Area: ${property.property.area} m²
+                            المساحة: ${property.property.area} م²
                         `;
                         content.appendChild(details);
-
+                    
                         const button = document.createElement('button');
-                        button.textContent = 'Get Nearby Places';
-                        button.className = 'btn btn-success'; // Use Bootstrap classes for styling
-                        button.style.marginTop = '12px';
+                        button.textContent = 'عرض الأماكن القريبة';
+                        button.className = 'btn btn-success map-info-button';
                         button.style.padding = '8px 16px';
                         button.style.fontSize = '14px';
+                        button.style.border = 'none';
+                        button.style.borderRadius = '6px';
+                        button.style.cursor = 'pointer';
                         button.onclick = () => {
                             fetchNearbyPlaces(property.property.latitude, property.property.longitude);
                         };
                         content.appendChild(button);
-
+                    
                         infoWindowRef.current.setContent(content);
                         infoWindowRef.current.open(map, marker);
                     });
@@ -248,7 +283,9 @@ function MapSection() {
     return (
         <section className="map-section"> {/* Use a section tag for consistency */}
             <div className="container"> {/* Add a container div for alignment */}
-                <h2 className="section-title">استكشف الأماكن القريبة</h2> {/* Update title to Arabic */}
+            <h2 className="section-title" id="map-section-title">خريطة الموقع</h2>
+              <p className="section-subtitle">خريطة تفاعلية للمواقع والخدمات المحيطة بمشاريع التحويل السكني</p>
+        
                 <div className="map-section-content"> {/* Add a content wrapper for better layout */}
                     <div className="insights-list-wrapper fixed-width"> {/* Add a class for fixed width */}
                         <div className="filter-wrapper" style={{ marginBottom: '20px', textAlign: 'right' }}> {/* Add inline styles for better alignment */}

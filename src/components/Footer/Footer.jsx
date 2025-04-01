@@ -29,9 +29,9 @@ const Footer = () => {
           <div className="footer-section contact">
             <h3>اتصل بنا</h3>
             <div className="contact-info">
-              <p><i className="contact-icon">📧</i> info@landplots.sa</p>
-              <p><i className="contact-icon">📞</i> +966 12 345 6789</p>
-              <p><i className="contact-icon">📍</i> الرياض، المملكة العربية السعودية</p>
+              <p><i className="contact-icon">📧</i> Info@balance.sa</p>
+              <p><i className="contact-icon">📞</i> +966 00 000 0000</p>
+              <p><i className="contact-icon">📍</i> شارع احمد بن شبانة - القيروان -الرياض</p>
             </div>
             
             <div className="social-links">

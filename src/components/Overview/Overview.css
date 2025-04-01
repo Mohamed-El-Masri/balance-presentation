@@ -20,7 +20,6 @@
 
 .section-title {
   position: relative;
-  display: inline-block;
   margin-bottom: 0.5rem;
 }
 
@@ -51,9 +50,10 @@
     box-shadow 0.5s ease;
   position: relative;
   overflow: hidden;
-  opacity: 0;
+  opacity: 1;
   transform: translateY(30px);
   border: 1px solid rgba(200, 176, 154, 0.1);
+  min-width: 222px;
 }
 
 /* تأثير ظهور البطاقات */
@@ -498,4 +498,37 @@
     min-height: 130px;     /* تقليل الارتفاع للشاشات الصغيرة */
     padding: 1.2rem 1rem;
   }
+}
+
+
+
+
+[data-theme='dark'] .quick-action-btn {
+  background-color: var(--alt-bg);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .quick-action-icon {
+  background: linear-gradient(145deg, rgba(200, 176, 154, 0.15), rgba(200, 176, 154, 0.05));
+}
+
+[data-theme='dark'] .stat-card {
+  background: var(--alt-bg);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .stat-value {
+  color: var(--text-color);
+}
+
+[data-theme='dark'] .overview-info {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* تأثيرات متقدمة للبطاقات */
+
+[data-theme='dark'] .info-marker, [data-theme='dark'] .masr-highlight {
+  background: rgba(200, 176, 154, 0.15);
+  color: var(--text-color);
 }

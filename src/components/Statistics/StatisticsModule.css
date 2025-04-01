@@ -1,0 +1,713 @@
+/* ===== عام ===== */
+.stats-module {
+  display: block;
+  width: 100%;
+  padding: 4rem 0;
+  font-family: 'Tajawal', sans-serif;
+}
+
+/* ===== تبويبات ===== */
+.stats-module__tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  position: relative;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.stats-module__tab {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.8rem;
+  font-size: 1rem;
+  color: var(--text-color, #333);
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #e0e0e0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  min-width: 160px;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.stats-module__tab svg {
+  margin-left: 8px;
+  font-size: 1.1rem;
+  color: inherit;
+  display: inline-block; /* ضمان العرض الصحيح */
+  vertical-align: middle;
+}
+
+.stats-module__tab:hover {
+  color: var(--secondary-color, #C8B09A);
+  background-color: rgba(200, 176, 154, 0.05);
+}
+
+.stats-module__tab.active {
+  color: var(--secondary-color, #C8B09A);
+  border-bottom-color: var(--secondary-color, #C8B09A);
+}
+
+.stats-module__tab-indicator {
+  display: none;
+}
+
+/* ===== محتوى القسم ===== */
+.stats-module__content {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  padding: 2.5rem;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+}
+
+.stats-module__content--fadeout {
+  pointer-events: none;
+}
+
+/* ===== البطاقات الإحصائية ===== */
+.stats-module__stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.stats-module__stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInScale 0.5s forwards;
+  opacity: 0;
+  animation-delay: calc(var(--stat-index, 0) * 0.1s);
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stats-module__stat-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.stats-module__stat-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, var(--secondary-color, #C8B09A), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.stats-module__stat-item:hover::after {
+  opacity: 1;
+}
+
+/* تلوين مختلف لكل نوع من البطاقات */
+.stats-module__stat-item.industrial .stats-module__stat-icon {
+  background-color: rgba(86, 95, 88, 0.1);
+  color: #565F58;
+}
+
+.stats-module__stat-item.residential .stats-module__stat-icon {
+  background-color: rgba(200, 176, 154, 0.1);
+  color: #C8B09A;
+}
+
+.stats-module__stat-item.hotels .stats-module__stat-icon {
+  background-color: rgba(150, 70, 80, 0.1);
+  color: #964650;
+}
+
+.stats-module__stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.05); /* لون خلفية افتراضي */
+}
+
+.stats-module__stat-icon svg {
+  font-size: 1.5rem;
+  display: block;
+}
+
+.stats-module__stat-item:hover .stats-module__stat-icon {
+  transform: scale(1.1);
+}
+
+.stats-module__stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color, #565F58);
+  margin-bottom: 0.5rem;
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+
+.stats-module__stat-item:hover .stats-module__stat-value {
+  color: var(--secondary-color, #C8B09A);
+}
+
+.stats-module__stat-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* ===== تحليل البيانات ===== */
+.stats-module__analysis {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.stats-module__analysis h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color, #565F58);
+  position: relative;
+  padding-right: 1rem;
+}
+
+.stats-module__analysis h3::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0.3rem;
+  width: 3px;
+  height: 1rem;
+  background-color: var(--secondary-color, #C8B09A);
+  border-radius: 3px;
+}
+
+.stats-module__analysis p {
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ===== الرسوم البيانية ===== */
+.stats-module__charts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.stats-module__chart-container {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  position: relative;
+  min-height: 350px; /* ضمان وجود مساحة كافية للرسم البياني */
+}
+
+.stats-module__chart-title {
+  font-size: 1.1rem;
+  color: var(--primary-color, #565F58);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.stats-module__chart-wrapper {
+  height: 280px;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  visibility: visible !important; /* ضمان رؤية الرسوم البيانية */
+}
+
+.stats-module__chart-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  z-index: 5;
+}
+
+.stats-module__loading-indicator {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--secondary-color, #C8B09A);
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.stats-module__chart-actions {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 0.5rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.stats-module__chart-container:hover .stats-module__chart-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stats-module__chart-action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.stats-module__chart-action-btn:hover {
+  background-color: var(--secondary-color, #C8B09A);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.stats-module__chart-actions button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  margin: 0 5px;
+}
+
+.stats-module__chart-actions button:hover {
+  background-color: var(--secondary-color, #C8B09A);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== عرض الرسم البياني المكبر ===== */
+.stats-module__zoom-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.stats-module__zoom-content {
+  background-color: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 1100px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  animation: zoomIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.stats-module__zoom-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.stats-module__zoom-close:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+  transform: rotate(90deg);
+}
+
+.stats-module__zoom-title {
+  text-align: center;
+  padding: 1.5rem;
+  margin: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 1.4rem;
+  color: var(--primary-color, #565F58);
+}
+
+.stats-module__zoom-chart {
+  flex: 1;
+  min-height: 400px;
+  padding: 1rem 2rem;
+}
+
+.stats-module__zoom-info {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.stats-module__zoom-legend {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.stats-module__zoom-legend-item {
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.stats-module__zoom-legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+.stats-module__zoom-legend-text {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.stats-module__zoom-description {
+  text-align: center;
+  color: #666;
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ===== رسائل الخطأ ===== */
+.stats-module__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: #666;
+  text-align: center;
+}
+
+.stats-module__error svg {
+  color: rgba(200, 176, 154, 0.7);
+  margin-bottom: 1rem;
+}
+
+/* ===== التجاوب مع الشاشات المختلفة ===== */
+@media (max-width: 992px) {
+  .stats-module__stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .stats-module__charts {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .stats-module__content {
+    padding: 2rem;
+  }
+  
+  .stats-module__tab {
+    font-size: 0.95rem;
+    padding: 0.7rem 1.5rem;
+    min-width: 140px;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-module__content {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+  
+  .stats-module__charts {
+    gap: 1.5rem;
+  }
+  
+  .stats-module__chart-wrapper {
+    height: 250px;
+  }
+  
+  .stats-module__zoom-chart {
+    min-height: 350px;
+  }
+  
+  .stats-module__tab {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 576px) {
+  .stats-module__stats-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  
+  .stats-module__tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .stats-module__tab {
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    justify-content: center;
+    min-width: 100%;
+  }
+  
+  .stats-module__tab.active {
+    background-color: rgba(200, 176, 154, 0.1);
+    border-color: var(--secondary-color, #C8B09A);
+  }
+  
+  .stats-module__tab-indicator {
+    display: none;
+  }
+  
+  .stats-module__content {
+    padding: 1.2rem;
+  }
+  
+  .stats-module__chart-wrapper {
+    height: 220px;
+  }
+  
+  .stats-module__zoom-content {
+    width: 95%;
+  }
+  
+  .stats-module__zoom-chart {
+    min-height: 300px;
+    padding: 1rem;
+  }
+  
+  .stats-module__zoom-info {
+    padding: 1rem;
+  }
+}
+
+/* ===== الوضع الداكن ===== */
+[data-theme='dark'] .stats-module__content {
+  background-color: #1e1e1e;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='dark'] .stats-module__tab {
+  color: #e0e0e0;
+  border-bottom-color: #444;
+}
+
+[data-theme='dark'] .stats-module__tab:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .stats-module__tab.active {
+  color: var(--secondary-color, #C8B09A);
+}
+
+[data-theme='dark'] .stats-module__stat-item {
+  background-color: #252525;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .stats-module__stat-value {
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .stats-module__stat-label {
+  color: #aaa;
+}
+
+[data-theme='dark'] .stats-module__analysis {
+  background-color: #252525;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .stats-module__analysis h3 {
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .stats-module__analysis p {
+  color: #ccc;
+}
+
+[data-theme='dark'] .stats-module__chart-container {
+  background-color: #252525;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .stats-module__chart-title {
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .stats-module__chart-loading {
+  background-color: rgba(30, 30, 30, 0.7);
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .stats-module__chart-action-btn {
+  background-color: rgba(50, 50, 50, 0.9);
+  color: #e0e0e0;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .stats-module__zoom-content {
+  background-color: #1e1e1e;
+}
+
+[data-theme='dark'] .stats-module__zoom-title {
+  color: #e0e0e0;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .stats-module__zoom-info {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .stats-module__zoom-legend-text {
+  color: #ccc;
+}
+
+[data-theme='dark'] .stats-module__zoom-description {
+  color: #aaa;
+}
+
+[data-theme='dark'] .stats-module__zoom-close {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .stats-module__zoom-close:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme='dark'] .stats-module__error {
+  color: #aaa;
+}
+
+/* تحسين تنسيق مؤشر الاتجاه */
+.stats-module__trend {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 15px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.05);
+  font-weight: 500;
+}
+
+.stats-module__trend.positive {
+  color: #28a745;
+  background-color: rgba(40, 167, 69, 0.1);
+}
+
+.stats-module__trend.negative {
+  color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.1);
+}
+
+.stats-module__trend-value {
+  font-size: 1.1rem;
+  margin-left: 8px;
+}
+
+/* التأكد من وضوح عناصر canvas الخاصة بالرسوم البيانية */
+canvas {
+  display: block !important;
+  visibility: visible !important;
+}

@@ -1,0 +1,307 @@
+/* تنسيق قسم الأمثلة */
+.examples-section {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.examples-title {
+  font-size: 1.3rem;
+  color: var(--primary-color, #333);
+  margin-bottom: 1.5rem;
+  text-align: right;
+  position: relative;
+  padding-right: 1rem;
+}
+
+.examples-title::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0.3rem;
+  width: 3px;
+  height: 1rem;
+  background-color: var(--secondary-color, #C8B09A);
+  border-radius: 3px;
+}
+
+.examples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* تنسيق بطاقة العرض */
+.example-card {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  animation: fadeInScale 0.5s forwards;
+  opacity: 0;
+}
+
+.example-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.example-card.industrial {
+  border-top: 4px solid #565F58;
+}
+
+.example-card.residential {
+  border-top: 4px solid #C8B09A;
+}
+
+.example-card.hotel {
+  border-top: 4px solid #964650;
+}
+
+/* رأس البطاقة */
+.example-header {
+  margin-bottom: 1.2rem;
+  position: relative;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.example-header h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color, #333);
+}
+
+.example-id {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 0.8rem;
+  color: #888;
+  font-family: monospace;
+}
+
+/* تنسيق التفاصيل */
+.example-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.example-detail-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.example-detail-icon {
+  margin-left: 6px;
+  color: #888;
+  width: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-detail-label {
+  color: #666;
+  margin-left: 4px;
+}
+
+.example-detail-value {
+  font-weight: 500;
+  color: #444;
+}
+
+/* تنسيق شارة النوع */
+.example-type-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: rgba(86, 95, 88, 0.1);
+  color: #565F58;
+  padding: 4px 12px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* أنواع الغرف */
+.example-room-types {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.room-type-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.06);
+}
+
+.room-type-item:last-child {
+  border-bottom: none;
+}
+
+.room-type {
+  font-weight: 500;
+  color: #333;
+}
+
+.room-count, .room-area, .room-price {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+/* قائمة المميزات والمرافق */
+.example-amenities, .example-facilities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.amenity-tag, .facility-tag {
+  background-color: rgba(200, 176, 154, 0.1);
+  color: #7d6c5c;
+  padding: 4px 12px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+}
+
+.facility-tag {
+  background-color: rgba(150, 70, 80, 0.1);
+  color: #964650;
+}
+
+/* نجوم الفندق */
+.hotel-stars {
+  margin-top: 5px;
+  color: #f8a100;
+  font-size: 0.9rem;
+}
+
+.empty-star {
+  color: #ccc;
+}
+
+/* تخصيص أنواع الغرف للفنادق */
+.example-room-types.hotel-rooms .room-type-item {
+  padding: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.example-room-types.hotel-rooms .room-price {
+  font-weight: 600;
+  color: #964650;
+}
+
+/* تعديلات للوضع الداكن */
+[data-theme='dark'] .example-card {
+  background-color: #252525;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .example-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .example-header h4 {
+  color: #e0e0e0;
+}
+
+[data-theme='dark'] .example-id {
+  color: #aaa;
+}
+
+[data-theme='dark'] .example-detail-label {
+  color: #aaa;
+}
+
+[data-theme='dark'] .example-detail-value {
+  color: #d0d0d0;
+}
+
+[data-theme='dark'] .room-type {
+  color: #d0d0d0;
+}
+
+[data-theme='dark'] .room-count, 
+[data-theme='dark'] .room-area, 
+[data-theme='dark'] .room-price {
+  color: #aaa;
+}
+
+[data-theme='dark'] .example-room-types {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme='dark'] .room-type-item {
+  border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .examples-title {
+  color: #e0e0e0;
+}
+
+/* تأثيرات حركية */
+@keyframes cardAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.examples-grid .example-card:nth-child(1) { animation-delay: 0.1s; }
+.examples-grid .example-card:nth-child(2) { animation-delay: 0.2s; }
+.examples-grid .example-card:nth-child(3) { animation-delay: 0.3s; }
+.examples-grid .example-card:nth-child(4) { animation-delay: 0.4s; }
+.examples-grid .example-card:nth-child(5) { animation-delay: 0.5s; }
+
+/* استجابة للشاشات المختلفة */
+@media (max-width: 992px) {
+  .examples-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .examples-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+  
+  .example-details {
+    grid-template-columns: 1fr;
+  }
+  
+  .example-card {
+    padding: 1.2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .examples-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .example-card {
+    margin-bottom: 1rem;
+  }
+  
+  .example-details {
+    grid-template-columns: 1fr 1fr;
+  }
+}
