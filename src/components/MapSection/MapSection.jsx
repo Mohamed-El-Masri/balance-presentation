@@ -219,17 +219,22 @@ function MapSection() {
                 input.type = 'text';
                 input.placeholder = 'ابحث عن موقع...'; // Arabic placeholder for "Search for a location..."
                 input.style.position = 'absolute';
-                input.style.top = '15px'; // Adjusted for better spacing
+                input.style.top = '60px'; // Adjusted to align better with buttons and map layout
                 input.style.left = '50%';
                 input.style.transform = 'translateX(-50%)';
                 input.style.padding = '10px'; // Increased padding for comfort
-                input.style.width = '350px'; // Wider input for better usability
+                input.style.width = window.innerWidth <= 768 ? '90%' : '350px'; // Adjust width for responsiveness
                 input.style.border = '1px solid #ccc';
                 input.style.borderRadius = '8px'; // Rounded corners for a modern look
                 input.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)'; // Subtle shadow for depth
                 input.style.fontSize = '16px'; // Larger font size for readability
                 input.style.zIndex = '5';
                 mapContainerRef.current.appendChild(input);
+
+                // Add resize event listener to adjust styles dynamically
+                window.addEventListener('resize', () => {
+                    input.style.width = window.innerWidth <= 768 ? '90%' : '350px';
+                });
 
                 const searchBox = new google.maps.places.SearchBox(input);
                 searchBoxRef.current = searchBox;

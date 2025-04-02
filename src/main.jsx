@@ -21,7 +21,7 @@ window.onerror = (message, source, lineno, colno, error) => {
 const root = createRoot(document.getElementById('root'));
 
 root.render(
-  <StrictMode>
+  // <StrictMode>
     <App />
-  </StrictMode>,
+  // </StrictMode>,
 );
