@@ -5,7 +5,7 @@ import App from './App.jsx';
 
 // تعريف متغيرات بيئة التطبيق للوصول إليها من أي مكان
 window.APP_CONFIG = {
-  apiKey: 'AIzaSyAl7W7vp4Jj09LEO3lKO-UBolbcDimAWbo',
+  apiKey: 'AIzaSyBb7zIoQBrl3GWQ2E4DyJ677ZVDtkQu_sQ',
   baseURL: '',
   version: '1.0.0',
 };
