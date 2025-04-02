@@ -13,16 +13,17 @@ function MapSection() {
     const activeMarkerRef = useRef(null); // Reference to store the active marker
     const infoWindowRef = useRef(null); // Reference to store the InfoWindow
     const mapRef = useRef(null); // Reference to store the map instance
+    const searchBoxRef = useRef(null); // Reference for the search box
 
     useEffect(() => {
         async function loadGoogleMapsAPI() {
             return new Promise((resolve, reject) => {
-                if (window.google && window.google.maps) {
+                if (window.google && window.google.maps && window.google.maps.places) {
                     resolve(window.google);
                     return;
                 }
 
-                const existingScript = document.querySelector(`script[src="https://maps.googleapis.com/maps/api/js?key=${MAPS_API_KEY}"]`);
+                const existingScript = document.querySelector(`script[src="https://maps.googleapis.com/maps/api/js?key=${MAPS_API_KEY}&libraries=places&language=ar"]`);
                 if (existingScript) {
                     existingScript.onload = () => resolve(window.google);
                     existingScript.onerror = () => reject(new Error('Error loading Google Maps API'));
@@ -30,12 +31,12 @@ function MapSection() {
                 }
 
                 const script = document.createElement('script');
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${MAPS_API_KEY}`;
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${MAPS_API_KEY}&libraries=places&language=ar`; // Arabic language support
                 script.async = true;
                 script.defer = true;
 
                 script.onload = () => {
-                    if (window.google && window.google.maps) {
+                    if (window.google && window.google.maps && window.google.maps.places) {
                         resolve(window.google);
                     } else {
                         reject(new Error('Google Maps API failed to load'));
@@ -61,23 +62,23 @@ function MapSection() {
                         },
                         body: JSON.stringify({
                             includedTypes: [
-                                'corporate_office',    // مكاتب شركات
-                                'lodging',             // فنادق
-                                'apartment_complex',   // مجمعات سكنية
-                                'real_estate_agency'   // وكالات عقارات
+                                'corporate_office',    // Corporate offices
+                                'lodging',             // Hotels
+                                'apartment_complex',   // Residential complexes
+                                'real_estate_agency'   // Real estate agencies
                             ],
                             locationRestriction: {
                                 circle: {
                                     center: { latitude: lat, longitude: lng },
-                                    radius: 5000, // 10 km
+                                    radius: 5000, // 5 km radius
                                 },
                             },
                         }),
                     }
                 );
                 const data = await response.json();
-                console.log('API Response:', data); // طباعة الاستجابة في الكونسول
-                setInsights(data.places || []); // تحديث البيانات
+                console.log('API Response:', data); // Log API response for debugging
+                setInsights(data.places || []); // Update insights state
             } catch (error) {
                 console.error('Error fetching nearby places:', error);
             }
@@ -213,7 +214,139 @@ function MapSection() {
                     fetchNearbyPlaces(latLng.lat(), latLng.lng());
                 });
 
-                console.info('Google Map initialized successfully');
+                // Add search box functionality
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = 'ابحث عن موقع...'; // Arabic placeholder for "Search for a location..."
+                input.style.position = 'absolute';
+                input.style.top = '15px'; // Adjusted for better spacing
+                input.style.left = '50%';
+                input.style.transform = 'translateX(-50%)';
+                input.style.padding = '10px'; // Increased padding for comfort
+                input.style.width = '350px'; // Wider input for better usability
+                input.style.border = '1px solid #ccc';
+                input.style.borderRadius = '8px'; // Rounded corners for a modern look
+                input.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)'; // Subtle shadow for depth
+                input.style.fontSize = '16px'; // Larger font size for readability
+                input.style.zIndex = '5';
+                mapContainerRef.current.appendChild(input);
+
+                const searchBox = new google.maps.places.SearchBox(input);
+                searchBoxRef.current = searchBox;
+
+                mapRef.current.addListener('bounds_changed', () => {
+                    searchBox.setBounds(mapRef.current.getBounds());
+                });
+
+                searchBox.addListener('places_changed', () => {
+                    const places = searchBox.getPlaces();
+                    if (places.length === 0) return;
+                
+                    // Clear previous markers
+                    if (activeMarkerRef.current) {
+                        activeMarkerRef.current.setMap(null);
+                    }
+                
+                    // Create markers for all search results
+                    const bounds = new google.maps.LatLngBounds();
+                    places.forEach((place) => {
+                        if (!place.geometry || !place.geometry.location) return;
+                
+                        const marker = new google.maps.Marker({
+                            position: place.geometry.location,
+                            map: mapRef.current,
+                            title: place.name,
+                        });
+                
+                        // Add click listener to each marker
+                        marker.addListener('click', () => {
+                            if (infoWindowRef.current) {
+                                const content = document.createElement('div');
+                                content.style.fontFamily = 'Arial, sans-serif';
+                                content.style.padding = '10px';
+                
+                                const title = document.createElement('strong');
+                                title.textContent = place.name;
+                                title.style.display = 'block';
+                                title.style.marginBottom = '8px';
+                                content.appendChild(title);
+                
+                                const address = document.createElement('p');
+                                address.textContent = place.formatted_address || 'No address available';
+                                address.style.marginBottom = '10px';
+                                content.appendChild(address);
+                
+                                const button = document.createElement('button');
+                                button.textContent = 'عرض الأماكن القريبة'; // Arabic for "Show Nearby Places"
+                                button.style.padding = '10px 16px';
+                                button.style.fontSize = '14px';
+                                button.style.border = 'none';
+                                button.style.borderRadius = '8px'; // Rounded corners for better UX
+                                button.style.backgroundColor = '#28a745';
+                                button.style.color = '#fff';
+                                button.style.cursor = 'pointer';
+                                button.style.transition = 'background-color 0.3s ease'; // Smooth hover effect
+                                button.onmouseover = () => (button.style.backgroundColor = '#218838'); // Darker green on hover
+                                button.onmouseout = () => (button.style.backgroundColor = '#28a745'); // Reset color on mouse out
+                                button.onclick = () => {
+                                    const location = place.geometry.location;
+                                    fetchNearbyPlaces(location.lat(), location.lng());
+                                };
+                                content.appendChild(button);
+                
+                                infoWindowRef.current.setContent(content);
+                                infoWindowRef.current.open(mapRef.current, marker);
+                            }
+                        });
+                
+                        // Extend the bounds to include this marker's location
+                        bounds.extend(place.geometry.location);
+                    });
+                
+                    // Adjust the map to fit all markers
+                    mapRef.current.fitBounds(bounds);
+                
+                    // Suggestion dropdown logic
+                    const suggestionContainer = document.createElement('div');
+                    suggestionContainer.style.position = 'absolute';
+                    suggestionContainer.style.top = '75px'; // Below the search bar
+                    suggestionContainer.style.left = '50%';
+                    suggestionContainer.style.transform = 'translateX(-50%)';
+                    suggestionContainer.style.width = '350px';
+                    suggestionContainer.style.backgroundColor = '#fff';
+                    suggestionContainer.style.border = '1px solid #ccc';
+                    suggestionContainer.style.borderRadius = '8px';
+                    suggestionContainer.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+                    suggestionContainer.style.zIndex = '1000';
+                    suggestionContainer.style.maxHeight = '200px';
+                    suggestionContainer.style.overflowY = 'auto';
+                
+                    places.forEach((place) => {
+                        const suggestionItem = document.createElement('div');
+                        suggestionItem.textContent = place.name;
+                        suggestionItem.style.padding = '10px';
+                        suggestionItem.style.cursor = 'pointer';
+                        suggestionItem.style.borderBottom = '1px solid #eee';
+                        suggestionItem.onmouseover = () => (suggestionItem.style.backgroundColor = '#f9f9f9');
+                        suggestionItem.onmouseout = () => (suggestionItem.style.backgroundColor = '#fff');
+                        suggestionItem.onclick = () => {
+                            mapRef.current.setCenter(place.geometry.location);
+                            mapRef.current.setZoom(16);
+                            suggestionContainer.remove();
+                        };
+                        suggestionContainer.appendChild(suggestionItem);
+                    });
+                
+                    document.body.appendChild(suggestionContainer);
+                
+                    // Remove suggestions when clicking outside
+                    document.addEventListener('click', (event) => {
+                        if (!suggestionContainer.contains(event.target)) {
+                            suggestionContainer.remove();
+                        }
+                    }, { once: true });
+                });
+                
             } catch (error) {
                 console.error('Error initializing Google Map:', error);
             }
@@ -223,8 +356,37 @@ function MapSection() {
     }, []);
 
     function handleFilterChange(event) {
-        setFilterType(event.target.value); // Update the filter type
+        const selectedFilter = event.target.value;
+        setFilterType(selectedFilter); // Update the filter type
+    
+        if (selectedFilter === 'lodging') {
+            // If "فنادق" (hotels) is selected, highlight all nearby hotels
+            const bounds = new google.maps.LatLngBounds();
+            const hotelMarkers = [];
+    
+            insights.forEach((insight) => {
+                if (insight.types.includes('lodging')) {
+                    const marker = new google.maps.Marker({
+                        position: {
+                            lat: insight.location.latitude,
+                            lng: insight.location.longitude,
+                        },
+                        map: mapRef.current,
+                        title: insight.displayName?.text || 'Hotel',
+                    });
+    
+                    hotelMarkers.push(marker);
+                    bounds.extend(marker.getPosition());
+                }
+            });
+    
+            // Adjust the map to fit all hotel markers
+            if (hotelMarkers.length > 0) {
+                mapRef.current.fitBounds(bounds);
+            }
+        }
     }
+    
 
     const filteredInsights = insights.filter((insight) =>
         filterType ? insight.types.includes(filterType) : true
@@ -240,19 +402,35 @@ function MapSection() {
         
                 <div className="map-section-content"> {/* Add a content wrapper for better layout */}
                     <div className="insights-list-wrapper fixed-width"> {/* Add a class for fixed width */}
-                        <div className="filter-wrapper" style={{ marginBottom: '20px', textAlign: 'right' }}> {/* Add inline styles for better alignment */}
-                            <label htmlFor="filter" style={{ marginRight: '10px', fontWeight: 'bold' }}>تصفية حسب النوع:</label> {/* Arabic label */}
+                        <div className="filter-wrapper" style={{ marginBottom: '20px', textAlign: 'right' }}>
+                            <label 
+                                htmlFor="filter" 
+                                style={{ 
+                                    marginRight: '10px', 
+                                    fontWeight: 'bold', 
+                                    fontSize: '16px', 
+                                    color: '#333' 
+                                }}
+                            >
+                                تصفية حسب النوع:
+                            </label>
                             <select
                                 id="filter"
                                 value={filterType}
                                 onChange={handleFilterChange}
                                 style={{
-                                    padding: '8px',
-                                    fontSize: '14px',
-                                    borderRadius: '5px',
+                                    padding: '10px', // Increased padding for better usability
+                                    fontSize: '16px', // Larger font size for readability
+                                    borderRadius: '8px', // Rounded corners for a modern look
                                     border: '1px solid #ccc',
                                     outline: 'none',
-                                }} // Add custom styles for dropdown
+                                    backgroundColor: '#f9f9f9', // Light background for better contrast
+                                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', // Subtle shadow for depth
+                                    cursor: 'pointer', // Pointer cursor for better interactivity
+                                    transition: 'all 0.3s ease', // Smooth transition for hover effects
+                                }}
+                                onMouseOver={(e) => e.target.style.backgroundColor = '#e6e6e6'} // Hover effect
+                                onMouseOut={(e) => e.target.style.backgroundColor = '#f9f9f9'} // Reset hover effect
                             >
                                 <option value="">الكل</option>
                                 <option value="corporate_office">مكاتب شركات</option>
