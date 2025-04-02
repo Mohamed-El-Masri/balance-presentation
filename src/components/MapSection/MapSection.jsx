@@ -14,6 +14,7 @@ function MapSection() {
     const infoWindowRef = useRef(null); // Reference to store the InfoWindow
     const mapRef = useRef(null); // Reference to store the map instance
     const searchBoxRef = useRef(null); // Reference for the search box
+    const searchMarkersRef = useRef([]); // Reference to store markers from the search
 
     useEffect(() => {
         async function loadGoogleMapsAPI() {
@@ -247,10 +248,9 @@ function MapSection() {
                     const places = searchBox.getPlaces();
                     if (places.length === 0) return;
                 
-                    // Clear previous markers
-                    if (activeMarkerRef.current) {
-                        activeMarkerRef.current.setMap(null);
-                    }
+                    // Remove all previous search markers
+                    searchMarkersRef.current.forEach((marker) => marker.setMap(null));
+                    searchMarkersRef.current = [];
                 
                     // Create markers for all search results
                     const bounds = new google.maps.LatLngBounds();
@@ -262,6 +262,9 @@ function MapSection() {
                             map: mapRef.current,
                             title: place.name,
                         });
+                
+                        // Store the new marker in the searchMarkersRef
+                        searchMarkersRef.current.push(marker);
                 
                         // Add click listener to each marker
                         marker.addListener('click', () => {
@@ -392,6 +395,36 @@ function MapSection() {
         }
     }
     
+    function resetToJSONPlaces() {
+        // Clear all search markers
+        searchMarkersRef.current.forEach((marker) => marker.setMap(null));
+        searchMarkersRef.current = [];
+    
+        // Clear active marker
+        if (activeMarkerRef.current) {
+            activeMarkerRef.current.setMap(null);
+            activeMarkerRef.current = null;
+        }
+    
+        // Reset map view and add markers from JSON data
+        const bounds = new google.maps.LatLngBounds();
+        properties.forEach((property) => {
+            const marker = new google.maps.Marker({
+                position: {
+                    lat: property.property.latitude,
+                    lng: property.property.longitude,
+                },
+                map: mapRef.current,
+                title: property.property.propertyId,
+            });
+    
+            bounds.extend(marker.getPosition());
+        });
+    
+        // Adjust the map to fit all JSON markers
+        mapRef.current.fitBounds(bounds);
+    }
+    
 
     const filteredInsights = insights.filter((insight) =>
         filterType ? insight.types.includes(filterType) : true
@@ -444,6 +477,31 @@ function MapSection() {
                                 <option value="real_estate_agency">وكالات عقارات</option>
                             </select>
                         </div>
+                        <button
+                            onClick={resetToJSONPlaces}
+                            style={{
+                                padding: '12px 24px', // Increased padding for a better look
+                                fontSize: '16px',
+                                borderRadius: '8px',
+                                border: 'none', // Removed border for a cleaner look
+                                backgroundColor: '#007bff', // Primary blue color
+                                color: '#fff', // White text
+                                cursor: 'pointer',
+                                marginBottom: '20px',
+                                transition: 'all 0.3s ease',
+                                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Added subtle shadow
+                            }}
+                            onMouseOver={(e) => {
+                                e.target.style.backgroundColor = '#0056b3'; // Darker blue on hover
+                                e.target.style.boxShadow = '0 6px 8px rgba(0, 0, 0, 0.2)'; // Enhanced shadow on hover
+                            }}
+                            onMouseOut={(e) => {
+                                e.target.style.backgroundColor = '#007bff'; // Reset color
+                                e.target.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)'; // Reset shadow
+                            }}
+                        >
+                            إعادة تعيين
+                        </button>
                         <InsightsList 
                             insights={filteredInsights} 
                             onPlaceClick={(place) => {
