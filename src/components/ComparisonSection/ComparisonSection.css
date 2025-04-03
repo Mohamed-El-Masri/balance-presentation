@@ -513,6 +513,10 @@
   .author-info span {
     font-size: 0.8rem;
   }
+  
+  .section-description {
+    color: white; /* Change font color to white for small devices */
+  }
 }
 
 /* Dark mode support */

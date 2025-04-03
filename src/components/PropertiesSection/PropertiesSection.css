@@ -367,7 +367,9 @@
     height: 50px;
     font-size: 1.2rem;
   }
-  
+  .summary-info{
+    overflow-y: hidden;
+  }
   .summary-info h3 {
     font-size: 1.6rem;
   }
