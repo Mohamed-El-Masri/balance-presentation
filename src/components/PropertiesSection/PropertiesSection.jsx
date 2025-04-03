@@ -36,7 +36,8 @@ function PropertiesSection() {
               <i className="fas fa-ruler-combined"></i>
             </div>
             <div className="summary-info">
-              <h3>{totalArea.toLocaleString()}</h3>
+              {/* <h3>{totalArea.toLocaleString()}</h3> */}
+              <h3>37,782</h3>
               <p>متر مربع إجمالي</p>
             </div>
           </div>
@@ -227,9 +228,7 @@ function PropertiesSection() {
           </div>
         </div>
         
-        <div className="cta-container">
-          <button className="main-cta">طلب تحويل رخصة البناء من فندقي إلى سكني</button>
-        </div>
+        
       </div>
     </section>
   );
