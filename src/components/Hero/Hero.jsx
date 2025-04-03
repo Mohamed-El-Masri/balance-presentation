@@ -18,7 +18,7 @@ const Hero = () => {
   // القيم النهائية للعدادات
   const finalPlotCount = 15;
   const finalOccupancyRate = 87;
-  const finalWorkersCount = 1240;
+  const finalWorkersCount = 15390;
   
   // مرجع للتحقق من بدء تشغيل العدادات
   const countersStarted = useRef(false);
@@ -221,13 +221,13 @@ const Hero = () => {
             </span>
             <span className="metric-label">قطع أراضي</span>
           </div>
-          <div className="metric">
+          {/* <div className="metric">
             <span className="metric-number counter">
               <span className="value">{occupancyRate}</span>
               <span className="percent">%</span>
             </span>
             <span className="metric-label">نسبة الإشغال</span>
-          </div>
+          </div> */}
           <div className="metric">
             <span className="metric-number counter">
               <span className="value">{formatNumber(workersCount)}</span>
