@@ -261,6 +261,17 @@ function MapSection() {
                             position: place.geometry.location,
                             map: mapRef.current,
                             title: place.name,
+                            label: {
+                                text: place.name, // Add the name of the place as a label
+                                color: '#000', // Black text for contrast
+                                fontSize: '12px', // Adjust font size for readability
+                                fontWeight: 'bold', // Make the text bold
+                                className: 'custom-marker-label', // Add a custom class for styling
+                            },
+                            icon: {
+                                url: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi2_hdpi.png', // Custom marker icon
+                                labelOrigin: new google.maps.Point(15, 40), // Position the label below the marker
+                            },
                         });
                 
                         // Store the new marker in the searchMarkersRef

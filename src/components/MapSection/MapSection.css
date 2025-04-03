@@ -865,3 +865,13 @@
 [data-theme='dark'] .gm-style .gm-style-iw-tc::after {
     background-color: #252525;
 }
+
+.custom-marker-label {
+    background-color: #fff; /* White background */
+    padding: 4px 8px; /* Add padding for better appearance */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    font-family: Arial, sans-serif; /* Consistent font */
+    text-align: center; /* Center the text */
+    display: inline-block; /* Ensure proper alignment */
+}
