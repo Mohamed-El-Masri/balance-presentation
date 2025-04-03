@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
 
 :root {
   /* الألوان الرئيسية */
@@ -22,12 +24,24 @@
   
   /* ظلال */
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  font-family: 'Cairo', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* CSS reset */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 html {
@@ -40,16 +54,30 @@ body {
   background-color: var(--light-bg);
   color: var(--text-color);
   line-height: 1.6;
+  margin: 0;
+  min-width: 320px;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   margin-bottom: 1rem;
+  margin: 0;
+  line-height: 1.2;
 }
 
 a {
   text-decoration: none;
   color: var(--primary-color);
+}
+
+ul, ol {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 .container {
@@ -117,5 +145,29 @@ a {
   
   .section {
     padding: 2rem 0;
+  }
+}
+
+/* Theme transitions */
+body, 
+a, 
+button,
+input,
+select,
+textarea {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -2,20 +2,23 @@ import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import Header from './components/Header/Header';
 import Hero from './components/Hero/Hero';
-import Overview from './components/Overview/Overview';
-import Statistics from './components/Statistics/Statistics';
-import Properties from './components/Properties/Properties';
+import OverviewSection from './components/OverviewSection/OverviewSection';
+import StatisticsSection from './components/StatisticsSection/StatisticsSection';
+import PropertiesSection from './components/PropertiesSection/PropertiesSection';
 import Footer from './components/Footer/Footer';
 import Spinner from './components/UI/Spinner/Spinner'; // مكون جديد للتحميل
 import ErrorBoundary from './components/UI/ErrorBoundary/ErrorBoundary'; // مكون جديد لمعالجة الأخطاء
 import properties from './assets/properties.json';
 import MapSection from './components/MapSection/MapSection';
+import ComparisonSection from './components/ComparisonSection/ComparisonSection';
+import Vision2030Section from './components/Vision2030Section/Vision2030Section';
+import CaseStudiesSection from './components/CaseStudiesSection/CaseStudiesSection';
 
 function App() {
   const [propertiesData, setPropertiesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [theme, setTheme] = useState('light'); // إضافة نظام المواضيع
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light'); // إضافة نظام المواضيع
 
   // تحميل البيانات
   const loadData = useCallback(async () => {
@@ -111,11 +114,13 @@ function App() {
         <Header toggleTheme={toggleTheme} currentTheme={theme} />
         <div className="main-content">
           <Hero />
-          <Overview stats={stats} />
+          <OverviewSection stats={stats} />
           <MapSection  />
-          <Statistics />
-        
-          <Properties properties={propertiesData} />
+          <StatisticsSection />
+          <PropertiesSection properties={propertiesData} />
+          <ComparisonSection />
+          <Vision2030Section />
+          <CaseStudiesSection />
         </div>
         <Footer />
       </ErrorBoundary>

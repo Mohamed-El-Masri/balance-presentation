@@ -245,6 +245,8 @@
   border: 1px solid rgba(0, 0, 0, 0.04);
   position: relative;
   min-height: 350px; /* ضمان وجود مساحة كافية للرسم البياني */
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .stats-module__chart-title {

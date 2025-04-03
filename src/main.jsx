@@ -1,7 +1,7 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import './index.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
+import './index.css';
 
 // تعريف متغيرات بيئة التطبيق للوصول إليها من أي مكان
 window.APP_CONFIG = {
@@ -17,11 +17,9 @@ window.onerror = (message, source, lineno, colno, error) => {
   return false;
 };
 
-// تهيئة جذر التطبيق
-const root = createRoot(document.getElementById('root'));
-
-root.render(
-  // <StrictMode>
+// Create a root for the application
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
     <App />
-  // </StrictMode>,
+  </React.StrictMode>,
 );
