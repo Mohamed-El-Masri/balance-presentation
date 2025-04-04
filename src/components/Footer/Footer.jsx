@@ -63,7 +63,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <i className="fas fa-envelope"></i>
-                  <span>info@balance-re.sa</span>
+                  <span>info@balance.sa</span>
                 </li>
                 <li>
                   <i className="fas fa-clock"></i>
