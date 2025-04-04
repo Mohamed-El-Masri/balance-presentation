@@ -24,14 +24,14 @@
 }
 
 .section-title, .section-subtitle {
+    
     text-align: center;
-    margin-bottom: 10px;
-}
-
-.section-subtitle {
+    /* margin-bottom: 10px; */
     margin-bottom: 40px;
     color: #666;
+    margin-inline: auto;
 }
+
 
 /* تحسين تناسق ارتفاعات المكونات */
 .map-section-content {

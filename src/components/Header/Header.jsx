@@ -1,23 +1,35 @@
 import { useState, useEffect, useRef } from 'react';
 import './Header.css';
+import balanceLogo from '/src/assets/logos/balance-logo.png';
+import modonLogo from '/src/assets/logos/modon-logo.png';
+import majdiahLogo from '/src/assets/logos/majdiah-logo.png';
 
 const Header = ({ toggleTheme, currentTheme }) => {
+  // حالات المكون
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   
-  // استخدام useRef لمنع إعادة الحسابات غير الضرورية
-  const sectionsRef = useRef(['hero', 'overview', 'map-section-title', 'statistics', 'properties']);
+  // مراجع الأقسام في الصفحة
+  const sectionsRef = useRef([
+    'hero', 
+    'overview', 
+    'map-section-title', 
+    'statistics', 
+    'properties',
+    'comparison',
+    'vision',
+    'case-studies'
+  ]);
+  
   const scrollTimeoutRef = useRef(null);
   
-  // تحديد القسم النشط بطريقة أكثر كفاءة
+  // تحديث القسم النشط بناء على موضع التمرير
   const updateActiveSection = () => {
-    // نقطة المرجع هي 20% من ارتفاع النافذة من الأعلى - هذا يساعد على تفعيل القسم مبكراً
     const viewportOffset = window.innerHeight * 0.2;
     const currentPosition = window.scrollY + viewportOffset;
     
-    // الانتقال من الأسفل إلى الأعلى لضمان أننا نجد أول قسم مرئي
     for (let i = sectionsRef.current.length - 1; i >= 0; i--) {
       const sectionId = sectionsRef.current[i];
       const element = document.getElementById(sectionId);
@@ -27,16 +39,14 @@ const Header = ({ toggleTheme, currentTheme }) => {
       const offsetTop = element.offsetTop;
       const height = element.offsetHeight;
       
-      // تفعيل القسم إذا كان المستخدم قد تمرر إليه
       if (currentPosition >= offsetTop && currentPosition <= offsetTop + height) {
         if (activeSection !== sectionId) {
           setActiveSection(sectionId);
         }
-        return; // وجدنا القسم النشط، نخرج من الدالة
+        return;
       }
     }
     
-    // إذا وصلنا هنا ولم نجد قسم نشط، نعتبر القسم الأول نشطًا إذا كنا في بداية الصفحة
     if (window.scrollY < 100 && activeSection !== 'hero') {
       setActiveSection('hero');
     }
@@ -46,13 +56,12 @@ const Header = ({ toggleTheme, currentTheme }) => {
   const handleScroll = () => {
     // حساب نسبة التمرير للشريط التقدمي
     const totalHeight = document.body.scrollHeight - window.innerHeight;
-    const progress = (window.scrollY / totalHeight) * 100;
+    const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
     setScrollProgress(progress);
     
     // تغيير مظهر الهيدر عند التمرير
     setIsScrolled(window.scrollY > 50);
     
-    // تأخير تحديث القسم النشط لتحسين الأداء
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
     }
@@ -60,7 +69,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
     scrollTimeoutRef.current = setTimeout(() => {
       updateActiveSection();
       scrollTimeoutRef.current = null;
-    }, 50); // تأخير قصير للأداء الأفضل
+    }, 50);
   };
 
   // إضافة مستمعي الأحداث
@@ -68,9 +77,11 @@ const Header = ({ toggleTheme, currentTheme }) => {
     window.addEventListener('scroll', handleScroll);
     
     // تحديث القسم النشط الأولي بعد تحميل الصفحة
-    updateActiveSection();
+    setTimeout(() => {
+      updateActiveSection();
+    }, 500);
     
-    // إضافة مستمع لتغيير حجم النافذة لإعادة حساب الأقسام النشطة
+    // إضافة مستمع لتغيير حجم النافذة
     window.addEventListener('resize', updateActiveSection);
     
     return () => {
@@ -80,18 +91,14 @@ const Header = ({ toggleTheme, currentTheme }) => {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
-  }, []); // لاحظ: لا نضع updateActiveSection كتبعية لتجنب التحديثات الغير ضرورية
+  }, []);
 
   // تبديل حالة القائمة المتنقلة
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
     
     // منع التمرير عند فتح القائمة
-    if (!mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = !mobileMenuOpen ? 'hidden' : '';
   };
 
   // إغلاق القائمة عند الضغط على أحد الروابط
@@ -119,7 +126,6 @@ const Header = ({ toggleTheme, currentTheme }) => {
       behavior: "smooth"
     });
     
-    // تعيين القسم النشط بعد التمرير
     setActiveSection(targetId);
   };
 
@@ -127,20 +133,22 @@ const Header = ({ toggleTheme, currentTheme }) => {
     <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
       <div className="progress-bar" style={{ width: `${scrollProgress}%` }}></div>
       <div className="container header-container">
+        {/* شعارات الشركات */}
         <div className="logos">
           <div className="logo-wrapper">
-            <img src="https://modon.gov.sa/Style%20Library/ar-sa/Core%20Styles/images/logo.png" alt="شعار هيئة مدن" className="logo-img" />
+            <img src={modonLogo} alt="شعار هيئة مدن" className="logo-img" />
           </div>
           <div className="logo-wrapper">
-            <img src="https://almajdiahinvestment.sa/storage/r6KO9mDQNojA5Cwk1r18GE5vD13K3P-metabG9nby1oLnBuZw==-.png" alt="شعار الماجدة" className="logo-img" />
+            <img src={majdiahLogo} alt="شعار الماجدة" className="logo-img" />
           </div>
           <div className="logo-wrapper">
-            <img src="https://res.cloudinary.com/dk2cdwufj/image/upload/v1743511083/Balance_-_logo_l3yjqs.png" alt="شعار شركة بالنس" className="logo-img" />
+            <img src={balanceLogo} alt="شعار شركة بالنس" className="logo-img" />
           </div>
         </div>
         
+        {/* قائمة التنقل الرئيسية */}
         <nav className={`main-nav ${mobileMenuOpen ? 'open' : ''}`}>
-          <ul>
+          <ul className="nav-list">
             <li>
               <a 
                 href="#hero" 
@@ -183,18 +191,46 @@ const Header = ({ toggleTheme, currentTheme }) => {
                 onClick={(e) => smoothScroll(e, 'properties')}
                 className={activeSection === 'properties' ? 'active' : ''}
               >
-                قطع الأراضي
+                العقارات
+              </a>
+            </li>
+            <li>
+              <a 
+                href="#comparison" 
+                onClick={(e) => smoothScroll(e, 'comparison')}
+                className={activeSection === 'comparison' ? 'active' : ''}
+              >
+                المقارنة
+              </a>
+            </li>
+            <li>
+              <a 
+                href="#vision" 
+                onClick={(e) => smoothScroll(e, 'vision')}
+                className={activeSection === 'vision' ? 'active' : ''}
+              >
+                رؤية 2030
+              </a>
+            </li>
+            <li>
+              <a 
+                href="#case-studies" 
+                onClick={(e) => smoothScroll(e, 'case-studies')}
+                className={activeSection === 'case-studies' ? 'active' : ''}
+              >
+                دراسات حالة
               </a>
             </li>
           </ul>
           
+          {/* زر تبديل الثيم */}
           <button 
             className="theme-toggle" 
             onClick={toggleTheme} 
             title={currentTheme === 'light' ? 'تفعيل الوضع الداكن' : 'تفعيل الوضع الفاتح'}
             aria-label="تبديل الوضع المظلم"
           >
-            {currentTheme === 'light' ? '🌙' : '☀️'}
+            <i className={`fas ${currentTheme === 'light' ? 'fa-moon' : 'fa-sun'}`}></i>
           </button>
         </nav>
 
@@ -204,10 +240,100 @@ const Header = ({ toggleTheme, currentTheme }) => {
           onClick={toggleMobileMenu}
           aria-label="قائمة متنقلة"
         >
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
+          <span className="mobile-menu-bar"></span>
+          <span className="mobile-menu-bar"></span>
+          <span className="mobile-menu-bar"></span>
         </button>
+
+        {/* قائمة الموبايل */}
+        <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
+          <ul className="mobile-nav-list">
+            <li className="mobile-nav-item">
+              <a 
+                href="#hero" 
+                onClick={(e) => smoothScroll(e, 'hero')}
+                className={`mobile-nav-link ${activeSection === 'hero' ? 'active' : ''}`}
+              >
+                الرئيسية
+              </a>
+            </li>
+            <li className="mobile-nav-item">
+              <a 
+                href="#overview" 
+                onClick={(e) => smoothScroll(e, 'overview')}
+                className={`mobile-nav-link ${activeSection === 'overview' ? 'active' : ''}`}
+              >
+                نظرة عامة
+              </a>
+            </li>
+            <li className="mobile-nav-item">
+              <a 
+                href="#map-section-title" 
+                onClick={(e) => smoothScroll(e, 'map-section-title')}
+                className={`mobile-nav-link ${activeSection === 'map-section-title' ? 'active' : ''}`}
+              >
+                الخريطة
+              </a>
+            </li>
+            <li className="mobile-nav-item">
+              <a 
+                href="#statistics" 
+                onClick={(e) => smoothScroll(e, 'statistics')}
+                className={`mobile-nav-link ${activeSection === 'statistics' ? 'active' : ''}`}
+              >
+                الإحصائيات
+              </a>
+            </li>
+            <li className="mobile-nav-item">
+              <a 
+                href="#properties" 
+                onClick={(e) => smoothScroll(e, 'properties')}
+                className={`mobile-nav-link ${activeSection === 'properties' ? 'active' : ''}`}
+              >
+                العقارات
+              </a>
+            </li>
+            <li className="mobile-nav-item">
+              <a 
+                href="#comparison" 
+                onClick={(e) => smoothScroll(e, 'comparison')}
+                className={`mobile-nav-link ${activeSection === 'comparison' ? 'active' : ''}`}
+              >
+                المقارنة
+              </a>
+            </li>
+            <li className="mobile-nav-item">
+              <a 
+                href="#vision" 
+                onClick={(e) => smoothScroll(e, 'vision')}
+                className={`mobile-nav-link ${activeSection === 'vision' ? 'active' : ''}`}
+              >
+                رؤية 2030
+              </a>
+            </li>
+            <li className="mobile-nav-item">
+              <a 
+                href="#case-studies" 
+                onClick={(e) => smoothScroll(e, 'case-studies')}
+                className={`mobile-nav-link ${activeSection === 'case-studies' ? 'active' : ''}`}
+              >
+                دراسات حالة
+              </a>
+            </li>
+          </ul>
+          
+          {/* زر تبديل الثيم للموبايل */}
+          <div className="mobile-theme-toggle">
+            <button
+              onClick={toggleTheme}
+              className="mobile-theme-btn"
+              title={currentTheme === 'light' ? 'تفعيل الوضع الداكن' : 'تفعيل الوضع الفاتح'}
+            >
+              <i className={`fas ${currentTheme === 'light' ? 'fa-moon' : 'fa-sun'}`}></i>
+              {currentTheme === 'light' ? ' الوضع الداكن' : ' الوضع الفاتح'}
+            </button>
+          </div>
+        </div>
       </div>
     </header>
   );

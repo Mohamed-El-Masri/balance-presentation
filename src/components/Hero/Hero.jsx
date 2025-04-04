@@ -214,20 +214,20 @@ const Hero = () => {
         {/* تم حذف hero-features */}
         {/* تم حذف أزرار hero-cta */}
 
-        <div className="metrics animate fade-in delay-3">
+        {/* <div className="metrics animate fade-in delay-3">
           <div className="metric">
             <span className="metric-number counter">
               <span className="value">{plotCount}</span>
             </span>
             <span className="metric-label">قطع أراضي</span>
           </div>
-          {/* <div className="metric">
+          <div className="metric">
             <span className="metric-number counter">
               <span className="value">{occupancyRate}</span>
               <span className="percent">%</span>
             </span>
             <span className="metric-label">نسبة الإشغال</span>
-          </div> */}
+          </div>
           <div className="metric">
             <span className="metric-number counter">
               <span className="value">{formatNumber(workersCount)}</span>
@@ -235,7 +235,7 @@ const Hero = () => {
             </span>
             <span className="metric-label">عدد العمال</span>
           </div>
-        </div>
+        </div> */}
       </div>
       
       {/* مؤشر التمرير للأسفل */}

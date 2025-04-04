@@ -205,3 +205,368 @@
 [data-theme='dark'] .partner-logo {
   background-color: rgba(255, 255, 255, 0.05);
 }
+
+/* تنسيقات أساسية للفوتر */
+.site-footer {
+  background-color: #2c3237;
+  color: #e0e0e0;
+  position: relative;
+  font-size: 0.95rem;
+}
+
+.footer-top {
+  padding: 70px 0 40px;
+  position: relative;
+}
+
+.footer-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/src/assets/patterns/pattern-dots.svg');
+  background-size: 20px;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+}
+
+/* معلومات الشركة */
+.company-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-logo {
+  margin-bottom: 20px;
+}
+
+.footer-logo img {
+  max-width: 180px;
+  height: auto;
+  filter: brightness(0) invert(1);
+}
+
+.footer-slogan {
+  line-height: 1.7;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-top: auto;
+}
+
+.social-link {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-5px);
+  color: white;
+}
+
+/* عناوين الأقسام */
+.footer-heading {
+  color: white;
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.footer-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 50px;
+  height: 3px;
+  background-color: var(--secondary-color);
+  border-radius: 2px;
+}
+
+/* روابط سريعة */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: #e0e0e0;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+  padding-right: 20px;
+}
+
+.footer-links a::before {
+  content: '\f105';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  right: 0;
+  transition: transform 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--secondary-color);
+  transform: translateX(-7px);
+}
+
+.footer-links a:hover::before {
+  transform: translateX(-5px);
+  color: var(--secondary-color);
+}
+
+/* معلومات الاتصال */
+.contact-details {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-details li {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.contact-details i {
+  color: var(--secondary-color);
+  margin-top: 3px;
+}
+
+/* النشرة البريدية */
+.newsletter p {
+  margin-bottom: 20px;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
+.newsletter-form {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.newsletter-form input {
+  flex: 1;
+  padding: 12px 15px;
+  border: none;
+  outline: none;
+  border-radius: 4px 0 0 4px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.subscribe-btn {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 0 20px;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.subscribe-btn:hover {
+  background-color: #d5bc9b;
+}
+
+.legal-links {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.legal-links a {
+  color: #e0e0e0;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.legal-links a:hover {
+  color: var(--secondary-color);
+}
+
+.separator {
+  margin: 0 10px;
+}
+
+/* فوتر سفلي */
+.footer-bottom {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 20px 0;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.footer-bottom .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.footer-bottom p {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.developer-credit a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.developer-credit a:hover {
+  color: white;
+}
+
+/* زر العودة للأعلى */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  width: auto;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+  padding: 0 20px;
+  z-index: 100;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.back-to-top-text {
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.back-to-top:hover {
+  background-color: var(--secondary-color);
+  width: auto;
+}
+
+.back-to-top:hover .back-to-top-text {
+  max-width: 100px;
+  opacity: 1;
+  margin-right: 8px;
+}
+
+/* تجاوبية الفوتر */
+@media (max-width: 992px) {
+  .footer-top {
+    padding: 60px 0 30px;
+  }
+  
+  .footer-grid {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+  }
+  
+  .footer-bottom .container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .back-to-top {
+    bottom: 20px;
+    left: 20px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer-top {
+    padding: 50px 0 20px;
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .footer-heading::after {
+    right: 50%;
+    transform: translateX(50%);
+  }
+  
+  .contact-details li {
+    justify-content: center;
+  }
+  
+  .newsletter-form {
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .social-links {
+    justify-content: center;
+  }
+}

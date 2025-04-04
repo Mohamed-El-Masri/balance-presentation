@@ -1,15 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './CaseStudiesSection.css';
 
 function CaseStudiesSection() {
   const [activeCase, setActiveCase] = useState('lam1');
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+  
+  // مراقبة ظهور القسم في الشاشة
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
   
   const handleCaseChange = (caseId) => {
     setActiveCase(caseId);
   };
   
   return (
-    <section className="case-studies-section" id="case-studies">
+    <section className={`case-studies-section ${isVisible ? 'visible' : ''}`} id="case-studies" ref={sectionRef}>
       <div className="container">
         <h2 className="section-title">نماذج ناجحة لمجمعات سكن العمال</h2>
         <p className="section-description">
@@ -48,12 +73,12 @@ function CaseStudiesSection() {
             <div className="case-details">
               <div className="case-images">
                 <div className="main-image">
-                  <img src="https://masek.sa/storage/Y6VjnOq7Wu9xoAcsNjc076VqqNnUI9-metadata29odG9zL3JfU29sdXRpb25zLzEucG5n-.png" alt="مجمع لام 1 السكني" />
+                  <img src="/src/assets/caseStudy/09.jpg" alt="مجمع لام 1 السكني" />
                 </div>
                 <div className="gallery">
-                  <img src="https://masek.sa/storage/Y6VjnOq7Wu9xoAcsNjc076VqqNnUI9-metadata29odG9zL3JfU29sdXRpb25zLzIucG5n-.png" alt="مرافق مجمع لام 1" />
-                  <img src="https://masek.sa/storage/Y6VjnOq7Wu9xoAcsNjc076VqqNnUI9-metadata29odG9zL3JfU29sdXRpb25zLzMucG5n-.png" alt="غرف مجمع لام 1" />
-                  <img src="https://masek.sa/storage/Y6VjnOq7Wu9xoAcsNjc076VqqNnUI9-metadata29odG9zL3JfU29sdXRpb25zLzQucG5n-.png" alt="خدمات مجمع لام 1" />
+                  <img src="/src/assets/caseStudy/10.jpg" alt="مرافق مجمع لام 1" />
+                  <img src="/src/assets/caseStudy/11.jpg" alt="غرف مجمع لام 1" />
+                  <img src="/src/assets/caseStudy/01.jpg" alt="خدمات مجمع لام 1" />
                 </div>
               </div>
               
@@ -155,12 +180,12 @@ function CaseStudiesSection() {
             <div className="case-details">
               <div className="case-images">
                 <div className="main-image">
-                  <img src="https://masek.sa/storage/Y6VjnOq7Wu9xoAcsNjc076VqqNnUI9-metadata29odG9zL3JfU29sdXRpb25zLzQucG5n-.png" alt="مجمع لام 2 السكني" />
+                  <img src="/src/assets/caseStudy/05.jpg" alt="مجمع لام 2 السكني" />
                 </div>
                 <div className="gallery">
-                  <img src="https://masek.sa/storage/Y6VjnOq7Wu9xoAcsNjc076VqqNnUI9-metadata29odG9zL3JfU29sdXRpb25zLzEucG5n-.png" alt="مرافق مجمع لام 2" />
-                  <img src="https://masek.sa/storage/Y6VjnOq7Wu9xoAcsNjc076VqqNnUI9-metadata29odG9zL3JfU29sdXRpb25zLzIucG5n-.png" alt="غرف مجمع لام 2" />
-                  <img src="https://masek.sa/storage/Y6VjnOq7Wu9xoAcsNjc076VqqNnUI9-metadata29odG9zL3JfU29sdXRpb25zLzMucG5n-.png" alt="خدمات مجمع لام 2" />
+                  <img src="/src/assets/caseStudy/06.jpg" alt="مرافق مجمع لام 2" />
+                  <img src="/src/assets/caseStudy/07.jpg" alt="غرف مجمع لام 2" />
+                  <img src="/src/assets/caseStudy/08.jpg" alt="خدمات مجمع لام 2" />
                 </div>
               </div>
               
@@ -261,12 +286,12 @@ function CaseStudiesSection() {
             <div className="case-details">
               <div className="case-images">
                 <div className="main-image">
-                  <img src="https://masek.sa/storage/Y6VjnOq7Wu9xoAcsNjc076VqqNnUI9-metadata29odG9zL3JfU29sdXRpb25zLzMucG5n-.png" alt="مشروع إسكان الفاضلي" />
+                  <img src="/src/assets/caseStudy/01.jpg" alt="مشروع إسكان الفاضلي" />
                 </div>
                 <div className="gallery">
-                  <img src="https://masek.sa/storage/Y6VjnOq7Wu9xoAcsNjc076VqqNnUI9-metadata29odG9zL3JfU29sdXRpb25zLzEucG5n-.png" alt="مرافق إسكان الفاضلي" />
-                  <img src="https://masek.sa/storage/Y6VjnOq7Wu9xoAcsNjc076VqqNnUI9-metadata29odG9zL3JfU29sdXRpb25zLzIucG5n-.png" alt="غرف إسكان الفاضلي" />
-                  <img src="https://masek.sa/storage/Y6VjnOq7Wu9xoAcsNjc076VqqNnUI9-metadata29odG9zL3JfU29sdXRpb25zLzQucG5n-.png" alt="خدمات إسكان الفاضلي" />
+                  <img src="/src/assets/caseStudy/02.jpg" alt="مرافق إسكان الفاضلي" />
+                  <img src="/src/assets/caseStudy/03.jpg" alt="غرف إسكان الفاضلي" />
+                  <img src="/src/assets/caseStudy/04.jpg" alt="خدمات إسكان الفاضلي" />
                 </div>
               </div>
               
@@ -364,39 +389,145 @@ function CaseStudiesSection() {
           )}
         </div>
         
-        <div className="conclusion-box">
-          <h3>الخلاصة والدروس المستفادة</h3>
-          <div className="conclusion-content">
-            <p className="highlight-text">
-              أثبتت المجمعات السكنية للعمال والموظفين في المناطق الصناعية نجاحاً كبيراً من ناحية الجدوى الاقتصادية والأثر الاجتماعي والبيئي.
-            </p>
-            <ul className="lessons-list">
-              <li>
-                <strong>العائد الاستثماري:</strong> تحقق المجمعات السكنية عائداً استثمارياً يتراوح بين 9-12% سنوياً، وهو أعلى من عائد الفنادق في المناطق الصناعية.
-              </li>
-              <li>
-                <strong>نسب الإشغال:</strong> تمتاز المجمعات السكنية بنسب إشغال عالية (85-98%) مقارنة بالفنادق التي لا تتجاوز نسبة إشغالها 55% في المناطق الصناعية.
-              </li>
-              <li>
-                <strong>تكاليف التشغيل:</strong> تنخفض تكاليف تشغيل المجمعات السكنية بنسبة 30-40% مقارنة بالفنادق، مع زيادة في الإيرادات.
-              </li>
-              <li>
-                <strong>الأثر الاجتماعي:</strong> تسهم هذه المجمعات في تحسين جودة حياة العمال والموظفين وزيادة إنتاجيتهم وتقليل معدل دوران الموظفين.
-              </li>
-              <li>
-                <strong>الأثر البيئي:</strong> تقليل التنقلات والازدحام المروري يؤدي إلى خفض الانبعاثات الكربونية بنسبة تصل إلى 45%.
-              </li>
-            </ul>
+        {/* قسم الخلاصة والدروس المستفادة - محسن */}
+        <div className="conclusion-section">
+          <div className="section-divider">
+            <span className="divider-icon"><i className="fas fa-bookmark"></i></span>
+          </div>
+          
+          <h3 className="conclusion-title">الخلاصة والدروس المستفادة</h3>
+          
+          <div className="conclusion-container">
+            <div className="conclusion-highlight">
+              <div className="quote-icon">
+                <i className="fas fa-quote-right"></i>
+              </div>
+              <p className="highlight-text">
+                أثبتت المجمعات السكنية للعمال والموظفين في المناطق الصناعية نجاحاً كبيراً من ناحية الجدوى الاقتصادية والأثر الاجتماعي والبيئي.
+              </p>
+            </div>
+            
+            <div className="lessons-container">
+              <div className="lessons-grid">
+                <div className="lesson-item">
+                  <div className="lesson-icon">
+                    <i className="fas fa-chart-line"></i>
+                  </div>
+                  <div className="lesson-content">
+                    <h4>العائد الاستثماري</h4>
+                    <p>تحقق المجمعات السكنية عائداً استثمارياً يتراوح بين 9-12% سنوياً، وهو أعلى من عائد الفنادق في المناطق الصناعية.</p>
+                  </div>
+                </div>
+                
+                <div className="lesson-item">
+                  <div className="lesson-icon">
+                    <i className="fas fa-percentage"></i>
+                  </div>
+                  <div className="lesson-content">
+                    <h4>نسب الإشغال</h4>
+                    <p>تمتاز المجمعات السكنية بنسب إشغال عالية (85-98%) مقارنة بالفنادق التي لا تتجاوز نسبة إشغالها 55% في المناطق الصناعية.</p>
+                  </div>
+                </div>
+                
+                <div className="lesson-item">
+                  <div className="lesson-icon">
+                    <i className="fas fa-hand-holding-usd"></i>
+                  </div>
+                  <div className="lesson-content">
+                    <h4>تكاليف التشغيل</h4>
+                    <p>تنخفض تكاليف تشغيل المجمعات السكنية بنسبة 30-40% مقارنة بالفنادق، مع زيادة في الإيرادات.</p>
+                  </div>
+                </div>
+                
+                <div className="lesson-item">
+                  <div className="lesson-icon">
+                    <i className="fas fa-users"></i>
+                  </div>
+                  <div className="lesson-content">
+                    <h4>الأثر الاجتماعي</h4>
+                    <p>تسهم هذه المجمعات في تحسين جودة حياة العمال والموظفين وزيادة إنتاجيتهم وتقليل معدل دوران الموظفين.</p>
+                  </div>
+                </div>
+                
+                <div className="lesson-item">
+                  <div className="lesson-icon">
+                    <i className="fas fa-leaf"></i>
+                  </div>
+                  <div className="lesson-content">
+                    <h4>الأثر البيئي</h4>
+                    <p>تقليل التنقلات والازدحام المروري يؤدي إلى خفض الانبعاثات الكربونية بنسبة تصل إلى 45%.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         
-        <div className="consultation-offer">
-          <h3>نبذة عن شركة بالنس للتطوير العقاري</h3>
-          <p>
-            نحن شركة متخصصة في تطوير المجمعات السكنية للعمال والموظفين، 
-            نقدم حلولاً مبتكرة تلبي احتياجات السوق وتحقق عوائد استثمارية متميزة.
-          </p>
- 
+        {/* نبذة عن شركة بالنس للتطوير العقاري - محسن */}
+        <div className="company-profile-section">
+          <div className="company-profile-container">
+            <div className="company-logo-container">
+              <img src="/src/assets/logos/balance-logo.png" alt="شعار شركة بالنس للتطوير العقاري" className="company-logo" />
+            </div>
+            
+            <div className="company-info">
+              <h3>نبذة عن شركة بالنس للتطوير العقاري</h3>
+              
+              <div className="company-description">
+                <p>
+                  تأسست شركة بالنس للتطوير العقاري بهدف إحداث توازن حقيقي في سوق العقارات السكنية للعمال والموظفين في المناطق الصناعية بالمملكة العربية السعودية، حيث تقدم حلولاً عقارية مبتكرة تجمع بين الجودة العالية والاستدامة.
+                </p>
+                
+                <div className="company-features">
+                  <div className="feature">
+                    <div className="feature-icon">
+                      <i className="fas fa-medal"></i>
+                    </div>
+                    <div className="feature-text">
+                      <h5>خبرة متميزة</h5>
+                      <p>فريق متخصص بخبرة تزيد عن 15 عاماً في تطوير وإدارة المجمعات السكنية</p>
+                    </div>
+                  </div>
+                  
+                  <div className="feature">
+                    <div className="feature-icon">
+                      <i className="fas fa-project-diagram"></i>
+                    </div>
+                    <div className="feature-text">
+                      <h5>مشاريع ناجحة</h5>
+                      <p>نفخر بتطوير أكثر من 20 مشروعاً سكنياً ناجحاً في مختلف مناطق المملكة</p>
+                    </div>
+                  </div>
+                  
+                  <div className="feature">
+                    <div className="feature-icon">
+                      <i className="fas fa-handshake"></i>
+                    </div>
+                    <div className="feature-text">
+                      <h5>شراكات استراتيجية</h5>
+                      <p>شراكات قوية مع كبرى الشركات الصناعية ومؤسسة مدن الصناعية</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="company-vision">
+                <h4>رؤيتنا</h4>
+                <p>أن نكون الشريك الأول في تطوير وإدارة المجمعات السكنية للعاملين في القطاع الصناعي بالمملكة، مع الالتزام بأعلى معايير الجودة والاستدامة، ودعم رؤية المملكة 2030 في تحسين جودة الحياة وتنمية الاقتصاد.</p>
+              </div>
+              
+              <div className="company-action">
+               
+                <div className="trusted-by">
+                  <span>موثوق من قبل:</span>
+                  <div className="partners-logos">
+                   
+                    <img src="/src/assets/logos/majdiah-logo.png" alt="شركة الماجدية للاستثمار" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

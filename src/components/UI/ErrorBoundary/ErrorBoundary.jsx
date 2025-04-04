@@ -1,68 +1,47 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import './ErrorBoundary.css';
 
 class ErrorBoundary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { 
-      hasError: false,
-      error: null,
-      errorInfo: null
+  state = {
+    hasError: false,
+    errorMessage: ''
+  };
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI
+    return { 
+      hasError: true,
+      errorMessage: error.toString()
     };
   }
 
-  static getDerivedStateFromError(error) {
-    // تحديث الحالة لعرض واجهة الخطأ البديلة
-    return { hasError: true };
+  componentDidCatch(error, errorInfo) {
+    // You can also log the error to an error reporting service
+    console.error("Error caught by ErrorBoundary:", error, errorInfo);
   }
 
-  componentDidCatch(error, errorInfo) {
-    // يمكنك تسجيل الخطأ في خدمة تسجيل الأخطاء
-    console.error("Error caught by ErrorBoundary:", error, errorInfo);
-    this.setState({
-      error: error,
-      errorInfo: errorInfo
-    });
-    
-    // هنا يمكنك إرسال الخطأ إلى خدمة تحليل الأخطاء مثل Sentry أو Google Analytics
-  }
+  handleReload = () => {
+    window.location.reload();
+  };
 
   render() {
     if (this.state.hasError) {
       return (
         <div className="error-boundary">
-          <div className="error-container">
-            <h2>عذراً، حدث خطأ ما</h2>
-            <p>نعتذر عن هذا الخلل. يرجى تحديث الصفحة أو المحاولة لاحقاً.</p>
-            <div className="error-actions">
-              <button 
-                className="retry-button"
-                onClick={() => window.location.reload()}
-              >
-                تحديث الصفحة
-              </button>
-              <button 
-                className="home-button"
-                onClick={() => window.location.href = '/'}
-              >
-                العودة للرئيسية
-              </button>
+          <div className="error-content">
+            <div className="error-icon">
+              <i className="fas fa-exclamation-triangle"></i>
             </div>
-            
-            {process.env.NODE_ENV === 'development' && this.state.error && (
-              <details className="error-details">
-                <summary>تفاصيل الخطأ (للمطورين فقط)</summary>
-                <p>{this.state.error.toString()}</p>
-                <p>موقع الخطأ:</p>
-                <pre>{this.state.errorInfo?.componentStack}</pre>
-              </details>
-            )}
+            <h2>عذراً، حدث خطأ غير متوقع</h2>
+            <p className="error-message">{this.state.errorMessage}</p>
+            <button onClick={this.handleReload} className="error-button">
+              <i className="fas fa-sync-alt"></i> إعادة تحميل الصفحة
+            </button>
           </div>
         </div>
       );
     }
 
-    // إذا لم يكن هناك خطأ، يتم عرض المحتوى الطبيعي
     return this.props.children;
   }
 }

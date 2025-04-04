@@ -1,16 +1,155 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './StatisticsSection.css';
+import CountUp from 'react-countup';
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+} from 'chart.js';
 
-function StatisticsSection() {
+// تسجيل مكونات الرسم البياني
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
+
+const StatisticsSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
   
-  // Count-up animation for statistics
-  const [factoriesCount, setFactoriesCount] = useState(0);
-  const [growthPercentage, setGrowthPercentage] = useState(0);
-  const [targetFactories, setTargetFactories] = useState(0);
-  const [riadFactories, setRiadFactories] = useState(0);
-  
+  // تنسيق الرسم البياني
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          font: {
+            family: 'Cairo',
+            size: 14
+          }
+        }
+      },
+      tooltip: {
+        rtl: true,
+        titleFont: {
+          family: 'Cairo'
+        },
+        bodyFont: {
+          family: 'Cairo'
+        },
+        callbacks: {
+          label: function(context) {
+            return `القيمة: ${context.parsed.y}`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          font: {
+            family: 'Cairo',
+            size: 12
+          }
+        },
+        grid: {
+          display: false
+        }
+      },
+      y: {
+        ticks: {
+          font: {
+            family: 'Cairo',
+            size: 12
+          }
+        },
+        grid: {
+          color: 'rgba(200, 200, 200, 0.2)'
+        },
+        beginAtZero: true
+      }
+    },
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
+    elements: {
+      line: {
+        tension: 0.4
+      },
+      point: {
+        radius: 4,
+        hoverRadius: 6
+      }
+    },
+    animation: {
+      duration: 2000
+    }
+  };
+
+  // بيانات نمو المصانع
+  const factoriesData = {
+    labels: ['2016', '2018', '2020', '2022', '2023', '2025 (متوقع)', '2030 (متوقع)', '2035 (متوقع)'],
+    datasets: [
+      {
+        label: 'عدد المصانع',
+        data: [7206, 8500, 9500, 10518, 11549, 15000, 25000, 36000],
+        borderColor: 'rgba(86, 95, 88, 0.8)',
+        backgroundColor: 'rgba(86, 95, 88, 0.1)',
+        fill: true,
+        pointBackgroundColor: 'rgba(86, 95, 88, 1)',
+        pointBorderColor: '#fff'
+      },
+      {
+        label: 'الناتج المحلي (مليار دولار)',
+        data: [70, 75, 88, 110, 140, 170, 200, 223],
+        borderColor: 'rgba(200, 176, 154, 0.8)',
+        backgroundColor: 'rgba(200, 176, 154, 0.1)',
+        fill: true,
+        pointBackgroundColor: 'rgba(200, 176, 154, 1)',
+        pointBorderColor: '#fff'
+      }
+    ]
+  };
+
+  // بيانات مقارنة المناطق
+  const regionData = {
+    labels: ['الرياض', 'المنطقة الشرقية', 'مكة المكرمة', 'القصيم', 'المدينة المنورة', 'عسير', 'مناطق أخرى'],
+    datasets: [
+      {
+        label: 'عدد المصانع',
+        data: [4502, 2618, 2209, 546, 526, 401, 747],
+        borderColor: 'rgba(200, 176, 154, 0.8)',
+        backgroundColor: [
+          'rgba(86, 95, 88, 0.8)',
+          'rgba(200, 176, 154, 0.8)',
+          'rgba(169, 177, 169, 0.8)',
+          'rgba(86, 95, 88, 0.6)',
+          'rgba(200, 176, 154, 0.6)',
+          'rgba(169, 177, 169, 0.6)',
+          'rgba(120, 120, 120, 0.6)'
+        ],
+        borderWidth: 1
+      }
+    ]
+  };
+
+  // تفعيل التأثيرات عند رؤية القسم
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -19,171 +158,272 @@ function StatisticsSection() {
           observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.2 }
+      {
+        threshold: 0.1
+      }
     );
-    
+
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-    
+
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
-  
-  useEffect(() => {
-    if (isVisible) {
-      // Animate statistics when section is visible
-      const factoriesInterval = animateValue(0, 11549, 2000, setFactoriesCount);
-      const growthInterval = animateValue(0, 60, 1500, setGrowthPercentage);
-      const targetInterval = animateValue(0, 36000, 2500, setTargetFactories);
-      const riadInterval = animateValue(0, 4502, 2000, setRiadFactories);
-      
-      return () => {
-        clearInterval(factoriesInterval);
-        clearInterval(growthInterval);
-        clearInterval(targetInterval);
-        clearInterval(riadInterval);
-      };
-    }
-  }, [isVisible]);
-  
-  // Function to animate counting
-  const animateValue = (start, end, duration, setValue) => {
-    let startTimestamp = null;
-    const step = (timestamp) => {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      const value = Math.floor(progress * (end - start) + start);
-      setValue(value);
-      if (progress < 1) {
-        window.requestAnimationFrame(step);
-      }
-    };
-    window.requestAnimationFrame(step);
-    
-    // Return dummy interval id for cleanup
-    return 1;
-  };
-  
-  // Format numbers with commas
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-  
+
   return (
     <section className="statistics-section" id="statistics" ref={sectionRef}>
       <div className="container">
-        <h2 className="section-title">إحصائيات النمو الصناعي</h2>
-        <p className="section-description">
-          شهدت المملكة العربية السعودية نمواً كبيراً في القطاع الصناعي منذ إطلاق رؤية 2030،
-          مما يزيد الحاجة لتوفير سكن مناسب للقوى العاملة في هذا القطاع.
-        </p>
-        
-        <div className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-icon">
-              <i className="fas fa-industry"></i>
+        <div className="section-header">
+          <h2 className="section-title">إحصائيات التطور الصناعي</h2>
+          <p className="section-description">
+            شهد القطاع الصناعي في المملكة العربية السعودية نمواً متسارعاً منذ إطلاق رؤية 2030، مع زيادة عدد المصانع بأكثر من 60% وتوقعات بمواصلة النمو لتصل إلى 36 ألف مصنع بحلول عام 2035.
+          </p>
+         <span className="section-subtitle">النمو الصناعي في المملكة</span>
+        </div>
+
+        <div className={`stats-container ${isVisible ? 'visible' : ''}`}>
+          <div className="stat-box">
+            <i className="fas fa-industry stat-icon"></i>
+            <div className="stat-value">
+              {isVisible && <CountUp end={11549} duration={2.5} separator="," />}
+              <span className="stat-label">مصنع</span>
             </div>
-            <div className="stat-info">
-              <h3 className="stat-number">{formatNumber(factoriesCount)}</h3>
-              <p className="stat-label">مصنع حالياً في المملكة</p>
-            </div>
+            <p className="stat-description">إجمالي عدد المصانع العاملة في المملكة</p>
           </div>
-          
-          <div className="stat-card">
-            <div className="stat-icon">
-              <i className="fas fa-chart-line"></i>
+
+          <div className="stat-box">
+            <i className="fas fa-chart-line stat-icon"></i>
+            <div className="stat-value">
+              <span className="percentage">+</span>
+              {isVisible && <CountUp end={60} duration={2} />}
+              <span className="percentage">%</span>
             </div>
-            <div className="stat-info">
-              <h3 className="stat-number">{growthPercentage}%</h3>
-              <p className="stat-label">نسبة النمو منذ إطلاق رؤية 2030</p>
-            </div>
+            <p className="stat-description">نسبة النمو الصناعي منذ إطلاق رؤية 2030</p>
           </div>
-          
-          <div className="stat-card">
-            <div className="stat-icon">
-              <i className="fas fa-bullseye"></i>
+
+          <div className="stat-box">
+            <i className="fas fa-coins stat-icon"></i>
+            <div className="stat-value">
+              {isVisible && <CountUp end={400} duration={2.5} />}
+              <span className="stat-label">مليار دولار</span>
             </div>
-            <div className="stat-info">
-              <h3 className="stat-number">{formatNumber(targetFactories)}</h3>
-              <p className="stat-label">مصنع مستهدف بحلول عام 2035</p>
-            </div>
+            <p className="stat-description">حجم الإستثمارات في القطاع الصناعي</p>
           </div>
-          
-          <div className="stat-card">
-            <div className="stat-icon">
-              <i className="fas fa-map-marker-alt"></i>
+
+          <div className="stat-box">
+            <i className="fas fa-bullseye stat-icon"></i>
+            <div className="stat-value">
+              {isVisible && <CountUp end={36} duration={2} />}
+              <span className="stat-label">ألف مصنع</span>
             </div>
-            <div className="stat-info">
-              <h3 className="stat-number">{formatNumber(riadFactories)}</h3>
-              <p className="stat-label">مصنع في منطقة الرياض</p>
-            </div>
+            <p className="stat-description">المستهدف ضمن الإستراتيجية الصناعية 2035</p>
           </div>
         </div>
-        
-        <div className="stats-chart">
-          <h3>توزيع المصانع في مناطق المملكة</h3>
-          <div className="chart-container">
-            <div className="chart-bar-container">
-              <div className="chart-label">الرياض</div>
-              <div className="chart-bar" style={{width: '90%'}} data-value="4,502"></div>
-            </div>
-            <div className="chart-bar-container">
-              <div className="chart-label">المنطقة الشرقية</div>
-              <div className="chart-bar" style={{width: '65%'}} data-value="2,618"></div>
-            </div>
-            <div className="chart-bar-container">
-              <div className="chart-label">مكة المكرمة</div>
-              <div className="chart-bar" style={{width: '55%'}} data-value="2,209"></div>
-            </div>
-            <div className="chart-bar-container">
-              <div className="chart-label">القصيم</div>
-              <div className="chart-bar" style={{width: '14%'}} data-value="546"></div>
-            </div>
-            <div className="chart-bar-container">
-              <div className="chart-label">المدينة المنورة</div>
-              <div className="chart-bar" style={{width: '13%'}} data-value="526"></div>
-            </div>
-            <div className="chart-bar-container">
-              <div className="chart-label">عسير</div>
-              <div className="chart-bar" style={{width: '10%'}} data-value="401"></div>
+
+        <div className={`chart-container ${isVisible ? 'visible' : ''}`}>
+          <div className="chart-header">
+            <h3 className="chart-title">تطور عدد المصانع والناتج المحلي الصناعي</h3>
+            <div className="chart-legend">
+              <div className="legend-item">
+                <div className="legend-color" style={{ background: 'rgba(86, 95, 88, 0.8)' }}></div>
+                <span>عدد المصانع</span>
+              </div>
+              <div className="legend-item">
+                <div className="legend-color" style={{ background: 'rgba(200, 176, 154, 0.8)' }}></div>
+                <span>الناتج المحلي (مليار دولار)</span>
+              </div>
             </div>
           </div>
+          <div className="chart">
+            <Line data={factoriesData} options={chartOptions} />
+          </div>
         </div>
-        
-        <div className="industry-info">
-          <h3>استراتيجية التطوير الصناعي في المملكة</h3>
-          <p>
-            تسعى المملكة العربية السعودية في إطار رؤية 2030 إلى جعل القطاع الصناعي أحد الركائز الأساسية للاقتصاد. 
-            أطلقت الاستراتيجية الوطنية للصناعة في العام 2022 لزيادة عدد المصانع في جميع أنحاء البلاد 3.5 أضعاف 
-            إلى 36 ألف مصنع بحلول العام 2035.
-          </p>
-          <p>
-            وتستهدف الاستراتيجية الصناعية في السعودية تحويل البلاد إلى مركز صناعي رائد من بين أكبر 15 مركزًا صناعيًا 
-            عالميًا بحلول العام 2035، وتحويل المملكة إلى مركز صناعي إقليمي متكامل لتلبية الطلب المتزايد وتحقيق 
-            الريادة العالمية في إنتاج سلع محددة.
-          </p>
-          <p>
-            يدعم ارتفاع عدد المصانع في مختلف أنحاء السعودية هدف الاستراتيجية المتمثل في رفع الناتج المحلي الإجمالي 
-            للقطاع من 88 مليار دولار في العام 2020 إلى 223 مليار دولار في العام 2035.
-          </p>
-          
-          <div className="workforce-demand">
-            <h4>الطلب المتزايد على سكن العمالة</h4>
-            <p>
-              مع النمو السريع في القطاع الصناعي، يزداد الطلب على توفير سكن مناسب للقوى العاملة في هذا القطاع. 
-              تحويل رخص البناء من فندقي إلى سكني في المناطق الصناعية يمثل حلاً استراتيجياً لتلبية هذا الطلب المتزايد،
-              مع دعم أهداف التنمية الصناعية المستدامة في المملكة.
+
+        <div className="data-insights">
+          <div className={`insight-card ${isVisible ? 'visible' : ''}`}>
+            <div className="insight-header">
+              <div className="insight-icon">
+                <i className="fas fa-map-marker-alt"></i>
+              </div>
+              <h3 className="insight-title">التوزيع الجغرافي للمصانع</h3>
+            </div>
+            <p className="insight-content">
+              تتصدر منطقة <strong>الرياض</strong> بـ 4,502 مصنع، تليها <strong>المنطقة الشرقية</strong> بـ 2,618 مصنع ومنطقة <strong>مكة المكرمة</strong> بـ 2,209 مصنع، مما يعكس تركز النشاط الصناعي في المناطق الحضرية الرئيسية.
             </p>
-           
+          </div>
+
+          <div className={`insight-card ${isVisible ? 'visible' : ''}`}>
+            <div className="insight-header">
+              <div className="insight-icon">
+                <i className="fas fa-hand-holding-usd"></i>
+              </div>
+              <h3 className="insight-title">حجم الاستثمارات والمشاريع</h3>
+            </div>
+            <p className="insight-content">
+              بلغت الاستثمارات الصناعية ما يقارب <strong>400 مليار دولار</strong> في عام 2023، مع صدور 1,379 ترخيصاً صناعياً جديداً باستثمارات تتجاوز <strong>21.6 مليار دولار</strong>.
+            </p>
+          </div>
+
+          <div className={`insight-card ${isVisible ? 'visible' : ''}`}>
+            <div className="insight-header">
+              <div className="insight-icon">
+                <i className="fas fa-briefcase"></i>
+              </div>
+              <h3 className="insight-title">التوظيف والتوطين</h3>
+            </div>
+            <p className="insight-content">
+              تستهدف الاستراتيجية الوطنية للصناعة رفع معدل التوطين من <strong>41%</strong> في عام 2020 إلى <strong>65%</strong> بحلول عام 2035، مع زيادة عدد الوظائف في القطاع بمقدار <strong>4 أضعاف</strong>.
+            </p>
           </div>
         </div>
+
+        <div className={`compare-section ${isVisible ? 'visible' : ''}`}>
+          <div className="compare-card past">
+            <div className="compare-header">
+              <h3>قبل رؤية 2030</h3>
+            </div>
+            <div className="compare-body">
+              <div className="compare-stat">
+                <div className="compare-stat-label">عدد المصانع</div>
+                <div className="compare-stat-value">7,206</div>
+                <div className="compare-progress">
+                  {/* تحسين طريقة عرض الشريط مع فئات مناسبة */}
+                  <div 
+                    className="compare-progress-bar" 
+                    style={{ 
+                      width: isVisible ? '30%' : '0%', 
+                      transitionDelay: '0.3s'
+                    }}
+                  ></div>
+                </div>
+              </div>
+              <div className="compare-stat">
+                <div className="compare-stat-label">الناتج المحلي الصناعي</div>
+                <div className="compare-stat-value">70 مليار دولار</div>
+                <div className="compare-progress">
+                  <div 
+                    className="compare-progress-bar" 
+                    style={{ 
+                      width: isVisible ? '35%' : '0%',
+                      transitionDelay: '0.5s'
+                    }}
+                  ></div>
+                </div>
+              </div>
+              <div className="compare-stat">
+                <div className="compare-stat-label">نسبة التوطين</div>
+                <div className="compare-stat-value">25%</div>
+                <div className="compare-progress">
+                  <div 
+                    className="compare-progress-bar" 
+                    style={{ 
+                      width: isVisible ? '25%' : '0%',
+                      transitionDelay: '0.7s'
+                    }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="compare-card future">
+            <div className="compare-header">
+              <h3>المستهدف 2035</h3>
+            </div>
+            <div className="compare-body">
+              <div className="compare-stat">
+                <div className="compare-stat-label">عدد المصانع</div>
+                <div className="compare-stat-value">36,000</div>
+                <div className="compare-progress">
+                  <div 
+                    className="compare-progress-bar" 
+                    style={{ 
+                      width: isVisible ? '90%' : '0%',
+                      transitionDelay: '0.4s'
+                    }}
+                  ></div>
+                </div>
+              </div>
+              <div className="compare-stat">
+                <div className="compare-stat-label">الناتج المحلي الصناعي</div>
+                <div className="compare-stat-value">223 مليار دولار</div>
+                <div className="compare-progress">
+                  <div 
+                    className="compare-progress-bar" 
+                    style={{ 
+                      width: isVisible ? '85%' : '0%',
+                      transitionDelay: '0.6s'
+                    }}
+                  ></div>
+                </div>
+              </div>
+              <div className="compare-stat">
+                <div className="compare-stat-label">نسبة التوطين</div>
+                <div className="compare-stat-value">65%</div>
+                <div className="compare-progress">
+                  <div 
+                    className="compare-progress-bar" 
+                    style={{ 
+                      width: isVisible ? '65%' : '0%',
+                      transitionDelay: '0.8s'
+                    }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="regional-distribution">
+          <h3>التوزيع الجغرافي للمصانع حسب المناطق</h3>
+          <div className="region-grid">
+            <div className={`region-card ${isVisible ? 'animated' : ''}`} style={{ animationDelay: '0s' }}>
+              <div className="region-icon"><i className="fas fa-city"></i></div>
+              <div className="region-name">الرياض</div>
+              <div className="region-value">4,502</div>
+              <div className="region-bar" style={{ width: '100%', backgroundColor: 'rgba(86, 95, 88, 0.8)' }}></div>
+            </div>
+            <div className={`region-card ${isVisible ? 'animated' : ''}`} style={{ animationDelay: '0.1s' }}>
+              <div className="region-icon"><i className="fas fa-industry"></i></div>
+              <div className="region-name">المنطقة الشرقية</div>
+              <div className="region-value">2,618</div>
+              <div className="region-bar" style={{ width: '58%', backgroundColor: 'rgba(200, 176, 154, 0.8)' }}></div>
+            </div>
+            <div className={`region-card ${isVisible ? 'animated' : ''}`} style={{ animationDelay: '0.2s' }}>
+              <div className="region-icon"><i className="fas fa-mosque"></i></div>
+              <div className="region-name">مكة المكرمة</div>
+              <div className="region-value">2,209</div>
+              <div className="region-bar" style={{ width: '49%', backgroundColor: 'rgba(169, 177, 169, 0.8)' }}></div>
+            </div>
+            <div className={`region-card ${isVisible ? 'animated' : ''}`} style={{ animationDelay: '0.3s' }}>
+              <div className="region-icon"><i className="fas fa-warehouse"></i></div>
+              <div className="region-name">القصيم</div>
+              <div className="region-value">546</div>
+              <div className="region-bar" style={{ width: '12%', backgroundColor: 'rgba(86, 95, 88, 0.6)' }}></div>
+            </div>
+            <div className={`region-card ${isVisible ? 'animated' : ''}`} style={{ animationDelay: '0.4s' }}>
+              <div className="region-icon"><i className="fas fa-landmark"></i></div>
+              <div className="region-name">المدينة المنورة</div>
+              <div className="region-value">526</div>
+              <div className="region-bar" style={{ width: '11.7%', backgroundColor: 'rgba(200, 176, 154, 0.6)' }}></div>
+            </div>
+            {/* تصحيح الخطأ في بطاقة منطقة عسير */}
+            <div className={`region-card ${isVisible ? 'animated' : ''}`} style={{ animationDelay: '0.5s' }}>
+              <div className="region-icon"><i className="fas fa-mountain"></i></div>
+              <div className="region-name">عسير</div>
+              <div className="region-value">401</div>
+              <div className="region-bar" style={{ width: '8.9%', backgroundColor: 'rgba(169, 177, 169, 0.6)' }}></div>
+            </div>
+          </div>
+        </div>
+    
       </div>
     </section>
   );
-}
+};
 
 export default StatisticsSection;

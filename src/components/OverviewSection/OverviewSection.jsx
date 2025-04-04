@@ -46,7 +46,7 @@ function OverviewSection() {
         </div>
 
         <div className="benefits-grid">
-          <div className="benefit-item">
+          <div className="Overview-benefit-item">
             <div className="benefit-icon">
               <i className="fas fa-chart-line"></i>
             </div>
@@ -57,7 +57,7 @@ function OverviewSection() {
             </p>
           </div>
 
-          <div className="benefit-item">
+          <div className="Overview-benefit-item">
             <div className="benefit-icon">
               <i className="fas fa-heart"></i>
             </div>
@@ -68,7 +68,7 @@ function OverviewSection() {
             </p>
           </div>
 
-          <div className="benefit-item">
+          <div className="Overview-benefit-item">
             <div className="benefit-icon">
               <i className="fas fa-shield-alt"></i>
             </div>
@@ -79,7 +79,7 @@ function OverviewSection() {
             </p>
           </div>
 
-          <div className="benefit-item">
+          <div className="Overview-benefit-item">
             <div className="benefit-icon">
               <i className="fas fa-users"></i>
             </div>
@@ -91,52 +91,89 @@ function OverviewSection() {
           </div>
         </div>
 
-        <div className="neighborhood-info">
-          <h3>نبذة عن حي المصفاة</h3>
-          <p>
-            حي المصفاة هو أحد الأحياء الواقعة في جنوب مدينة الرياض، ويتوسط أفضل أحياء جنوب الرياض والتابع 
-            إلى بلدية العزيزية. يتميز بموقعه الاستراتيجي الذي يجعله محط اهتمام العديد من السكان والمستثمرين. 
-            شهدت المنطقة تطوراً عمرانياً ملحوظاً في السنوات الأخيرة، مما أدى إلى زيادة الطلب على المجمعات السكنية فيها.
-          </p>
+        <div className="ov-district-showcase">
+          <div className="ov-district-header">
+            <h3>نبذة عن حي المصفاة</h3>
+            <div className="ov-district-badge">
+              <i className="fas fa-map-marker-alt"></i>
+              <span>المنطقة الصناعية - جنوب الرياض</span>
+            </div>
+          </div>
           
-          <div className="neighborhood-features">
-            <div className="feature">
-              <h4>الخدمات الطبية</h4>
-              <ul>
-                <li>مستشفى رابية - حي طيبة</li>
-                <li>مركز العزيزية الطبي - حي العزيزية</li>
-                <li>المجمع العالمي الطبي - حي العزيزية</li>
-                <li>مركز طب الأسرة والمجتمع - حي الإسكان</li>
-              </ul>
+          <div className="ov-district-content">
+            <div className="ov-district-description">
+              <p>
+                حي المصفاة هو أحد الأحياء الواقعة في جنوب مدينة الرياض، ويتوسط أفضل أحياء جنوب الرياض والتابع 
+                إلى بلدية العزيزية. يتميز بموقعه الاستراتيجي الذي يجعله محط اهتمام العديد من السكان والمستثمرين. 
+                شهدت المنطقة تطوراً عمرانياً ملحوظاً في السنوات الأخيرة، مما أدى إلى زيادة الطلب على المجمعات السكنية فيها.
+              </p>
             </div>
             
-            <div className="feature">
-              <h4>الأماكن الترفيهية</h4>
-              <ul>
-                <li>حديقة طيبة - تبعد 11.7 كم</li>
-                <li>حديقة إسكان - تبعد 8.7 كم</li>
-                <li>الحديقة الصناعية الجديدة - تبعد 6.7 كم</li>
-                <li>ملعب أطفال قبعة القش - يبعد 10.2 كم</li>
-              </ul>
+            <div className="ov-district-highlights">
+              <div className="ov-district-highlight">
+                <div className="ov-highlight-icon">
+                  <i className="fas fa-industry"></i>
+                </div>
+                <h4>تطور صناعي</h4>
+                <p>نمو صناعي ملحوظ وزيادة في أعداد العمال والموظفين في المنطقة.</p>
+              </div>
+              <div className="ov-district-highlight">
+                <div className="ov-highlight-icon">
+                  <i className="fas fa-map-signs"></i>
+                </div>
+                <h4>موقع استراتيجي</h4>
+                <p>قرب من الطرق الرئيسية ومرافق الخدمات الأساسية.</p>
+              </div>
+              <div className="ov-district-highlight">
+                <div className="ov-highlight-icon">
+                  <i className="fas fa-building"></i>
+                </div>
+                <h4>تطور عمراني</h4>
+                <p>تطور ملحوظ في البنية التحتية والمشاريع السكنية.</p>
+              </div>
             </div>
             
-            <div className="feature">
-              <h4>أشهر المطاعم</h4>
-              <ul>
-                <li>مطعم المنصور</li>
-                <li>مطعم Multani Restaurant</li>
-                <li>مطاعم Sultan Indian restaurant</li>
-              </ul>
+            <div className="ov-district-services">
+              <div className="ov-service-category">
+                <h4><i className="fas fa-hospital"></i> الخدمات الطبية</h4>
+                <ul className="ov-service-list">
+                  <li>مستشفى رابية - حي طيبة</li>
+                  <li>مركز العزيزية الطبي - حي العزيزية</li>
+                  <li>المجمع العالمي الطبي - حي العزيزية</li>
+                  <li>مركز طب الأسرة والمجتمع - حي الإسكان</li>
+                </ul>
+              </div>
+              
+              <div className="ov-service-category">
+                <h4><i className="fas fa-tree"></i> الأماكن الترفيهية</h4>
+                <ul className="ov-service-list">
+                  <li>حديقة طيبة - تبعد 11.7 كم</li>
+                  <li>حديقة إسكان - تبعد 8.7 كم</li>
+                  <li>الحديقة الصناعية الجديدة - تبعد 6.7 كم</li>
+                  <li>ملعب أطفال قبعة القش - يبعد 10.2 كم</li>
+                </ul>
+              </div>
+              
+              <div className="ov-service-category">
+                <h4><i className="fas fa-utensils"></i> أشهر المطاعم</h4>
+                <ul className="ov-service-list">
+                  <li>مطعم المنصور</li>
+                  <li>مطعم Multani Restaurant</li>
+                  <li>مطاعم Sultan Indian restaurant</li>
+                </ul>
+              </div>
+              
+              <div className="ov-service-category">
+                <h4><i className="fas fa-shopping-cart"></i> أماكن التسوق</h4>
+                <ul className="ov-service-list">
+                  <li>مركز جراح المصفاة للتسوق</li>
+                  <li>مخابز المصفاة</li>
+                  <li>متاجر ومستودعات فيلا السعودية</li>
+                </ul>
+              </div>
             </div>
             
-            <div className="feature">
-              <h4>أماكن التسوق</h4>
-              <ul>
-                <li>مركز جراح المصفاة للتسوق</li>
-                <li>مخابز المصفاة</li>
-                <li>متاجر ومستودعات فيلا السعودية</li>
-              </ul>
-            </div>
+           
           </div>
         </div>
       </div>

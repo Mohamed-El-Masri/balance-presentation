@@ -1,326 +1,348 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './ComparisonSection.css';
 
-function ComparisonSection() {
-  const [activeTab, setActiveTab] = useState('financial');
-  
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
+const ComparisonSection = () => {
+  const [activeTab, setActiveTab] = useState('occupancy');
+  const sectionRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const comparisonCardsRef = useRef(null);
+
+  // بيانات المقارنة
+  const comparisonData = {
+    occupancy: {
+      title: "معدل الإشغال",
+      hotelPercent: 45,
+      residentialPercent: 95,
+      hotelDescription: "معدل إشغال منخفض في المناطق الصناعية",
+      residentialDescription: "معدل إشغال مرتفع مع استقرار طويل الأمد",
+      icon: "fas fa-chart-line",
+      difference: "+50%",
+      differenceText: "زيادة في نسبة الإشغال",
+      color: "#4D7C0F"
+    },
+    operationalCosts: {
+      title: "تكاليف التشغيل",
+      hotelPercent: 85,
+      residentialPercent: 40,
+      hotelDescription: "تكاليف مرتفعة لخدمات فندقية متكاملة",
+      residentialDescription: "تكاليف منخفضة وإدارة أكثر كفاءة",
+      icon: "fas fa-hand-holding-usd",
+      difference: "-45%",
+      differenceText: "انخفاض في تكاليف التشغيل",
+      color: "#4D7C0F"
+    },
+    roi: {
+      title: "العائد على الاستثمار",
+      hotelPercent: 35,
+      residentialPercent: 75,
+      hotelDescription: "عائد متذبذب يعتمد على موسمية السياحة",
+      residentialDescription: "عائد مستقر مع عقود طويلة الأمد",
+      icon: "fas fa-percentage",
+      difference: "+40%",
+      differenceText: "زيادة في العائد الاستثماري",
+      color: "#4D7C0F"
+    },
+    environmentalImpact: {
+      title: "الأثر البيئي",
+      hotelPercent: 78,
+      residentialPercent: 35,
+      hotelDescription: "استهلاك عالٍ للموارد وإنتاج نفايات أكثر",
+      residentialDescription: "أثر بيئي أقل واستهلاك أقل للطاقة والمياه",
+      icon: "fas fa-leaf",
+      difference: "-43%",
+      differenceText: "انخفاض في الأثر البيئي",
+      color: "#4D7C0F"
+    },
+    resilience: {
+      title: "المرونة والاستدامة",
+      hotelPercent: 38,
+      residentialPercent: 88,
+      hotelDescription: "تأثّر كبير بالأزمات وتقلبات السوق",
+      residentialDescription: "استقرار أكبر ومقاومة للتقلبات الاقتصادية",
+      icon: "fas fa-shield-alt",
+      difference: "+50%",
+      differenceText: "زيادة في المرونة والاستدامة",
+      color: "#4D7C0F"
+    }
   };
-  
+
+  // مراقبة ظهور القسم في الشاشة للتحريك
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  // إضافة تأثير حركي عند تغيير التبويب
+  useEffect(() => {
+    if (comparisonCardsRef.current && isVisible) {
+      // تطبيق تأثير حركي عند تغيير التبويب
+      comparisonCardsRef.current.classList.add('tab-changing');
+      setTimeout(() => {
+        comparisonCardsRef.current.classList.remove('tab-changing');
+      }, 500);
+    }
+  }, [activeTab, isVisible]);
+
+  // التبديل بين علامات التبويب
+  const handleTabChange = (tab) => {
+    if (tab !== activeTab) {
+      setActiveTab(tab);
+    }
+  };
+
+  // البيانات النشطة
+  const activeData = comparisonData[activeTab];
+
   return (
-    <section className="comparison-section" id="comparison">
+    <section id="comparison" ref={sectionRef} className={`comparison-section ${isVisible ? 'visible' : ''}`}>
+      <div className="comparison-bg-pattern"></div>
       <div className="container">
-        <h2 className="section-title">مقارنة بين المباني الفندقية والسكنية</h2>
-        <p className="section-description">
-          تحليل شامل للفروقات بين المباني الفندقية والمجمعات السكنية في المناطق الصناعية،
-          يوضح المزايا المالية والتشغيلية والاجتماعية للتحويل من فندقي إلى سكني.
-        </p>
-        
-        <div className="tabs-container">
-          <div className="tabs-header">
-            <button 
-              className={`tab-btn ${activeTab === 'financial' ? 'active' : ''}`}
-              onClick={() => handleTabChange('financial')}
-            >
-              <i className="fas fa-chart-line"></i>
-              المزايا المالية
-            </button>
-            <button 
-              className={`tab-btn ${activeTab === 'operational' ? 'active' : ''}`}
-              onClick={() => handleTabChange('operational')}
-            >
-              <i className="fas fa-cogs"></i>
-              الجوانب التشغيلية
-            </button>
-            <button 
-              className={`tab-btn ${activeTab === 'social' ? 'active' : ''}`}
-              onClick={() => handleTabChange('social')}
-            >
-              <i className="fas fa-users"></i>
-              التأثير الاجتماعي
-            </button>
-          </div>
-          
-          <div className="tabs-content">
-            {activeTab === 'financial' && (
-              <div className="tab-content">
-                <div className="comparison-table-container">
-                  <table className="comparison-table">
-                    <thead>
-                      <tr>
-                        <th className="metric-header">معيار المقارنة</th>
-                        <th>المباني الفندقية</th>
-                        <th>المجمعات السكنية</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="metric-name">متوسط معدل الإشغال</td>
-                        <td>40-55% <span className="trend negative">↓</span></td>
-                        <td>85-95% <span className="trend positive">↑</span></td>
-                      </tr>
-                      <tr>
-                        <td className="metric-name">معدل العائد على الاستثمار</td>
-                        <td>4-6% سنوياً <span className="trend negative">↓</span></td>
-                        <td>9-12% سنوياً <span className="trend positive">↑</span></td>
-                      </tr>
-                      <tr>
-                        <td className="metric-name">تكاليف التشغيل</td>
-                        <td>35-45% من الإيرادات <span className="trend negative">↑</span></td>
-                        <td>15-25% من الإيرادات <span className="trend positive">↓</span></td>
-                      </tr>
-                      <tr>
-                        <td className="metric-name">فترة استرداد رأس المال</td>
-                        <td>12-15 سنة <span className="trend negative">↑</span></td>
-                        <td>6-8 سنوات <span className="trend positive">↓</span></td>
-                      </tr>
-                      <tr>
-                        <td className="metric-name">استقرار التدفقات النقدية</td>
-                        <td>منخفض - متقلب <span className="trend negative">↓</span></td>
-                        <td>مرتفع - مستقر <span className="trend positive">↑</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
+        {/* ترويسة القسم */}
+        <header className="section-header">
+          <h2 className="section-title">مقارنة بين المباني الفندقية والسكنية</h2>
+          <p className="section-description">
+            اكتشف الفروق الجوهرية بين المباني الفندقية والسكنية في المناطق الصناعية،
+            والتي توضح لماذا يُعد تحويل الرخصة من فندقي إلى سكني استثماراً مُجدياً.
+          </p>
+        </header>
+
+        {/* شريط التبويب المحسن */}
+        <div className="comparison-tabs-container">
+          <div className="comparison-tabs">
+            {Object.keys(comparisonData).map(tab => (
+              <button
+                key={tab}
+                className={`tab-button ${activeTab === tab ? 'active' : ''}`}
+                onClick={() => handleTabChange(tab)}
+                aria-pressed={activeTab === tab}
+              >
+                <div className="tab-icon">
+                  <i className={comparisonData[tab].icon}></i>
                 </div>
-                
-                <div className="financial-highlights">
-                  <h4>إحصائيات واقعية من السوق المحلي</h4>
-                  <div className="highlights-grid">
-                    <div className="highlight-card">
-                      <h5>معدل الإشغال الحالي للفنادق في المنطقة</h5>
-                      <div className="highlight-value">42%</div>
-                      <p>بسبب قلة الطلب على الغرف الفندقية في المناطق الصناعية</p>
-                    </div>
-                    
-                    <div className="highlight-card">
-                      <h5>معدل الإشغال للمجمعات السكنية للعمال</h5>
-                      <div className="highlight-value">87%</div>
-                      <p>نظراً للطلب المرتفع على السكن بالقرب من مواقع العمل</p>
-                    </div>
-                    
-                    <div className="highlight-card">
-                      <h5>فرق العائد الاستثماري</h5>
-                      <div className="highlight-value">+6.4%</div>
-                      <p>متوسط الفرق في العائد على الاستثمار لصالح المجمعات السكنية</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            {activeTab === 'operational' && (
-              <div className="tab-content">
-                <div className="comparison-table-container">
-                  <table className="comparison-table">
-                    <thead>
-                      <tr>
-                        <th className="metric-header">معيار المقارنة</th>
-                        <th>المباني الفندقية</th>
-                        <th>المجمعات السكنية</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="metric-name">حجم فريق العمل المطلوب</td>
-                        <td>كبير (30-40 موظف لكل 100 غرفة) <span className="trend negative">↑</span></td>
-                        <td>متوسط (10-15 موظف لكل 100 وحدة) <span className="trend positive">↓</span></td>
-                      </tr>
-                      <tr>
-                        <td className="metric-name">تكاليف الصيانة</td>
-                        <td>مرتفعة ودورية <span className="trend negative">↑</span></td>
-                        <td>متوسطة وأقل تكراراً <span className="trend positive">↓</span></td>
-                      </tr>
-                      <tr>
-                        <td className="metric-name">استهلاك الكهرباء والمياه</td>
-                        <td>مرتفع <span className="trend negative">↑</span></td>
-                        <td>معتدل <span className="trend positive">↓</span></td>
-                      </tr>
-                      <tr>
-                        <td className="metric-name">نسبة دوران المستأجرين</td>
-                        <td>مرتفعة جداً (يومية) <span className="trend negative">↑</span></td>
-                        <td>منخفضة (تعاقدات طويلة) <span className="trend positive">↓</span></td>
-                      </tr>
-                      <tr>
-                        <td className="metric-name">تكاليف التسويق</td>
-                        <td>مرتفعة ومستمرة <span className="trend negative">↑</span></td>
-                        <td>منخفضة (غالباً عقود مباشرة مع الشركات) <span className="trend positive">↓</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                
-                <div className="operational-features">
-                  <h4>تحديات تشغيلية تواجهها الفنادق في المناطق الصناعية</h4>
-                  <div className="features-grid">
-                    <div className="feature-item">
-                      <div className="feature-icon">
-                        <i className="fas fa-hand-holding-usd"></i>
-                      </div>
-                      <h5>تكاليف تشغيلية غير مبررة</h5>
-                      <p>
-                        الفنادق في المناطق الصناعية تعاني من تكاليف تشغيلية مرتفعة مقارنة 
-                        بمعدلات الإشغال المنخفضة، مما يؤثر سلباً على الجدوى الاقتصادية للمشروع.
-                      </p>
-                    </div>
-                    
-                    <div className="feature-item">
-                      <div className="feature-icon">
-                        <i className="fas fa-search-location"></i>
-                      </div>
-                      <h5>عدم تناسب الخدمات مع احتياجات العمال</h5>
-                      <p>
-                        تقدم الفنادق خدمات غير ضرورية للعمال (مثل خدمة الغرف اليومية)، بينما تفتقر 
-                        للخدمات الأساسية التي يحتاجونها مثل المطابخ المشتركة والمغاسل.
-                      </p>
-                    </div>
-                    
-                    <div className="feature-item">
-                      <div className="feature-icon">
-                        <i className="fas fa-calendar-alt"></i>
-                      </div>
-                      <h5>تحديات الحجوزات والإدارة</h5>
-                      <p>
-                        إدارة الفنادق تتطلب نظاماً معقداً للحجوزات والخدمة اليومية، بينما 
-                        المجمعات السكنية تعتمد على عقود طويلة الأجل أسهل في الإدارة.
-                      </p>
-                    </div>
-                    
-                    <div className="feature-item">
-                      <div className="feature-icon">
-                        <i className="fas fa-bed"></i>
-                      </div>
-                      <h5>عدم مناسبة التصميم والتجهيزات</h5>
-                      <p>
-                        التصميم الداخلي للفنادق لا يناسب الإقامة طويلة الأجل للعمال، بينما المجمعات 
-                        السكنية مصممة خصيصاً لتلبية احتياجاتهم اليومية.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            {activeTab === 'social' && (
-              <div className="tab-content">
-                <div className="social-impact-grid">
-                  <div className="impact-card">
-                    <div className="impact-header hotel">
-                      <i className="fas fa-hotel"></i>
-                      <h4>التأثير الاجتماعي للمباني الفندقية</h4>
-                    </div>
-                    <ul className="impact-list negative">
-                      <li>
-                        <i className="fas fa-times-circle"></i>
-                        عدم توفير بيئة مستقرة للعمال يؤثر سلباً على انتماءهم للمنطقة
-                      </li>
-                      <li>
-                        <i className="fas fa-times-circle"></i>
-                        زيادة التنقلات اليومية بين مناطق السكن والعمل يسبب ازدحاماً مرورياً
-                      </li>
-                      <li>
-                        <i className="fas fa-times-circle"></i>
-                        ارتفاع تكاليف السكن يؤثر على المستوى المعيشي للعمال
-                      </li>
-                      <li>
-                        <i className="fas fa-times-circle"></i>
-                        عدم وجود مرافق اجتماعية وترفيهية مناسبة للعمال
-                      </li>
-                      <li>
-                        <i className="fas fa-times-circle"></i>
-                        افتقار الفنادق للخدمات المتخصصة التي تلبي احتياجات العمال
-                      </li>
-                    </ul>
-                  </div>
-                  
-                  <div className="impact-card">
-                    <div className="impact-header residential">
-                      <i className="fas fa-home"></i>
-                      <h4>التأثير الاجتماعي للمجمعات السكنية</h4>
-                    </div>
-                    <ul className="impact-list positive">
-                      <li>
-                        <i className="fas fa-check-circle"></i>
-                        توفير استقرار سكني للعمال يعزز انتماءهم للمنطقة والشركة
-                      </li>
-                      <li>
-                        <i className="fas fa-check-circle"></i>
-                        تقليل التنقلات والازدحام المروري في المنطقة
-                      </li>
-                      <li>
-                        <i className="fas fa-check-circle"></i>
-                        توفير سكن بتكلفة معقولة يحسن المستوى المعيشي للعمال
-                      </li>
-                      <li>
-                        <i className="fas fa-check-circle"></i>
-                        إنشاء مرافق اجتماعية ورياضية تناسب احتياجات السكان
-                      </li>
-                      <li>
-                        <i className="fas fa-check-circle"></i>
-                        تطوير خدمات متخصصة (مطاعم، مغاسل، صالونات) تلبي احتياجاتهم
-                      </li>
-                      <li>
-                        <i className="fas fa-check-circle"></i>
-                        تعزيز التفاعل الاجتماعي الإيجابي بين العمال في بيئة مناسبة
-                      </li>
-                      <li>
-                        <i className="fas fa-check-circle"></i>
-                        زيادة الإنتاجية والرضا الوظيفي نتيجة توفر السكن الملائم
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                
-                <div className="testimonial-section">
-                  <h4>شهادات من الواقع</h4>
-                  <div className="testimonials">
-                    <div className="testimonial">
-                      <div className="quote-mark">"</div>
-                      <p className="quote-text">
-                        التحول من الاقامة في فندق إلى سكني في مجمع متكامل بالقرب من مقر العمل 
-                        حسن جودة حياتي وقلل من ساعات التنقل والإرهاق اليومي، مما انعكس إيجاباً على أدائي
-                      </p>
-                      <div className="testimonial-author">
-                        <div className="author-avatar">AS</div>
-                        <div className="author-info">
-                          <h5>أحمد سعيد</h5>
-                          <span>فني إنتاج - مصنع الرياض للألمنيوم</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="testimonial">
-                      <div className="quote-mark">"</div>
-                      <p className="quote-text">
-                        لاحظنا تحسناً ملحوظاً في إنتاجية العمال وانخفاضاً في معدل الغياب بنسبة 32% 
-                        بعد نقلهم للسكن في مجمع سكني قريب من المصنع، مع توفير 18% من تكاليف النقل
-                      </p>
-                      <div className="testimonial-author">
-                        <div className="author-avatar">MK</div>
-                        <div className="author-info">
-                          <h5>محمد الخالدي</h5>
-                          <span>مدير الموارد البشرية - شركة الصناعات الكيميائية</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+                <span className="tab-text">{comparisonData[tab].title}</span>
+              </button>
+            ))}
           </div>
         </div>
-        
-        <div className="conversion-request">
-          <h3>الخلاصة</h3>
-          <p>
-            تحويل المباني الفندقية إلى مجمعات سكنية يوفر فوائد مالية وتشغيلية واجتماعية 
-            كبيرة، مما يعزز من استدامة المشروع ويحقق عوائد أعلى.           
-          </p>
-         
+
+        <div className="comparison-content">
+          {/* عنوان المقارنة الحالية */}
+          <h3 className="comparison-title">
+            <span className="icon-wrapper">
+              <i className={activeData.icon}></i>
+            </span>
+            <span className="title-text">{activeData.title}</span>
+          </h3>
+
+          {/* بطاقات المقارنة - أضفنا مرجع للتحريك */}
+          <div className="comparison-cards-wrapper">
+            <div className="comparison-cards" ref={comparisonCardsRef}>
+              {/* بطاقة المباني الفندقية */}
+              <div className="comparison-card hotel-card">
+                <div className="card-header">
+                  <h4>المباني الفندقية</h4>
+                  <div className="card-header-icon">
+                    <i className="fas fa-hotel"></i>
+                  </div>
+                </div>
+                <div className="card-body">
+                  <div className="percentage-visual">
+                    <div className="percentage-label">
+                      <span className="label-text">النسبة</span>
+                      <span className="percentage-value">{activeData.hotelPercent}%</span>
+                    </div>
+                    <div className="percentage-bar">
+                      <div 
+                        className="percentage-fill" 
+                        style={{ width: `${activeData.hotelPercent}%`, backgroundColor: '#E97A67' }}
+                      ></div>
+                    </div>
+                  </div>
+                  <p className="description">{activeData.hotelDescription}</p>
+                  <div className="feature-list">
+                    <div className="feature-item negative">
+                      <i className="fas fa-times-circle"></i>
+                      <span>إشغال متقلب وغير مستقر</span>
+                    </div>
+                    <div className="feature-item negative">
+                      <i className="fas fa-times-circle"></i>
+                      <span>تكاليف تشغيل وصيانة عالية</span>
+                    </div>
+                    <div className="feature-item negative">
+                      <i className="fas fa-times-circle"></i>
+                      <span>عدم ملاءمة للمناطق الصناعية</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* بطاقة النتائج والفروق */}
+              <div className="comparison-card result-card">
+                <div className="result-icon">
+                  <i className={activeData.icon}></i>
+                </div>
+                <div className="result-difference">
+                  <span className="difference-value" style={{ color: activeData.color }}>{activeData.difference}</span>
+                  <span className="difference-text">{activeData.differenceText}</span>
+                </div>
+                <div className="divider"></div>
+                <div className="result-conclusion">
+                  <p>التحويل من فندقي إلى سكني يحقق أداءً أفضل بشكل ملحوظ في مناطق القطاع الصناعي</p>
+                </div>
+
+               
+              </div>
+
+              {/* بطاقة المباني السكنية */}
+              <div className="comparison-card residential-card">
+                <div className="card-header">
+                  <h4>المباني السكنية</h4>
+                  <div className="card-header-icon">
+                    <i className="fas fa-building"></i>
+                  </div>
+                </div>
+                <div className="card-body">
+                  <div className="percentage-visual">
+                    <div className="percentage-label">
+                      <span className="label-text">النسبة</span>
+                      <span className="percentage-value">{activeData.residentialPercent}%</span>
+                    </div>
+                    <div className="percentage-bar">
+                      <div 
+                        className="percentage-fill" 
+                        style={{ width: `${activeData.residentialPercent}%`, backgroundColor: '#4D7C0F' }}
+                      ></div>
+                    </div>
+                  </div>
+                  <p className="description">{activeData.residentialDescription}</p>
+                  <div className="feature-list">
+                    <div className="feature-item positive">
+                      <i className="fas fa-check-circle"></i>
+                      <span>طلب مستمر من العاملين في المنطقة</span>
+                    </div>
+                    <div className="feature-item positive">
+                      <i className="fas fa-check-circle"></i>
+                      <span>تكاليف تشغيل أقل وإدارة أبسط</span>
+                    </div>
+                    <div className="feature-item positive">
+                      <i className="fas fa-check-circle"></i>
+                      <span>عقود طويلة الأجل مع الشركات</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* قسم للإحصائيات المتحركة - تحسين عرضها */}
+          <div className="statistics-section">
+            <h4 className="statistics-title">أرقام وإحصائيات</h4>
+            <div className="comparison-stats">
+              <div className="stat-item">
+                <div className="stat-icon">
+                  <i className="fas fa-arrow-circle-up"></i>
+                </div>
+                <div className="stat-value counter">95%</div>
+                <div className="stat-label">معدل إشغال المجمعات السكنية</div>
+              </div>
+              <div className="stat-item">
+                <div className="stat-icon">
+                  <i className="fas fa-arrow-circle-down"></i>
+                </div>
+                <div className="stat-value counter">45%</div>
+                <div className="stat-label">انخفاض في تكاليف التشغيل</div>
+              </div>
+              <div className="stat-item">
+                <div className="stat-icon">
+                  <i className="fas fa-chart-pie"></i>
+                </div>
+                <div className="stat-value counter">10.5%</div>
+                <div className="stat-label">متوسط العائد السنوي</div>
+              </div>
+            </div>
+          </div>
+
+          {/* شرح مفصل للحالات الأنسب للتحويل - تحسين العرض والتفاعل */}
+          <div className="conversion-cases">
+            <h4 className="cases-title">الحالات المثالية لتحويل الرخصة</h4>
+            <div className="cases-grid">
+              <div className="case-item">
+                <div className="case-icon">
+                  <i className="fas fa-industry"></i>
+                </div>
+                <div className="Comparison-case-content">
+                  <h5>القرب من المناطق الصناعية</h5>
+                  <p>المباني القريبة من المصانع والشركات الكبرى تحقق أعلى معدلات الإشغال عند تحويلها إلى سكني.</p>
+                </div>
+                <span className="case-hover-icon"><i className="fas fa-plus"></i></span>
+              </div>
+              <div className="case-item">
+                <div className="case-icon">
+                  <i className="fas fa-hotel"></i>
+                </div>
+                <div className="Comparison-case-content">
+                  <h5>فنادق ذات معدل إشغال منخفض</h5>
+                  <p>الفنادق التي تعاني من انخفاض معدلات الإشغال في المناطق الصناعية ستستفيد بشكل كبير من التحويل.</p>
+                </div>
+                <span className="case-hover-icon"><i className="fas fa-plus"></i></span>
+              </div>
+              <div className="case-item">
+                <div className="case-icon">
+                  <i className="fas fa-building"></i>
+                </div>
+                <div className="Comparison-case-content">
+                  <h5>المباني متعددة الطوابق</h5>
+                  <p>المباني التي تتضمن عدة طوابق يمكن تحويلها إلى وحدات سكنية متكاملة للعمال والموظفين.</p>
+                </div>
+                <span className="case-hover-icon"><i className="fas fa-plus"></i></span>
+              </div>
+              <div className="case-item">
+                <div className="case-icon">
+                  <i className="fas fa-map-marked-alt"></i>
+                </div>
+                <div className="Comparison-case-content">
+                  <h5>المواقع الاستراتيجية</h5>
+                  <p>المباني الواقعة على الطرق الرئيسية وقرب الخدمات العامة تكون مثالية للتحويل إلى مجمعات سكنية.</p>
+                </div>
+                <span className="case-hover-icon"><i className="fas fa-plus"></i></span>
+              </div>
+            </div>
+          </div>
+
+          {/* ملخص الخلاصة مع نص توجيهي */}
+          <div className="comparison-summary">
+            <div className="summary-icon">
+              <i className="fas fa-lightbulb"></i>
+            </div>
+            <div className="summary-content">
+              <h4>الخلاصة</h4>
+              <p>
+                تُظهر المقارنة تفوقًا واضحًا للمباني السكنية على الفندقية في المناطق الصناعية من حيث معدلات الإشغال، والعائد على الاستثمار، وانخفاض تكاليف التشغيل، والمرونة والاستدامة البيئية.
+                يعتبر تحويل الرخص من فندقي إلى سكني خيارًا استراتيجيًا سيحقق عوائد مالية أعلى ومستدامة.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default ComparisonSection;

@@ -4,21 +4,31 @@ import Header from './components/Header/Header';
 import Hero from './components/Hero/Hero';
 import OverviewSection from './components/OverviewSection/OverviewSection';
 import StatisticsSection from './components/StatisticsSection/StatisticsSection';
-import PropertiesSection from './components/PropertiesSection/PropertiesSection';
+import Properties from './components/Properties/Properties';
 import Footer from './components/Footer/Footer';
-import Spinner from './components/UI/Spinner/Spinner'; // مكون جديد للتحميل
-import ErrorBoundary from './components/UI/ErrorBoundary/ErrorBoundary'; // مكون جديد لمعالجة الأخطاء
+import Spinner from './components/UI/Spinner/Spinner';
+import ErrorBoundary from './components/UI/ErrorBoundary/ErrorBoundary';
 import properties from './assets/properties.json';
 import MapSection from './components/MapSection/MapSection';
 import ComparisonSection from './components/ComparisonSection/ComparisonSection';
 import Vision2030Section from './components/Vision2030Section/Vision2030Section';
 import CaseStudiesSection from './components/CaseStudiesSection/CaseStudiesSection';
 
+
 function App() {
   const [propertiesData, setPropertiesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light'); // إضافة نظام المواضيع
+  
+  // ترتيب تعريف متغير الثيم قبل استخدامه في تبديل الثيم
+  const [theme, setTheme] = useState(() => {
+    // استخدام localStorage بطريقة أكثر أمانًا مع التحقق من الوضع المفضل للنظام
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) return savedTheme;
+    
+    // التحقق من تفضيلات النظام كنقطة بداية
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
 
   // تحميل البيانات
   const loadData = useCallback(async () => {
@@ -40,22 +50,20 @@ function App() {
     }
   }, []);
 
-  // تحميل البيانات عند بدء التطبيق
+  // تحميل البيانات عند بدء التطبيق وتعيين الثيم
   useEffect(() => {
     loadData();
     
-    // تحميل الموضوع المحفوظ مسبقًا
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
-  }, [loadData]);
+    // تطبيق الثيم على مستوى المستند
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [loadData, theme]);
 
   // تبديل الموضوع بين الفاتح والداكن
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
   };
 
   // حساب الإحصائيات
@@ -72,7 +80,7 @@ function App() {
     const averageArea = totalArea / totalProperties;
     
     // تقدير عدد المستفيدين
-    const estimatedBeneficiaries = Math.ceil(totalArea / 10); // افتراض تقريبي
+    const estimatedBeneficiaries = Math.ceil(totalArea / 10);
     
     return {
       totalProperties,
@@ -109,17 +117,18 @@ function App() {
   const stats = calculateStats();
 
   return (
-    <div className={`app theme-${theme}`}>
+    <div className="app">
       <ErrorBoundary>
         <Header toggleTheme={toggleTheme} currentTheme={theme} />
         <div className="main-content">
           <Hero />
           <OverviewSection stats={stats} />
-          <MapSection  />
+          <MapSection />
           <StatisticsSection />
-          <PropertiesSection properties={propertiesData} />
+          <Properties properties={propertiesData} />
           <ComparisonSection />
           <Vision2030Section />
+          
           <CaseStudiesSection />
         </div>
         <Footer />

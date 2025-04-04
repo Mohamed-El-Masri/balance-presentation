@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './Properties.css';
 
 const Properties = ({ properties }) => {
@@ -9,8 +9,10 @@ const Properties = ({ properties }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPageChanging, setIsPageChanging] = useState(false);
   const propertiesPerPage = 3;
+  const sectionRef = useRef(null);
+  const propertiesGridRef = useRef(null);
   
-  // Simulate loading
+  // محاكاة التحميل
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -19,27 +21,56 @@ const Properties = ({ properties }) => {
     return () => clearTimeout(timer);
   }, []);
   
-  // Reset image loaded state when changing selected property
+  // إعادة ضبط حالة تحميل الصورة عند تغيير العقار المحدد
   useEffect(() => {
     setImageLoaded(false);
   }, [selectedProperty]);
   
-  // Calculate pagination
+  // تأثير ظهور متدرج عند ظهور القسم في مجال الرؤية
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          sectionRef.current.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      },
+      {
+        threshold: 0.1
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+  
+  // حساب الصفحات
   const totalPages = Math.ceil(properties.length / propertiesPerPage);
   const indexOfLastProperty = currentPage * propertiesPerPage;
   const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
   const currentProperties = properties.slice(indexOfFirstProperty, indexOfLastProperty);
   
-  // Page navigation with transition effect
+  // التنقل بين الصفحات مع تأثير انتقال بدون عمل scroll
   const paginate = (pageNumber) => {
     if (pageNumber === currentPage) return;
     setIsPageChanging(true);
     
-    // Short delay to show loading animation
+    // التأكد من أن المستخدم يبقى في نفس الموقع على الصفحة
+    const currentScrollPosition = window.scrollY;
+    
     setTimeout(() => {
       setCurrentPage(pageNumber);
       
-      // Allow time for rendering before removing loading state
+      // إعادة التمرير إلى نفس الموقع بعد تغيير الصفحة
+      window.scrollTo(0, currentScrollPosition);
+      
       setTimeout(() => {
         setIsPageChanging(false);
       }, 500);
@@ -58,6 +89,32 @@ const Properties = ({ properties }) => {
     }
   };
   
+  // حساب الإحصائيات
+  const calculateStats = () => {
+    const totalPlots = properties.length || 15; // إذا لم تتوفر بيانات، استخدم 15
+    
+    // حساب المساحة الإجمالية
+    const totalArea = properties.length ? properties.reduce((sum, property) => {
+      const area = parseFloat(property.property.area.replace(/,/g, ''));
+      return sum + (isNaN(area) ? 0 : area);
+    }, 0) : 37750; // إذا لم تتوفر بيانات، استخدم 37,750
+    
+    // تقدير عدد العمال - طاقة استيعابية (10 عمال لكل 100 متر مربع)
+    const estimatedWorkers = Math.round(totalArea / 100 * 10);
+    
+    // تقدير عدد المستفيدين (العمال + العائلات والأفراد المرتبطين)
+    const estimatedBeneficiaries = Math.round(estimatedWorkers * 3);
+    
+    return {
+      totalPlots,
+      totalArea: totalArea.toLocaleString('ar-SA'),
+      estimatedWorkers: estimatedWorkers.toLocaleString('ar-SA'),
+      estimatedBeneficiaries: estimatedBeneficiaries.toLocaleString('ar-SA')
+    };
+  };
+
+  const stats = calculateStats();
+  
   // عرض تفاصيل العقار
   const showPropertyDetails = (property) => {
     setSelectedProperty(property);
@@ -73,9 +130,7 @@ const Properties = ({ properties }) => {
   
   // الحصول على مسار صورة الوثيقة
   const getDocumentImagePath = (propertyId) => {
-
     const imgUrls = [
-
       "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509781/deed-1-thumb_dn7rmv.jpg",
       "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509783/deed-2-thumb_zhgyqk.jpg",
       "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509781/deed-3-thumb_ztlbht.jpg",
@@ -91,12 +146,12 @@ const Properties = ({ properties }) => {
       "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509788/deed-13-thumb_cys6ty.jpg",
       "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509789/deed-14-thumb_n5mbwm.jpg",
       "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743509789/deed-15-thumb_ausi3o.jpg"
-      ]
+    ];
+    
     // استخراج الرقم من معرف العقار (على افتراض أن المعرف هو "deed-X")
     const idNumber = propertyId.replace(/\D/g, '');
-
+    
     return `${imgUrls[idNumber % imgUrls.length]}`;
-
   };
   
   // تبديل حالة العرض بملء الشاشة
@@ -105,7 +160,7 @@ const Properties = ({ properties }) => {
     setIsFullscreen(!isFullscreen);
   };
 
-  // Function to handle keyboard accessibility for property cards
+  // دالة للتعامل مع إمكانية الوصول باستخدام لوحة المفاتيح لبطاقات العقارات
   const handleCardKeyPress = (e, property) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -113,26 +168,142 @@ const Properties = ({ properties }) => {
     }
   };
 
-  // Function to get animated background colors for properties
+  // دالة للحصول على تدرجات ألوان متحركة للعقارات
   const getAnimatedGradient = (index) => {
-    const colors = [
-      ['#557153', '#7D8F69'],
-      ['#606C5D', '#7D8F69'],
-      ['#4F6F52', '#739072']
+    const gradients = [
+      'linear-gradient(120deg, rgba(86, 95, 88, 0.95), rgba(86, 95, 88, 0.8))',
+      'linear-gradient(120deg, rgba(200, 176, 154, 0.95), rgba(200, 176, 154, 0.8))',
+      'linear-gradient(120deg, rgba(86, 95, 88, 0.9), rgba(98, 110, 100, 0.8))'
     ];
-    const colorPair = colors[index % colors.length];
-    return `linear-gradient(120deg, ${colorPair[0]}, ${colorPair[1]})`;
+    return gradients[index % gradients.length];
   };
 
+  // مميزات الموقع
+  const siteFeatures = [
+    { id: 1, icon: "fas fa-industry", text: "بالقرب من المنطقة الصناعية الثانية بالرياض" },
+    { id: 2, icon: "fas fa-road", text: "الأراضي واقعة على الدائري الثاني" },
+    { id: 3, icon: "fas fa-hospital", text: "قرب الخدمات الأساسية من مستشفيات ومراكز تسوق" },
+    { id: 4, icon: "fas fa-chart-line", text: "منطقة نمو اقتصادي وتطوير مستمر" },
+    { id: 5, icon: "fas fa-home", text: "ارتفاع الطلب على السكن في المنطقة" },
+    { id: 6, icon: "fas fa-money-bill-wave", text: "بيئة استثمارية واعدة ومستقرة" }
+  ];
+
+  // فوائد تحويل الرخصة
+  const benefitCards = [
+    {
+      id: 1, 
+      title: "رفع العائد الاستثماري", 
+      icon: "fas fa-chart-pie",
+      description: "المجمعات السكنية أكثر استدامة وربحية من الفنادق في المناطق الصناعية، مع معدل إشغال أعلى بكثير وتكاليف تشغيل أقل."
+    },
+    {
+      id: 2, 
+      title: "تحسين بيئة العمل", 
+      icon: "fas fa-briefcase",
+      description: "توفير سكن قريب للموظفين والعمال يؤدي إلى تحسين الاستقرار الوظيفي وزيادة الإنتاجية والرضا الوظيفي."
+    },
+    {
+      id: 3, 
+      title: "تقليل الازدحام المروري", 
+      icon: "fas fa-car",
+      description: "انتقال العمال للعيش داخل المجمع بالقرب من مقر عملهم يقلل من الازدحام المروري والتنقلات اليومية الطويلة."
+    },
+    {
+      id: 4, 
+      title: "تنشيط التجارة المحلية", 
+      icon: "fas fa-store",
+      description: "زيادة السكان المقيمين تحفز النشاط التجاري للمحلات التجارية في الحي وتساهم في تطوير المنطقة اقتصادياً."
+    },
+    {
+      id: 5, 
+      title: "الاستدامة البيئية", 
+      icon: "fas fa-leaf",
+      description: "تقليل التنقلات اليومية يساهم في تقليل الانبعاثات الكربونية والحفاظ على البيئة، متوافقاً مع أهداف رؤية 2030."
+    },
+    {
+      id: 6, 
+      title: "تحقيق مبدأ المدن الذكية", 
+      icon: "fas fa-city",
+      description: "إنشاء بيئة سكنية متكاملة بجوار المصانع يدعم مفهوم المدن الذكية والمستدامة ويحقق تكامل المرافق والخدمات."
+    }
+  ];
+
   return (
-    <section id="properties" className="section properties-section">
+    <section id="properties" ref={sectionRef} className="section properties-section">
       <div className="container">
-        <h2 className="section-title">قطع الأراضي</h2>
-        <p className="section-subtitle">استعرض قطع الأراضي المتاحة للتحويل من فندقي إلى سكني</p>
+        {/* عنوان القسم والوصف */}
+        <h2 className="section-title">قطع الأراضي المتاحة</h2>
+        <p className="section-description">
+          تتوفر 15 قطعة أرض في حي المصفاة بجنوب الرياض وبجوار المنطقة الصناعية الثانية، بمساحة إجمالية تقارب 37,750 متر مربع، مثالية لتطوير مجمعات سكنية عالية الجودة للعمال والموظفين.
+        </p>
         
-        <div className={`properties-grid ${isPageChanging ? 'page-transitioning' : ''}`}>
+        {/* بطاقات الإحصائيات */}
+        <div className="property-stats-row">
+          <div className="property-stat-card">
+            <div className="stat-card-icon">
+              <i className="fas fa-map-marked-alt"></i>
+            </div>
+            <div className="stat-card-content">
+              <h4>عدد قطع الأراضي</h4>
+              <div className="stat-value">{stats.totalPlots}</div>
+              <div className="stat-description">قطعة متاحة للتحويل</div>
+            </div>
+          </div>
+          
+          <div className="property-stat-card">
+            <div className="stat-card-icon">
+              <i className="fas fa-ruler-combined"></i>
+            </div>
+            <div className="stat-card-content">
+              <h4>المساحة الإجمالية</h4>
+              <div className="stat-value">{stats.totalArea}</div>
+              <div className="stat-description">متر مربع</div>
+            </div>
+          </div>
+          
+          <div className="property-stat-card" title="عدد العمال والموظفين الذين يمكن استيعابهم في المجمعات السكنية">
+            <div className="stat-card-icon">
+              <i className="fas fa-hard-hat"></i>
+            </div>
+            <div className="stat-card-content">
+              <h4>طاقة استيعابية</h4>
+              <div className="stat-value">{stats.estimatedWorkers}</div>
+              <div className="stat-description">عامل وموظف</div>
+            </div>
+          </div>
+          
+          <div className="property-stat-card" title="إجمالي المستفيدين بما يشمل العمال وعائلاتهم والخدمات المرتبطة">
+            <div className="stat-card-icon">
+              <i className="fas fa-users"></i>
+            </div>
+            <div className="stat-card-content">
+              <h4>المستفيدون المتوقعون</h4>
+              <div className="stat-value">{stats.estimatedBeneficiaries}</div>
+              <div className="stat-description">فرد مستفيد</div>
+            </div>
+          </div>
+        </div>
+        
+        {/* مميزات الموقع */}
+        <div className="site-features-section">
+          <h3 className="features-title">مميزات الموقع</h3>
+          <div className="features-container">
+            {siteFeatures.map(feature => (
+              <div className="feature-item" key={feature.id}>
+                <div className="feature-icon">
+                  <i className={feature.icon}></i>
+                </div>
+                <p className="feature-text">{feature.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* قطع الأراضي المعروضة */}
+        <h3 className="section-subtitle">القطع المتاحة للتحويل</h3>
+        <div className={`properties-grid ${isPageChanging ? 'page-transitioning' : ''}`} ref={propertiesGridRef}>
           {loading || isPageChanging ? (
-            // Loading state
+            // حالة التحميل - الهياكل العظمية
             Array(3).fill(0).map((_, index) => (
               <div key={`skeleton-${index}`} className="property-card skeleton-card">
                 <div className="property-card-header skeleton"></div>
@@ -148,6 +319,7 @@ const Properties = ({ properties }) => {
               </div>
             ))
           ) : currentProperties.length > 0 ? (
+            // بطاقات العقارات
             currentProperties.map((property, index) => (
               <div 
                 key={property.id} 
@@ -158,50 +330,36 @@ const Properties = ({ properties }) => {
                 role="button"
                 aria-label={`عرض تفاصيل قطعة الأرض رقم ${property.property.plotNumber}`}
                 style={{
-                  '--card-animation-delay': `${index * 0.1}s`,
+                  '--card-animation-delay': `${index * 0.15}s`,
                   '--card-header-bg': getAnimatedGradient(index)
                 }}
               >
                 <div className="card-decoration"></div>
-                <div className="property-card-header" style={{ background: 'var(--card-header-bg)' }}>
-                  <h3>قطعة رقم: {property.property.plotNumber}</h3>
+                <div className="property-card-header">
+                  <div className="header-content">
+                    <h3>قطعة رقم: {property.property.plotNumber}</h3>
+                    <div className="property-meta">
+                      <span className="property-area">{property.property.area} م²</span>
+                      <span className="property-divider">|</span>
+                      <span className="property-neighborhood">{property.property.neighborhood}</span>
+                    </div>
+                  </div>
                   <span className="id-badge">{property.id}</span>
                 </div>
                 
-                <div className="property-card-content">
-                  <div className="property-info-row">
-                    <div className="info-item">
-                      <span className="info-icon">📍</span>
-                      <div className="info-text">
-                        <span className="info-label">الحي</span>
-                        <span className="info-value">{property.property.neighborhood}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="property-info-row">
-                    <div className="info-item">
-                      <span className="info-icon">🏙️</span>
-                      <div className="info-text">
-                        <span className="info-label">المدينة</span>
-                        <span className="info-value">{property.property.city}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="property-info-row">
-                    <div className="info-item">
-                      <span className="info-icon">📏</span>
-                      <div className="info-text">
-                        <span className="info-label">المساحة</span>
-                        <span className="info-value">{property.property.area} م²</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
                 <div className="property-card-footer">
-                  <button className="btn btn-primary">عرض التفاصيل</button>
+                  <div className="property-quick-info">
+                    <span className="info-pill">
+                      <i className="fas fa-map-marker-alt"></i> {property.property.city}
+                    </span>
+                    <span className="info-pill">
+                      <i className="fas fa-check-circle"></i> متاح للتحويل
+                    </span>
+                  </div>
+                  <button className="btn btn-primary">
+                    <i className="fas fa-file-alt"></i>
+                    <span>عرض الوثيقة</span>
+                  </button>
                 </div>
                 
                 <div className="card-shine"></div>
@@ -214,13 +372,14 @@ const Properties = ({ properties }) => {
           )}
         </div>
         
-        {/* Pagination Controls */}
-        {!loading && (
+        {/* أزرار التنقل بين الصفحات */}
+        {!loading && properties.length > propertiesPerPage && (
           <div className="pagination" data-current-page={currentPage} data-total-pages={totalPages}>
             <button 
               className="pagination-button" 
               onClick={prevPage} 
               disabled={currentPage === 1 || isPageChanging}
+              aria-label="الصفحة السابقة"
             >
               {isPageChanging ? (
                 <span className="pagination-loading"></span>
@@ -236,6 +395,8 @@ const Properties = ({ properties }) => {
                   className={`pagination-number ${currentPage === index + 1 ? 'active' : ''}`}
                   onClick={() => paginate(index + 1)}
                   disabled={isPageChanging}
+                  aria-label={`الصفحة ${index + 1}`}
+                  aria-current={currentPage === index + 1 ? "page" : null}
                 >
                   {index + 1}
                 </button>
@@ -246,6 +407,7 @@ const Properties = ({ properties }) => {
               className="pagination-button" 
               onClick={nextPage} 
               disabled={currentPage === totalPages || isPageChanging}
+              aria-label="الصفحة التالية"
             >
               {isPageChanging ? (
                 <span className="pagination-loading"></span>
@@ -255,14 +417,36 @@ const Properties = ({ properties }) => {
             </button>
           </div>
         )}
+        
+        {/* فوائد تحويل الرخصة */}
+        <div className="license-benefits-section">
+          <h3 className="benefits-title">فوائد تحويل الرخصة من فندقي إلى سكني</h3>
+          <div className="benefits-grid">
+            {benefitCards.map(benefit => (
+              <div className="benefit-card" key={benefit.id}>
+                <div className="benefit-header">
+                  <div className="benefit-icon">
+                    <i className={benefit.icon}></i>
+                  </div>
+                  <h4 className="benefit-title">{benefit.title}</h4>
+                </div>
+                <p className="benefit-description">{benefit.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
       
-      {/* نافذة منبثقة لعرض صورة الوثيقة */}
+      {/* نافذة منبثقة لعرض صورة الوثيقة - تصحيح الأخطاء في هيكل الترميز */}
       {selectedProperty && (
         <div className={`property-modal ${isFullscreen ? 'fullscreen' : ''}`}>
           <div className="modal-overlay" onClick={closePropertyDetails}></div>
           <div className="modal-content document-modal-content">
-            <button className="close-button" onClick={closePropertyDetails}>×</button>
+            <button 
+              className="close-button" 
+              onClick={closePropertyDetails}
+              aria-label="إغلاق"
+            >×</button>
             
             <h2 className="modal-title">وثيقة قطعة الأرض رقم: {selectedProperty.property.plotNumber}</h2>
             
@@ -288,8 +472,14 @@ const Properties = ({ properties }) => {
                     }}
                   />
                   
-                  {/* Center fullscreen control */}
-                  <div className="document-fullscreen-control" onClick={toggleFullscreen}>
+                  {/* تصحيح أخطاء أزرار التحكم في العرض بملء الشاشة */}
+                  <div 
+                    className="document-fullscreen-control" 
+                    onClick={toggleFullscreen}
+                    role="button"
+                    aria-label={isFullscreen ? "الخروج من وضع ملء الشاشة" : "عرض بملء الشاشة"}
+                    tabIndex={0}
+                  >
                     <div className="fullscreen-icon">
                       {isFullscreen ? (
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -310,6 +500,7 @@ const Properties = ({ properties }) => {
                       className="document-control-button"
                       title="تحميل الوثيقة"
                       onClick={(e) => e.stopPropagation()}
+                      aria-label="تحميل الوثيقة"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                         <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />

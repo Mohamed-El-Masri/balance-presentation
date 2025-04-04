@@ -280,7 +280,7 @@ function MapSection() {
                 className: "custom-marker-label",
               },
               icon: {
-                url: "https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi2_hdpi.png", // More modern Google-style icon
+                url: "/src/assets/mapmarker.png", // More modern Google-style icon
                 scaledSize: new google.maps.Size(24, 36), // Proper sizing for the icon
                 labelOrigin: new google.maps.Point(12, 42), // Better label positioning
               },
