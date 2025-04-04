@@ -211,7 +211,7 @@ const StatisticsSection = () => {
               {isVisible && <CountUp end={400} duration={2.5} />}
               <span className="stat-label">مليار دولار</span>
             </div>
-            <p className="stat-description">حجم الإستثمارات في القطاع الصناعي</p>
+            <p className="stat-description">حجم الإستثمارات في القطاع الصناعي خلال 2022 - 2023</p>
           </div>
 
           <div className="stat-box">
