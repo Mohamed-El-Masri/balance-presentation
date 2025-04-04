@@ -13,7 +13,7 @@ const Vision2030Section = () => {
         
         <div className="vision-logo-container">
           <img 
-            src="/src/assets/2030Logo.png" 
+            src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/logos/2030Logo.png" 
             alt="شعار رؤية المملكة 2030" 
             className="vision-logo"
           />

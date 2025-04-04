@@ -13,7 +13,7 @@ const Footer = () => {
             {/* معلومات الشركة */}
             <div className="footer-column company-info">
               <div className="footer-logo">
-                <img src="/src/assets/logos/balance-logo.png" alt="شركة بالنس للتطوير العقاري" />
+                <img src="https://res.cloudinary.com/dk2cdwufj/image/upload/v1743511083/Balance_-_logo_l3yjqs.png" alt="شركة بالنس للتطوير العقاري" />
               </div>
               <p className="footer-slogan">
                 نوازن بين الجودة والاستدامة لتطوير مجمعات سكنية متميزة

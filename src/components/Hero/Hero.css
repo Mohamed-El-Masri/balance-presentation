@@ -7,8 +7,8 @@
   justify-content: center;
   color: white;
   overflow: hidden;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)), 
-              url('/src/assets/hero-bg.png');
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.56)), 
+              url('https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/hero-bg.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

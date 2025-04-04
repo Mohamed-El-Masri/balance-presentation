@@ -280,7 +280,7 @@ function MapSection() {
                 className: "custom-marker-label",
               },
               icon: {
-                url: "/src/assets/mapmarker.png", // More modern Google-style icon
+                url: "https://res.cloudinary.com/dk2cdwufj/image/upload/v1743692108/destination-concept-international-travel-journey-red-pointer-with-grey-world-map-inside_uv5wvc.png", // More modern Google-style icon
                 scaledSize: new google.maps.Size(24, 36), // Proper sizing for the icon
                 labelOrigin: new google.maps.Point(12, 42), // Better label positioning
               },

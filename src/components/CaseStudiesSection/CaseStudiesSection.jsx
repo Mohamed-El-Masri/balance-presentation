@@ -73,12 +73,12 @@ function CaseStudiesSection() {
             <div className="case-details">
               <div className="case-images">
                 <div className="main-image">
-                  <img src="/src/assets/caseStudy/09.jpg" alt="مجمع لام 1 السكني" />
+                  <img src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/caseStudy/L1/03.jpg" alt="مجمع لام 1 السكني" />
                 </div>
                 <div className="gallery">
-                  <img src="/src/assets/caseStudy/10.jpg" alt="مرافق مجمع لام 1" />
-                  <img src="/src/assets/caseStudy/11.jpg" alt="غرف مجمع لام 1" />
-                  <img src="/src/assets/caseStudy/01.jpg" alt="خدمات مجمع لام 1" />
+                  <img src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/caseStudy/L1/02.jpg" alt="مرافق مجمع لام 1" />
+                  <img src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/caseStudy/L1/01.jpg" alt="غرف مجمع لام 1" />
+                  <img src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/caseStudy/L1/02.jpg" alt="خدمات مجمع لام 1" />
                 </div>
               </div>
               
@@ -179,13 +179,13 @@ function CaseStudiesSection() {
           {activeCase === 'lam2' && (
             <div className="case-details">
               <div className="case-images">
-                <div className="main-image">
-                  <img src="/src/assets/caseStudy/05.jpg" alt="مجمع لام 2 السكني" />
+              <div className="main-image">
+                  <img src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/caseStudy/L1/01.jpg" alt="مجمع لام 1 السكني" />
                 </div>
                 <div className="gallery">
-                  <img src="/src/assets/caseStudy/06.jpg" alt="مرافق مجمع لام 2" />
-                  <img src="/src/assets/caseStudy/07.jpg" alt="غرف مجمع لام 2" />
-                  <img src="/src/assets/caseStudy/08.jpg" alt="خدمات مجمع لام 2" />
+                  <img src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/caseStudy/L1/02.jpg" alt="مرافق مجمع لام 1" />
+                  <img src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/caseStudy/L1/01.jpg" alt="غرف مجمع لام 1" />
+                  <img src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/caseStudy/L1/03.jpg" alt="خدمات مجمع لام 1" />
                 </div>
               </div>
               
@@ -286,12 +286,12 @@ function CaseStudiesSection() {
             <div className="case-details">
               <div className="case-images">
                 <div className="main-image">
-                  <img src="/src/assets/caseStudy/01.jpg" alt="مشروع إسكان الفاضلي" />
+                  <img src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/caseStudy/Fadel/07.jpg" alt="مشروع إسكان الفاضلي" />
                 </div>
                 <div className="gallery">
-                  <img src="/src/assets/caseStudy/02.jpg" alt="مرافق إسكان الفاضلي" />
-                  <img src="/src/assets/caseStudy/03.jpg" alt="غرف إسكان الفاضلي" />
-                  <img src="/src/assets/caseStudy/04.jpg" alt="خدمات إسكان الفاضلي" />
+                  <img src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/caseStudy/Fadel/06.jpg" alt="مرافق إسكان الفاضلي" />
+                  <img src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/caseStudy/Fadel/04.jpg" alt="غرف إسكان الفاضلي" />
+                  <img src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/caseStudy/Fadel/11.jpg" alt="خدمات إسكان الفاضلي" />
                 </div>
               </div>
               
@@ -467,7 +467,7 @@ function CaseStudiesSection() {
         <div className="company-profile-section">
           <div className="company-profile-container">
             <div className="company-logo-container">
-              <img src="/src/assets/logos/balance-logo.png" alt="شعار شركة بالنس للتطوير العقاري" className="company-logo" />
+              <img src="https://res.cloudinary.com/dk2cdwufj/image/upload/v1743511083/Balance_-_logo_l3yjqs.png" alt="شعار شركة بالنس للتطوير العقاري" className="company-logo" />
             </div>
             
             <div className="company-info">
@@ -522,7 +522,7 @@ function CaseStudiesSection() {
                   <span>موثوق من قبل:</span>
                   <div className="partners-logos">
                    
-                    <img src="/src/assets/logos/majdiah-logo.png" alt="شركة الماجدية للاستثمار" />
+                    <img src="https://raw.githubusercontent.com/Mohamed-El-Masri/balance-presentation/refs/heads/main/src/assets/logos/majdiah-logo.png" alt="شركة الماجدية للاستثمار" />
                   </div>
                 </div>
               </div>
