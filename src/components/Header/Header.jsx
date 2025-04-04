@@ -191,7 +191,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
                 onClick={(e) => smoothScroll(e, 'properties')}
                 className={activeSection === 'properties' ? 'active' : ''}
               >
-                العقارات
+                قطع الأراضي
               </a>
             </li>
             <li>
@@ -290,7 +290,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
                 onClick={(e) => smoothScroll(e, 'properties')}
                 className={`mobile-nav-link ${activeSection === 'properties' ? 'active' : ''}`}
               >
-                العقارات
+              قطع الأراضي
               </a>
             </li>
             <li className="mobile-nav-item">
