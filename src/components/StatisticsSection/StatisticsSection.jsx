@@ -1,33 +1,42 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './StatisticsSection.css';
 import StatHighlight from '../StatHighlight/StatHighlight';
-import { Chart } from 'react-chartjs-2';
-import {
+import { 
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
   BarElement,
+  PieElement,
+  ArcElement,
+  LineController, // إضافة هذا السطر
+  BarController, // إضافة هذا السطر
+  PieController, // إضافة هذا السطر
+  DoughnutController, // إضافة هذا السطر 
   Title,
   Tooltip,
   Legend,
-  Filler,
-  ArcElement
+  Filler
 } from 'chart.js';
+import { Chart } from 'react-chartjs-2';
 
-// تسجيل مكونات Chart.js
+// تسجيل مكونات Chart.js بالطريقة الصحيحة
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
   BarElement,
+  ArcElement,
+  LineController, // مهم جداً لمخططات الخط
+  BarController, // مهم لمخططات الأعمدة
+  PieController, // مهم لمخططات الدائرة
+  DoughnutController, // مهم لمخططات الدائرة المجوفة
   Title,
   Tooltip,
   Legend,
-  Filler,
-  ArcElement
+  Filler
 );
 
 const StatisticsSection = () => {
