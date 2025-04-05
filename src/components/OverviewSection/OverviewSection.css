@@ -666,3 +666,450 @@
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+قسم إحصائيات القوى العاملة
+.workforce-stats {
+  margin: 50px 0;
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.workforce-stats::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+.workforce-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--primary-color);
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.workforce-title i {
+  font-size: 1.3rem;
+  background-color: var(--secondary-color);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(var(--secondary-rgb), 0.2);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.stats-grid > *:first-child {
+  grid-column: 1 / -1;
+}
+
+.stats-group {
+  display: grid;
+  gap: 25px;
+}
+
+/* تنسيق قائمة الإحصائيات المميزة */
+.stats-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+  margin-top: 40px;
+}
+
+.stat-highlight-item {
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.03) 0%, rgba(var(--secondary-rgb), 0.03) 100%);
+  padding: 25px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(var(--primary-rgb), 0.05);
+}
+
+.stat-highlight-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.05) 0%, rgba(var(--secondary-rgb), 0.05) 100%);
+}
+
+.highlight-icon {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background-color: var(--secondary-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(var(--secondary-rgb), 0.2);
+}
+
+.stat-highlight-item:hover .highlight-icon {
+  transform: scale(1.1) rotate(10deg);
+}
+
+.highlight-content {
+  flex-grow: 1;
+}
+
+.highlight-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  line-height: 1.1;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.highlight-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--secondary-color);
+  display: inline-block;
+}
+
+.highlight-description {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  opacity: 0.9;
+  margin-top: 5px;
+}
+
+/* تنسيق عرض المدن الصناعية */
+.industrial-cities {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin: 40px 0;
+}
+
+.industrial-city {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(var(--primary-rgb), 0.05);
+}
+
+.industrial-city.featured {
+  border-color: var(--secondary-color);
+  border-width: 2px;
+}
+
+.industrial-city.featured::after {
+  content: 'الأكبر';
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.industrial-city:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.city-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(var(--secondary-rgb), 0.1), rgba(var(--primary-rgb), 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--secondary-color);
+  margin: 0 auto 15px;
+  transition: all 0.3s ease;
+}
+
+.industrial-city:hover .city-icon {
+  transform: scale(1.15) rotate(10deg);
+  background-color: var(--secondary-color);
+  color: white;
+  box-shadow: 0 10px 25px rgba(var(--secondary-rgb), 0.3);
+}
+
+.industrial-city h4 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.city-year {
+  font-size: 0.9rem;
+  color: var(--text-muted, #888);
+  margin-bottom: 20px;
+  background-color: rgba(var(--primary-rgb), 0.05);
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.city-stat {
+  margin: 20px 0;
+  position: relative;
+}
+
+.city-stat::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    rgba(var(--primary-rgb), 0) 0%,
+    rgba(var(--primary-rgb), 0.1) 25%,
+    rgba(var(--primary-rgb), 0.1) 75%,
+    rgba(var(--primary-rgb), 0) 100%
+  );
+  z-index: 0;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--secondary-color);
+  display: block;
+  position: relative;
+  margin-bottom: 5px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  animation: numberPulse 2s infinite alternate;
+}
+
+@keyframes numberPulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+.stat-text {
+  font-size: 1rem;
+  color: var(--text-muted, #888);
+  position: relative;
+  background-color: white;
+  padding: 0 10px;
+  display: inline-block;
+}
+
+.industrial-city p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-color);
+}
+
+/* Responsive styles for industrial cities */
+@media (max-width: 768px) {
+  .industrial-cities {
+    grid-template-columns: 1fr;
+  }
+
+  .industrial-city {
+    padding: 20px;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  .city-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.7rem;
+  }
+}
+
+/* Dark mode support for industrial cities */
+[data-theme='dark'] .industrial-city {
+  background-color: #252525;
+}
+
+[data-theme='dark'] .city-year {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #bbb;
+}
+
+[data-theme='dark'] .stat-text {
+  background-color: #252525;
+  color: #bbb;
+}
+
+[data-theme='dark'] .city-stat::before {
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 25%,
+    rgba(255, 255, 255, 0.1) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+[data-theme='dark'] .workforce-stats {
+  background-color: #252525;
+}
+
+/* Animaciones para los elementos estadísticos */
+.workforce-stats {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+  animation-delay: 0.3s;
+}
+
+.stats-grid {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+  animation-delay: 0.6s;
+}
+
+.stats-highlights {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+  animation-delay: 0.9s;
+}
+
+.stats-highlights .stat-highlight-item:nth-child(1) {
+  animation: slideIn 0.8s forwards;
+  animation-delay: 1.0s;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stats-highlights .stat-highlight-item:nth-child(2) {
+  animation: slideIn 0.8s forwards;
+  animation-delay: 1.2s;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stats-highlights .stat-highlight-item:nth-child(3) {
+  animation: slideIn 0.8s forwards;
+  animation-delay: 1.4s;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stats-highlights .stat-highlight-item:nth-child(4) {
+  animation: slideIn 0.8s forwards;
+  animation-delay: 1.6s;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.industrial-cities {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+  animation-delay: 1.2s;
+}
+
+.industrial-city {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.industrial-cities .industrial-city:nth-child(1) {
+  animation: slideIn 0.8s forwards;
+  animation-delay: 1.4s;
+}
+
+.industrial-cities .industrial-city:nth-child(2) {
+  animation: slideIn 0.8s forwards;
+  animation-delay: 1.6s;
+}
+
+.industrial-cities .industrial-city:nth-child(3) {
+  animation: slideIn 0.8s forwards;
+  animation-delay: 1.8s;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Media queries for responsive design */
+@media (max-width: 992px) {
+  .workforce-stats {
+    padding: 30px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .stats-group > div {
+    flex: 1;
+    min-width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .workforce-stats {
+    padding: 25px;
+  }
+  
+  .workforce-title {
+    font-size: 1.4rem;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .stats-highlights {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .stat-highlight-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .highlight-icon {
+    margin: 0 auto;
+  }
+}

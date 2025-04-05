@@ -1,167 +1,216 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './StatisticsSection.css';
-import CountUp from 'react-countup';
-import { Line } from 'react-chartjs-2';
+import StatHighlight from '../StatHighlight/StatHighlight';
+import { Chart } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
+  ArcElement
 } from 'chart.js';
 
-// تسجيل مكونات الرسم البياني
+// تسجيل مكونات Chart.js
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
+  ArcElement
 );
 
 const StatisticsSection = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef(null);
+  const [statsVisible, setStatsVisible] = useState(false);
+  const [chartVisible, setChartVisible] = useState(false);
+  const [compareVisible, setCompareVisible] = useState(false);
+  const [regionIndex, setRegionIndex] = useState(0);
   
-  // تنسيق الرسم البياني
+  const sectionRef = useRef();
+  const statsRef = useRef();
+  const chartRef = useRef();
+  const compareRef = useRef();
+  const regionRefs = useRef([]);
+
+  // بيانات إحصائيات المشاريع الصناعية
+  const industrialStats = [
+    { 
+      icon: "fas fa-industry", 
+      value: 4500, 
+      description: "منشأة صناعية في منطقة الرياض" 
+    },
+    { 
+      icon: "fas fa-hard-hat", 
+      value: 450, 
+      suffix: "ألف", 
+      description: "عامل في القطاع الصناعي" 
+    },
+    { 
+      icon: "fas fa-building", 
+      value: 1220, 
+      description: "مصنع في المدن الصناعية الثلاث" 
+    },
+    { 
+      icon: "fas fa-bed", 
+      value: 85, 
+      suffix: "ألف", 
+      description: "فجوة في السكن الجماعي للعمال" 
+    }
+  ];
+
+  // بيانات المقارنة بين السكن الفندقي والسكن الجماعي
+  const comparisonData = {
+    past: [
+      { label: "نسبة الإشغال", value: 35, max: 100 },
+      { label: "العائد الاستثماري السنوي", value: 8.5, max: 20 },
+      { label: "تكاليف التشغيل", value: 65, max: 100 }
+    ],
+    future: [
+      { label: "نسبة الإشغال", value: 95, max: 100 },
+      { label: "العائد الاستثماري السنوي", value: 18, max: 20 },
+      { label: "تكاليف التشغيل", value: 35, max: 100 }
+    ]
+  };
+
+  // بيانات المناطق الصناعية
+  const regionData = [
+    {
+      name: "المدينة الصناعية الأولى",
+      value: 66,
+      year: 1973,
+      icon: "fas fa-industry",
+      workers: 2500,
+      occupancy: 97
+    },
+    {
+      name: "المدينة الصناعية الثانية",
+      value: 1117,
+      year: 1976,
+      icon: "fas fa-industry",
+      workers: 58000,
+      occupancy: 94
+    },
+    {
+      name: "المدينة الصناعية الثالثة",
+      value: 37,
+      year: 2010,
+      icon: "fas fa-industry",
+      workers: 4200,
+      occupancy: 98
+    },
+    {
+      name: "مدن صناعية أخرى",
+      value: 3280,
+      icon: "fas fa-map-marker-alt",
+      workers: 385000,
+      occupancy: 92
+    }
+  ];
+
+  // بيانات الرسم البياني - مقارنة معدل الإشغال
+  const occupancyChartData = {
+    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+    datasets: [
+      {
+        label: 'السكن الجماعي للعمال',
+        data: [92, 94, 95, 95, 96, 97],
+        borderColor: '#65A30D',
+        backgroundColor: 'rgba(77, 124, 15, 0.2)',
+        fill: true,
+        tension: 0.4,
+        borderWidth: 3
+      },
+      {
+        label: 'الفنادق في المناطق الصناعية',
+        data: [42, 38, 35, 33, 36, 34],
+        borderColor: '#E35A45',
+        backgroundColor: 'rgba(227, 90, 69, 0.2)',
+        fill: true,
+        tension: 0.4,
+        borderWidth: 3
+      }
+    ]
+  };
+
+  // إعدادات الرسم البياني
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top',
+        align: 'center',
         labels: {
           font: {
-            family: 'Cairo',
-            size: 14
-          }
+            size: 12,
+            family: "'Tajawal', 'Arial', sans-serif"
+          },
+          color: '#555',
+          usePointStyle: true,
+          padding: 20
         }
       },
       tooltip: {
-        rtl: true,
-        titleFont: {
-          family: 'Cairo'
-        },
         bodyFont: {
-          family: 'Cairo'
+          family: "'Tajawal', 'Arial', sans-serif"
         },
-        callbacks: {
-          label: function(context) {
-            return `القيمة: ${context.parsed.y}`;
-          }
+        titleFont: {
+          family: "'Tajawal', 'Arial', sans-serif"
         }
       }
     },
     scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          font: {
+            family: "'Tajawal', 'Arial', sans-serif"
+          }
+        },
+        grid: {
+          drawBorder: false
+        }
+      },
       x: {
         ticks: {
           font: {
-            family: 'Cairo',
-            size: 12
+            family: "'Tajawal', 'Arial', sans-serif"
           }
         },
         grid: {
-          display: false
+          display: false,
+          drawBorder: false
         }
-      },
-      y: {
-        ticks: {
-          font: {
-            family: 'Cairo',
-            size: 12
-          }
-        },
-        grid: {
-          color: 'rgba(200, 200, 200, 0.2)'
-        },
-        beginAtZero: true
       }
-    },
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
-    elements: {
-      line: {
-        tension: 0.4
-      },
-      point: {
-        radius: 4,
-        hoverRadius: 6
-      }
-    },
-    animation: {
-      duration: 2000
     }
   };
 
-  // بيانات نمو المصانع
-  const factoriesData = {
-    labels: ['2016', '2018', '2020', '2022', '2023', '2025 (متوقع)', '2030 (متوقع)', '2035 (متوقع)'],
-    datasets: [
-      {
-        label: 'عدد المصانع',
-        data: [7206, 8500, 9500, 10518, 11549, 15000, 25000, 36000],
-        borderColor: 'rgba(86, 95, 88, 0.8)',
-        backgroundColor: 'rgba(86, 95, 88, 0.1)',
-        fill: true,
-        pointBackgroundColor: 'rgba(86, 95, 88, 1)',
-        pointBorderColor: '#fff'
-      },
-      {
-        label: 'الناتج المحلي (مليار دولار)',
-        data: [70, 75, 88, 110, 140, 170, 200, 223],
-        borderColor: 'rgba(200, 176, 154, 0.8)',
-        backgroundColor: 'rgba(200, 176, 154, 0.1)',
-        fill: true,
-        pointBackgroundColor: 'rgba(200, 176, 154, 1)',
-        pointBorderColor: '#fff'
-      }
-    ]
-  };
-
-  // بيانات مقارنة المناطق
-  const regionData = {
-    labels: ['الرياض', 'المنطقة الشرقية', 'مكة المكرمة', 'القصيم', 'المدينة المنورة', 'عسير', 'مناطق أخرى'],
-    datasets: [
-      {
-        label: 'عدد المصانع',
-        data: [4502, 2618, 2209, 546, 526, 401, 747],
-        borderColor: 'rgba(200, 176, 154, 0.8)',
-        backgroundColor: [
-          'rgba(86, 95, 88, 0.8)',
-          'rgba(200, 176, 154, 0.8)',
-          'rgba(169, 177, 169, 0.8)',
-          'rgba(86, 95, 88, 0.6)',
-          'rgba(200, 176, 154, 0.6)',
-          'rgba(169, 177, 169, 0.6)',
-          'rgba(120, 120, 120, 0.6)'
-        ],
-        borderWidth: 1
-      }
-    ]
-  };
-
-  // تفعيل التأثيرات عند رؤية القسم
+  // مراقبة ظهور القسم في الشاشة
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      {
-        threshold: 0.1
+    const observer = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        setTimeout(() => setStatsVisible(true), 300);
+        setTimeout(() => setChartVisible(true), 800);
+        setTimeout(() => setCompareVisible(true), 1300);
+        regionData.forEach((_, index) => {
+          setTimeout(() => {
+            setRegionIndex(prev => Math.max(prev, index + 1));
+          }, 1800 + (index * 200));
+        });
+        observer.unobserve(entry.target);
       }
-    );
+    }, { threshold: 0.1 });
 
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
@@ -172,255 +221,186 @@ const StatisticsSection = () => {
         observer.unobserve(sectionRef.current);
       }
     };
-  }, []);
+  }, [regionData.length]);
 
   return (
-    <section className="statistics-section" id="statistics" ref={sectionRef}>
+    <section id="statistics" className="statistics-section" ref={sectionRef}>
       <div className="container">
         <div className="section-header">
-          <h2 className="section-title">إحصائيات التطور الصناعي</h2>
+          <span className="section-subtitle">تحليل الوضع الحالي</span>
+          <h2 className="section-title">الإحصائيات والمؤشرات الرئيسية</h2>
           <p className="section-description">
-            شهد القطاع الصناعي في المملكة العربية السعودية نمواً متسارعاً منذ إطلاق رؤية 2030، مع زيادة عدد المصانع بأكثر من 60% وتوقعات بمواصلة النمو لتصل إلى 36 ألف مصنع بحلول عام 2035.
+            إحصائيات تفصيلية تبين واقع القطاع الصناعي في منطقة الرياض وفجوة السكن الجماعي للعمال، وأثر تحويل المباني الفندقية إلى سكن للعمال.
           </p>
-         <span className="section-subtitle">النمو الصناعي في المملكة</span>
         </div>
 
-        <div className={`stats-container ${isVisible ? 'visible' : ''}`}>
-          <div className="stat-box">
-            <i className="fas fa-industry stat-icon"></i>
-            <div className="stat-value">
-              {isVisible && <CountUp end={11549} duration={2.5} separator="," />}
-              <span className="stat-label">مصنع</span>
-            </div>
-            <p className="stat-description">إجمالي عدد المصانع العاملة في المملكة</p>
-          </div>
-
-          <div className="stat-box">
-            <i className="fas fa-chart-line stat-icon"></i>
-            <div className="stat-value">
-              <span className="percentage">+</span>
-              {isVisible && <CountUp end={60} duration={2} />}
-              <span className="percentage">%</span>
-            </div>
-            <p className="stat-description">نسبة النمو الصناعي منذ إطلاق رؤية 2030</p>
-          </div>
-
-          <div className="stat-box">
-            <i className="fas fa-coins stat-icon"></i>
-            <div className="stat-value">
-              {isVisible && <CountUp end={400} duration={2.5} />}
-              <span className="stat-label">مليار دولار</span>
-            </div>
-            <p className="stat-description">حجم الإستثمارات في القطاع الصناعي خلال 2022 - 2023</p>
-          </div>
-
-          <div className="stat-box">
-            <i className="fas fa-bullseye stat-icon"></i>
-            <div className="stat-value">
-              {isVisible && <CountUp end={36} duration={2} />}
-              <span className="stat-label">ألف مصنع</span>
-            </div>
-            <p className="stat-description">المستهدف ضمن الإستراتيجية الصناعية 2035</p>
-          </div>
+        {/* صف الإحصائيات الرئيسية باستخدام StatHighlight */}
+        <div className="stats-grid">
+          {industrialStats.map((stat, index) => (
+            <StatHighlight
+              key={index}
+              value={stat.value.toString()}
+              suffix={stat.suffix || ""}
+              label={stat.description}
+              icon={stat.icon}
+              theme={index % 2 === 0 ? "primary" : "secondary"}
+              animationDelay={300 + (index * 200)}
+              size="large"
+            />
+          ))}
         </div>
 
-        <div className={`chart-container ${isVisible ? 'visible' : ''}`}>
+        {/* رسم بياني يوضح مقارنة معدلات الإشغال */}
+        <div className={`chart-container ${chartVisible ? 'visible' : ''}`} ref={chartRef}>
           <div className="chart-header">
-            <h3 className="chart-title">تطور عدد المصانع والناتج المحلي الصناعي</h3>
+            <h3 className="chart-title">مقارنة معدلات الإشغال (2023)</h3>
             <div className="chart-legend">
               <div className="legend-item">
-                <div className="legend-color" style={{ background: 'rgba(86, 95, 88, 0.8)' }}></div>
-                <span>عدد المصانع</span>
+                <span className="legend-color" style={{ backgroundColor: '#65A30D' }}></span>
+                <span>السكن الجماعي للعمال</span>
               </div>
               <div className="legend-item">
-                <div className="legend-color" style={{ background: 'rgba(200, 176, 154, 0.8)' }}></div>
-                <span>الناتج المحلي (مليار دولار)</span>
+                <span className="legend-color" style={{ backgroundColor: '#E35A45' }}></span>
+                <span>الفنادق في المناطق الصناعية</span>
               </div>
             </div>
           </div>
           <div className="chart">
-            <Line data={factoriesData} options={chartOptions} />
+            <Chart type="line" data={occupancyChartData} options={chartOptions} />
           </div>
         </div>
 
+        {/* قسم المقارنة بين الفنادق والسكن الجماعي */}
+        <div className={`compare-section ${compareVisible ? 'visible' : ''}`} ref={compareRef}>
+          <div className="compare-card past">
+            <div className="compare-header">
+              <h3>المباني الفندقية</h3>
+            </div>
+            <div className="compare-body">
+              {comparisonData.past.map((item, index) => (
+                <div className="compare-stat" key={index}>
+                  <div className="compare-stat-label">{item.label}</div>
+                  <div className="compare-stat-value">{item.value}{index === 1 ? '%' : ''}</div>
+                  <div className="compare-progress">
+                    <div 
+                      className="compare-progress-bar" 
+                      style={{ width: compareVisible ? `${(item.value / item.max) * 100}%` : '0%' }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="compare-card future">
+            <div className="compare-header">
+              <h3>السكن الجماعي للعمال</h3>
+            </div>
+            <div className="compare-body">
+              {comparisonData.future.map((item, index) => (
+                <div className="compare-stat" key={index}>
+                  <div className="compare-stat-label">{item.label}</div>
+                  <div className="compare-stat-value">{item.value}{index === 1 ? '%' : ''}</div>
+                  <div className="compare-progress">
+                    <div 
+                      className="compare-progress-bar" 
+                      style={{ width: compareVisible ? `${(item.value / item.max) * 100}%` : '0%' }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* نظرة على المدن الصناعية في منطقة الرياض */}
+        <div className="regional-distribution">
+          <h3>المدن الصناعية في منطقة الرياض</h3>
+          <div className="region-grid">
+            {regionData.map((region, index) => (
+              <div 
+                className={`region-card ${index < regionIndex ? 'animated' : ''}`} 
+                key={index}
+                ref={el => regionRefs.current[index] = el}
+              >
+                <div className="region-icon">
+                  <i className={region.icon}></i>
+                </div>
+                <div className="region-name">{region.name}</div>
+                <div className="region-value">{region.value}</div>
+                
+                <div className="region-stats">
+                  {region.year && (
+                    <div className="region-stat">
+                      <div className="stat-icon"><i className="fas fa-calendar-alt"></i></div>
+                      <div className="stat-text">تأسست عام {region.year}م</div>
+                    </div>
+                  )}
+                  <div className="region-stat">
+                    <div className="stat-icon"><i className="fas fa-user-hard-hat"></i></div>
+                    <div className="stat-text">~{region.workers.toLocaleString('ar-SA')} عامل</div>
+                  </div>
+                  <div className="region-stat">
+                    <div className="stat-icon"><i className="fas fa-percentage"></i></div>
+                    <div className="stat-text">معدل الإشغال {region.occupancy}%</div>
+                  </div>
+                </div>
+                
+                <div className="region-bar" style={{ 
+                  backgroundColor: 'rgba(200, 176, 154, 0.2)',
+                  scaleX: index < regionIndex ? 1 : 0
+                }}></div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* رؤى وتحليلات البيانات */}
         <div className="data-insights">
-          <div className={`insight-card ${isVisible ? 'visible' : ''}`}>
+          <div className={`insight-card ${statsVisible ? 'visible' : ''}`}>
             <div className="insight-header">
               <div className="insight-icon">
-                <i className="fas fa-map-marker-alt"></i>
+                <i className="fas fa-chart-pie"></i>
               </div>
-              <h3 className="insight-title">التوزيع الجغرافي للمصانع</h3>
+              <h4 className="insight-title">الفجوة السكنية للعمال</h4>
             </div>
-            <p className="insight-content">
-              تتصدر منطقة <strong>الرياض</strong> بـ 4,502 مصنع، تليها <strong>المنطقة الشرقية</strong> بـ 2,618 مصنع ومنطقة <strong>مكة المكرمة</strong> بـ 2,209 مصنع، مما يعكس تركز النشاط الصناعي في المناطق الحضرية الرئيسية.
-            </p>
+            <div className="insight-content">
+              تشير الإحصاءات إلى وجود فجوة كبيرة تقدر بـ <strong>85,000 سرير</strong> في السكن الجماعي للعمال في المناطق الصناعية بالرياض. تحويل الرخص من فندقي إلى سكن جماعي يمكن أن يساهم بشكل كبير في سد هذه الفجوة وتلبية الطلب المتزايد.
+            </div>
           </div>
-
-          <div className={`insight-card ${isVisible ? 'visible' : ''}`}>
+          
+          <div className={`insight-card ${statsVisible ? 'visible' : ''}`}>
+            <div className="insight-header">
+              <div className="insight-icon">
+                <i className="fas fa-percentage"></i>
+              </div>
+              <h4 className="insight-title">الفرق في معدل الإشغال</h4>
+            </div>
+            <div className="insight-content">
+              يصل الفرق في معدل الإشغال بين الفنادق والسكن الجماعي في المناطق الصناعية إلى <strong>60%</strong>، حيث أن معدل إشغال السكن الجماعي للعمال يتجاوز <strong>95%</strong> بينما لا تتعدى نسبة إشغال الفنادق <strong>35%</strong> في هذه المناطق.
+            </div>
+          </div>
+          
+          <div className={`insight-card ${statsVisible ? 'visible' : ''}`}>
             <div className="insight-header">
               <div className="insight-icon">
                 <i className="fas fa-hand-holding-usd"></i>
               </div>
-              <h3 className="insight-title">حجم الاستثمارات والمشاريع</h3>
+              <h4 className="insight-title">العائد الاستثماري</h4>
             </div>
-            <p className="insight-content">
-              بلغت الاستثمارات الصناعية ما يقارب <strong>400 مليار دولار</strong> في عام 2023، مع صدور 1,379 ترخيصاً صناعياً جديداً باستثمارات تتجاوز <strong>21.6 مليار دولار</strong>.
-            </p>
-          </div>
-
-          <div className={`insight-card ${isVisible ? 'visible' : ''}`}>
-            <div className="insight-header">
-              <div className="insight-icon">
-                <i className="fas fa-briefcase"></i>
-              </div>
-              <h3 className="insight-title">التوظيف والتوطين</h3>
-            </div>
-            <p className="insight-content">
-              تستهدف الاستراتيجية الوطنية للصناعة رفع معدل التوطين من <strong>41%</strong> في عام 2020 إلى <strong>65%</strong> بحلول عام 2035، مع زيادة عدد الوظائف في القطاع بمقدار <strong>4 أضعاف</strong>.
-            </p>
-          </div>
-        </div>
-
-        <div className={`compare-section ${isVisible ? 'visible' : ''}`}>
-          <div className="compare-card past">
-            <div className="compare-header">
-              <h3>قبل رؤية 2030</h3>
-            </div>
-            <div className="compare-body">
-              <div className="compare-stat">
-                <div className="compare-stat-label">عدد المصانع</div>
-                <div className="compare-stat-value">7,206</div>
-                <div className="compare-progress">
-                  {/* تحسين طريقة عرض الشريط مع فئات مناسبة */}
-                  <div 
-                    className="compare-progress-bar" 
-                    style={{ 
-                      width: isVisible ? '30%' : '0%', 
-                      transitionDelay: '0.3s'
-                    }}
-                  ></div>
-                </div>
-              </div>
-              <div className="compare-stat">
-                <div className="compare-stat-label">الناتج المحلي الصناعي</div>
-                <div className="compare-stat-value">70 مليار دولار</div>
-                <div className="compare-progress">
-                  <div 
-                    className="compare-progress-bar" 
-                    style={{ 
-                      width: isVisible ? '35%' : '0%',
-                      transitionDelay: '0.5s'
-                    }}
-                  ></div>
-                </div>
-              </div>
-              <div className="compare-stat">
-                <div className="compare-stat-label">نسبة التوطين</div>
-                <div className="compare-stat-value">25%</div>
-                <div className="compare-progress">
-                  <div 
-                    className="compare-progress-bar" 
-                    style={{ 
-                      width: isVisible ? '25%' : '0%',
-                      transitionDelay: '0.7s'
-                    }}
-                  ></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="compare-card future">
-            <div className="compare-header">
-              <h3>المستهدف 2035</h3>
-            </div>
-            <div className="compare-body">
-              <div className="compare-stat">
-                <div className="compare-stat-label">عدد المصانع</div>
-                <div className="compare-stat-value">36,000</div>
-                <div className="compare-progress">
-                  <div 
-                    className="compare-progress-bar" 
-                    style={{ 
-                      width: isVisible ? '90%' : '0%',
-                      transitionDelay: '0.4s'
-                    }}
-                  ></div>
-                </div>
-              </div>
-              <div className="compare-stat">
-                <div className="compare-stat-label">الناتج المحلي الصناعي</div>
-                <div className="compare-stat-value">223 مليار دولار</div>
-                <div className="compare-progress">
-                  <div 
-                    className="compare-progress-bar" 
-                    style={{ 
-                      width: isVisible ? '85%' : '0%',
-                      transitionDelay: '0.6s'
-                    }}
-                  ></div>
-                </div>
-              </div>
-              <div className="compare-stat">
-                <div className="compare-stat-label">نسبة التوطين</div>
-                <div className="compare-stat-value">65%</div>
-                <div className="compare-progress">
-                  <div 
-                    className="compare-progress-bar" 
-                    style={{ 
-                      width: isVisible ? '65%' : '0%',
-                      transitionDelay: '0.8s'
-                    }}
-                  ></div>
-                </div>
-              </div>
+            <div className="insight-content">
+              يوفر تحويل الرخص من فندقي إلى سكن جماعي عائداً استثمارياً أعلى بنسبة <strong>9.5%</strong> في المتوسط، مع انخفاض في تكاليف التشغيل بنسبة <strong>30%</strong> وفترة استرداد رأس المال أقصر بـ <strong>4 سنوات</strong>.
             </div>
           </div>
         </div>
 
-        <div className="regional-distribution">
-          <h3>التوزيع الجغرافي للمصانع حسب المناطق</h3>
-          <div className="region-grid">
-            <div className={`region-card ${isVisible ? 'animated' : ''}`} style={{ animationDelay: '0s' }}>
-              <div className="region-icon"><i className="fas fa-city"></i></div>
-              <div className="region-name">الرياض</div>
-              <div className="region-value">4,502</div>
-              <div className="region-bar" style={{ width: '100%', backgroundColor: 'rgba(86, 95, 88, 0.8)' }}></div>
-            </div>
-            <div className={`region-card ${isVisible ? 'animated' : ''}`} style={{ animationDelay: '0.1s' }}>
-              <div className="region-icon"><i className="fas fa-industry"></i></div>
-              <div className="region-name">المنطقة الشرقية</div>
-              <div className="region-value">2,618</div>
-              <div className="region-bar" style={{ width: '58%', backgroundColor: 'rgba(200, 176, 154, 0.8)' }}></div>
-            </div>
-            <div className={`region-card ${isVisible ? 'animated' : ''}`} style={{ animationDelay: '0.2s' }}>
-              <div className="region-icon"><i className="fas fa-mosque"></i></div>
-              <div className="region-name">مكة المكرمة</div>
-              <div className="region-value">2,209</div>
-              <div className="region-bar" style={{ width: '49%', backgroundColor: 'rgba(169, 177, 169, 0.8)' }}></div>
-            </div>
-            <div className={`region-card ${isVisible ? 'animated' : ''}`} style={{ animationDelay: '0.3s' }}>
-              <div className="region-icon"><i className="fas fa-warehouse"></i></div>
-              <div className="region-name">القصيم</div>
-              <div className="region-value">546</div>
-              <div className="region-bar" style={{ width: '12%', backgroundColor: 'rgba(86, 95, 88, 0.6)' }}></div>
-            </div>
-            <div className={`region-card ${isVisible ? 'animated' : ''}`} style={{ animationDelay: '0.4s' }}>
-              <div className="region-icon"><i className="fas fa-landmark"></i></div>
-              <div className="region-name">المدينة المنورة</div>
-              <div className="region-value">526</div>
-              <div className="region-bar" style={{ width: '11.7%', backgroundColor: 'rgba(200, 176, 154, 0.6)' }}></div>
-            </div>
-            {/* تصحيح الخطأ في بطاقة منطقة عسير */}
-            <div className={`region-card ${isVisible ? 'animated' : ''}`} style={{ animationDelay: '0.5s' }}>
-              <div className="region-icon"><i className="fas fa-mountain"></i></div>
-              <div className="region-name">عسير</div>
-              <div className="region-value">401</div>
-              <div className="region-bar" style={{ width: '8.9%', backgroundColor: 'rgba(169, 177, 169, 0.6)' }}></div>
-            </div>
-          </div>
+        {/* دعوة للعمل */}
+        <div className="cta-container">
+          <a href="#contact" className="cta-button">
+            <i className="fas fa-arrow-left ml-2"></i>
+            احصل على دراسة جدوى مفصلة
+          </a>
         </div>
-    
       </div>
     </section>
   );

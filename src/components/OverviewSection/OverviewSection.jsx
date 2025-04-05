@@ -1,5 +1,7 @@
 import React from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './OverviewSection.css';
+import StatHighlight from '../StatHighlight/StatHighlight';
 
 function OverviewSection() {
   return (
@@ -9,38 +11,39 @@ function OverviewSection() {
         <div className="overview-content">
           <div className="overview-card problem">
             <div className="overview-icon">
-              <i className="fas fa-exclamation-triangle"></i>
+              <i className="fas fa-hotel"></i>
             </div>
-            <h3>التحديات الحالية</h3>
+            <h3>تحدي الفئة المستهدفة للفنادق</h3>
             <p>
-              يعد ارتفاع أسعار الغرف الفندقية وبُعدها عن المناطق الصناعية من أكثر 
-              العقبات التي تواجه العمالة، مما يؤثر سلباً على الإنتاجية وراحة العمال. 
-              كما يؤدي عدم توفر سكن للعمالة بالقرب من المناطق الصناعية إلى ازدحام 
-              المرور والتأثير السلبي على البيئة.
+              الفنادق مصممة لاستقبال السياح والزوار المؤقتين وهي فئة غير متوفرة في المناطق الصناعية. 
+              تتسم المنطقة بالمنشآت الصناعية والعمالية مما يجعل نموذج الأعمال الفندقي غير ملائم، حيث يبحث العمال 
+              عن سكن جماعي مخصص وليس غرف فندقية باهظة الثمن. هذا التباين الجوهري في الفئة المستهدفة 
+              يجعل الفنادق استثماراً غير مناسب في المناطق الصناعية.
             </p>
           </div>
 
           <div className="overview-card islamic">
             <div className="overview-icon">
-              <i className="fas fa-star-and-crescent"></i>
+              <i className="fas fa-chart-bar"></i>
             </div>
-            <h3>المنظور الإسلامي</h3>
+            <h3>المعطيات الإحصائية</h3>
             <p>
-              إن ديننا الحنيف يحثنا على التعامل الإنساني مع الأجير بأفضل معاملة، 
-              ونحن مؤتمنون على صحتهم وأمنهم وسلامتهم. وسنعمل كل ما في وسعنا لتحقيق 
-              ذلك، باعتبارهم ضيوفاً مساهمين في التنمية الوطنية والاقتصادية.
+              بناءً على تقارير الهيئة العامة للإحصاء ووزارة الموارد البشرية لعام 2023، يبلغ عدد العاملين 
+              في منطقة الرياض 4.3 مليون عامل، منهم حوالي 450 ألف في قطاع الصناعة وما يقارب 1.1 مليون في 
+              قطاع التشييد والبناء. هذه الكثافة العمالية الهائلة تشكل طلباً حقيقياً على السكن الجماعي 
+              وليس على الفنادق، مما يؤكد الحاجة لتحويل الرخص.
             </p>
           </div>
 
           <div className="overview-card solution">
             <div className="overview-icon">
-              <i className="fas fa-home"></i>
+              <i className="fas fa-exchange-alt"></i>
             </div>
-            <h3>الحلول المقترحة</h3>
+            <h3>الحل المثالي</h3>
             <p>
-              يعتبر توفير سكن نموذجي للعمال داخل المناطق الصناعية عنصراً أساسياً 
-              في تعزيز بيئة العمل وضمان راحة العاملين وتوفير الاستقرار الاجتماعي لهم. 
-              إن إقامة مجمعات سكنية متكاملة يسهم في تحسين جودة حياة العمال وزيادة إنتاجيتهم.
+              تحويل المباني من رخص فندقية إلى سكن جماعي للعمال في المناطق الصناعية يُعد 
+              استجابة واقعية لمتطلبات السوق. هذا التحويل يستهدف الفئة الموجودة بالفعل في المنطقة، 
+              ويلبي احتياجات المصانع والشركات، ويضمن معدلات إشغال عالية ومستدامة للمستثمرين.
             </p>
           </div>
         </div>
@@ -48,132 +51,255 @@ function OverviewSection() {
         <div className="benefits-grid">
           <div className="Overview-benefit-item">
             <div className="benefit-icon">
-              <i className="fas fa-chart-line"></i>
+              <i className="fas fa-bullseye"></i>
             </div>
-            <h4>تحسين الإنتاجية</h4>
+            <h4>استهداف الفئة الصحيحة</h4>
             <p>
-              عندما يعيش العمال في بيئة مريحة وقريبة من مكان عملهم، يقل الوقت والجهد المبذول 
-              في التنقل، مما يتيح لهم التركيز بشكل أفضل على مهامهم وزيادة إنتاجيتهم.
+              المناطق الصناعية تستقطب العمال وليس السياح، مما يجعل السكن الجماعي للعمال 
+              هو النموذج المثالي للاستثمار العقاري في هذه المناطق، بدلاً من الفنادق التي 
+              تستهدف فئة غير متواجدة.
             </p>
           </div>
 
           <div className="Overview-benefit-item">
             <div className="benefit-icon">
-              <i className="fas fa-heart"></i>
+              <i className="fas fa-bed"></i>
             </div>
-            <h4>تحسين جودة الحياة</h4>
+            <h4>معدلات إشغال مرتفعة</h4>
             <p>
-              توفير مرافق سكنية مجهزة تلبي احتياجات العمال الأساسية يساهم في رفع مستوى راحتهم 
-              ويقلل من التوتر والإجهاد الناتج عن بيئة السكن غير الملائمة.
+              السكن الجماعي للعمال يحقق معدلات إشغال تصل إلى 95%، مقارنة بمعدلات 
+              إشغال متدنية (35%) للفنادق في المناطق الصناعية، مما يعكس الطلب الحقيقي في السوق.
             </p>
           </div>
 
           <div className="Overview-benefit-item">
             <div className="benefit-icon">
-              <i className="fas fa-shield-alt"></i>
+              <i className="fas fa-sack-dollar"></i>
             </div>
-            <h4>الامتثال للمعايير الصحية</h4>
+            <h4>عائد استثماري مستدام</h4>
             <p>
-              تلتزم المجمعات السكنية النموذجية بمعايير الصحة والسلامة المعتمدة، مما 
-              يقلل من المخاطر الصحية ويحسن رفاهية العمال.
+              العقود طويلة الأمد مع الشركات والمصانع توفر استقراراً في الدخل وعائداً 
+              استثمارياً أعلى بنسبة 55% مقارنة بالفنادق في المناطق غير السياحية.
             </p>
           </div>
 
           <div className="Overview-benefit-item">
             <div className="benefit-icon">
-              <i className="fas fa-users"></i>
+              <i className="fas fa-hard-hat"></i>
             </div>
-            <h4>تقليل التأثيرات السلبية</h4>
+            <h4>دعم قطاع الصناعة</h4>
             <p>
-              باستضافة العمال داخل المناطق الصناعية، يتم تقليل التكدس السكاني في الأحياء 
-              السكنية المجاورة، مما يقلل من التوترات الاجتماعية ويحافظ على هوية المجتمعات المحلية.
+              توفير سكن جماعي ملائم للعمال بالقرب من المصانع يساهم في استقرار القوى العاملة، 
+              ويرفع إنتاجية المصانع، ويدعم نمو القطاع الصناعي في المملكة.
             </p>
           </div>
         </div>
 
+        {/* <div className="workforce-stats">
+          <h3 className="workforce-title">
+            <i className="fas fa-chart-line"></i> إحصائيات القوى العاملة والمنشآت الصناعية
+          </h3>
+           */}
+          {/* <div className="stats-grid">
+            <StatHighlight 
+              value="4.3" 
+              suffix=" مليون" 
+              label="إجمالي القوى العاملة في منطقة الرياض" 
+              icon="fas fa-users"
+              theme="primary"
+              size="large"
+              description="المصدر: الهيئة العامة للإحصاء، تقرير سوق العمل 2023"
+            />
+            
+            <div className="stats-group">
+              <StatHighlight 
+                value="450" 
+                suffix=" ألف" 
+                label="العاملين في القطاع الصناعي" 
+                icon="fas fa-industry"
+                theme="secondary"
+                size="medium"
+              />
+              
+              <StatHighlight 
+                value="1.1" 
+                suffix=" مليون" 
+                label="العاملين في قطاع التشييد والبناء" 
+                icon="fas fa-hard-hat"
+                theme="secondary"
+                size="medium"
+              />
+            </div>
+            
+            <div className="stats-group">
+              <StatHighlight 
+                value="65" 
+                suffix="%" 
+                label="نسبة العمال الذين يحتاجون لسكن قريب" 
+                icon="fas fa-home"
+                theme="success"
+                size="medium"
+              />
+              
+              <StatHighlight 
+                value="78" 
+                suffix="%" 
+                label="نسبة المصانع الباحثة عن حلول سكنية" 
+                icon="fas fa-search"
+                theme="success"
+                size="medium"
+              />
+            </div>
+          </div> */}
+{/*           
+          <div className="stats-highlights">
+            <div className="stat-highlight-item">
+              <div className="highlight-icon">
+                <i className="fas fa-bed"></i>
+              </div>
+              <div className="highlight-content">
+                <div className="highlight-number">85,000+</div>
+                <div className="highlight-label">سرير</div>
+                <div className="highlight-description">فجوة في السكن الجماعي للعمال</div>
+              </div>
+            </div>
+            
+            <div className="stat-highlight-item">
+              <div className="highlight-icon">
+                <i className="fas fa-building"></i>
+              </div>
+              <div className="highlight-content">
+                <div className="highlight-number">1,220</div>
+                <div className="highlight-label">مصنع</div>
+                <div className="highlight-description">في المدن الصناعية الثلاث بالرياض</div>
+              </div>
+            </div>
+            
+            <div className="stat-highlight-item">
+              <div className="highlight-icon">
+                <i className="fas fa-percentage"></i>
+              </div>
+              <div className="highlight-content">
+                <div className="highlight-number">8-12%</div>
+                <div className="highlight-label">نمو سنوي</div>
+                <div className="highlight-description">معدل نمو سوق سكن العمال المتوقع حتى 2030</div>
+              </div>
+            </div>
+            
+            <div className="stat-highlight-item">
+              <div className="highlight-icon">
+                <i className="fas fa-money-bill-wave"></i>
+              </div>
+              <div className="highlight-content">
+                <div className="highlight-number">3.5</div>
+                <div className="highlight-label">مليار ريال</div>
+                <div className="highlight-description">قيمة سوق سكن العمال في منطقة الرياض</div>
+              </div>
+            </div>
+          </div>
+        </div> */}
+
         <div className="ov-district-showcase">
           <div className="ov-district-header">
-            <h3>نبذة عن حي المصفاة</h3>
+            <h3>المدن الصناعية في منطقة الرياض</h3>
             <div className="ov-district-badge">
-              <i className="fas fa-map-marker-alt"></i>
-              <span>المنطقة الصناعية - جنوب الرياض</span>
+              <i className="fas fa-industry"></i>
+              <span>بيانات وإحصاءات رسمية حتى عام 2023</span>
             </div>
           </div>
           
           <div className="ov-district-content">
             <div className="ov-district-description">
               <p>
-                حي المصفاة هو أحد الأحياء الواقعة في جنوب مدينة الرياض، ويتوسط أفضل أحياء جنوب الرياض والتابع 
-                إلى بلدية العزيزية. يتميز بموقعه الاستراتيجي الذي يجعله محط اهتمام العديد من السكان والمستثمرين. 
-                شهدت المنطقة تطوراً عمرانياً ملحوظاً في السنوات الأخيرة، مما أدى إلى زيادة الطلب على المجمعات السكنية فيها.
+                تضم منطقة الرياض ثلاث مدن صناعية رئيسية تحتوي على آلاف المصانع والمنشآت الصناعية، مما يجعلها من 
+                أكبر التجمعات الصناعية في المملكة وأكثرها كثافة عمالية. هذه المدن تتطلب توفير سكن ملائم للعمال، 
+                خاصة مع نقص الخيارات السكنية المناسبة في المناطق المحيطة.
               </p>
             </div>
             
-            <div className="ov-district-highlights">
-              <div className="ov-district-highlight">
-                <div className="ov-highlight-icon">
-                  <i className="fas fa-industry"></i>
+            <div className="industrial-cities">
+              <div className="industrial-city">
+                <div className="city-icon"><i className="fas fa-industry"></i></div>
+                <h4>المدينة الصناعية الأولى</h4>
+                <div className="city-year">تأسست عام 1973م</div>
+                <div className="city-stat">
+                  <div className="stat-number">66</div>
+                  <div className="stat-text">مصنعاً</div>
                 </div>
-                <h4>تطور صناعي</h4>
-                <p>نمو صناعي ملحوظ وزيادة في أعداد العمال والموظفين في المنطقة.</p>
+                <p>تتميز بقربها من وسط مدينة الرياض وتضم عدداً من المصانع القديمة.</p>
               </div>
-              <div className="ov-district-highlight">
-                <div className="ov-highlight-icon">
-                  <i className="fas fa-map-signs"></i>
+              
+              <div className="industrial-city featured">
+                <div className="city-icon"><i className="fas fa-industry"></i></div>
+                <h4>المدينة الصناعية الثانية</h4>
+                <div className="city-year">تأسست عام 1976م</div>
+                <div className="city-stat">
+                  <div className="stat-number">1,117</div>
+                  <div className="stat-text">مصنعاً</div>
                 </div>
-                <h4>موقع استراتيجي</h4>
-                <p>قرب من الطرق الرئيسية ومرافق الخدمات الأساسية.</p>
+                <p>الأكبر من حيث عدد المصانع والكثافة العمالية وتحتاج لأكثر من 60 ألف سرير.</p>
               </div>
-              <div className="ov-district-highlight">
-                <div className="ov-highlight-icon">
-                  <i className="fas fa-building"></i>
+              
+              <div className="industrial-city">
+                <div className="city-icon"><i className="fas fa-industry"></i></div>
+                <h4>المدينة الصناعية الثالثة</h4>
+                <div className="city-year">تأسست عام 2010م</div>
+                <div className="city-stat">
+                  <div className="stat-number">37</div>
+                  <div className="stat-text">مصنعاً</div>
                 </div>
-                <h4>تطور عمراني</h4>
-                <p>تطور ملحوظ في البنية التحتية والمشاريع السكنية.</p>
+                <p>الأحدث وتشهد نمواً متسارعاً مع خطط توسعية كبيرة خلال الخمس سنوات القادمة.</p>
               </div>
             </div>
             
             <div className="ov-district-services">
               <div className="ov-service-category">
-                <h4><i className="fas fa-hospital"></i> الخدمات الطبية</h4>
+                <h4><i className="fas fa-users"></i> القوى العاملة في الرياض</h4>
                 <ul className="ov-service-list">
-                  <li>مستشفى رابية - حي طيبة</li>
-                  <li>مركز العزيزية الطبي - حي العزيزية</li>
-                  <li>المجمع العالمي الطبي - حي العزيزية</li>
-                  <li>مركز طب الأسرة والمجتمع - حي الإسكان</li>
+                  <li>إجمالي القوى العاملة في منطقة الرياض: 4.3 مليون عامل</li>
+                  <li>العاملين في القطاع الصناعي: 400 - 450 ألف عامل</li>
+                  <li>العاملين في قطاع التشييد والبناء: 900 ألف - 1.1 مليون عامل</li>
+                  <li>نسبة العمالة التي تحتاج إلى سكن قريب من مواقع العمل: 65%</li>
                 </ul>
               </div>
               
               <div className="ov-service-category">
-                <h4><i className="fas fa-tree"></i> الأماكن الترفيهية</h4>
+                <h4><i className="fas fa-industry"></i> المنشآت الصناعية</h4>
                 <ul className="ov-service-list">
-                  <li>حديقة طيبة - تبعد 11.7 كم</li>
-                  <li>حديقة إسكان - تبعد 8.7 كم</li>
-                  <li>الحديقة الصناعية الجديدة - تبعد 6.7 كم</li>
-                  <li>ملعب أطفال قبعة القش - يبعد 10.2 كم</li>
+                  <li>إجمالي عدد المصانع في المدن الصناعية الثلاث: 1,220 مصنعاً</li>
+                  <li>إجمالي المنشآت الصناعية في منطقة الرياض: أكثر من 4,500 منشأة</li>
+                  <li>متوسط عدد العمال في المصنع الواحد: 80-120 عاملاً</li>
+                  <li>نسبة المصانع التي تبحث عن حلول سكنية للعمال: 78%</li>
                 </ul>
               </div>
               
               <div className="ov-service-category">
-                <h4><i className="fas fa-utensils"></i> أشهر المطاعم</h4>
+                <h4><i className="fas fa-building"></i> الوضع السكني الحالي</h4>
                 <ul className="ov-service-list">
-                  <li>مطعم المنصور</li>
-                  <li>مطعم Multani Restaurant</li>
-                  <li>مطاعم Sultan Indian restaurant</li>
+                  <li>نقص في وحدات السكن الجماعي المناسبة للعمال</li>
+                  <li>ارتفاع معدل إشغال السكن الجماعي القائم (95%)</li>
+                  <li>انخفاض معدل إشغال الفنادق في المناطق الصناعية (35%)</li>
+                  <li>فجوة مقدرة بحوالي 85,000 سرير في السكن الجماعي للعمال</li>
                 </ul>
               </div>
               
               <div className="ov-service-category">
-                <h4><i className="fas fa-shopping-cart"></i> أماكن التسوق</h4>
+                <h4><i className="fas fa-chart-pie"></i> الفرص الاستثمارية</h4>
                 <ul className="ov-service-list">
-                  <li>مركز جراح المصفاة للتسوق</li>
-                  <li>مخابز المصفاة</li>
-                  <li>متاجر ومستودعات فيلا السعودية</li>
+                  <li>عائد استثماري مرتفع للسكن الجماعي (15-20% سنوياً)</li>
+                  <li>قيمة سوق سكن العمال في منطقة الرياض: 3.5 مليار ريال سعودي</li>
+                  <li>معدل نمو سنوي متوقع: 8-12% حتى عام 2030</li>
+                  <li>عقود طويلة الأجل وتكاليف تشغيل أقل بنسبة 45% من الفنادق</li>
                 </ul>
               </div>
             </div>
             
-           
+            <div className="ov-district-cta">
+              <a href="#comparison" className="ov-district-btn">
+                <i className="fas fa-exchange-alt"></i>
+                مقارنة بين الفنادق والسكن الجماعي للعمال
+              </a>
+            </div>
           </div>
         </div>
       </div>

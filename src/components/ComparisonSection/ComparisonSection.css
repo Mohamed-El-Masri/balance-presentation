@@ -234,6 +234,20 @@
   margin-bottom: 25px;
 }
 
+.percentage-visual.enhanced {
+  margin-bottom: 25px;
+  background-color: rgba(0, 0, 0, 0.01);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.percentage-visual.enhanced:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
 .percentage-label {
   display: flex;
   justify-content: space-between;
@@ -241,9 +255,78 @@
   align-items: center;
 }
 
-.label-text {
+.tooltip-info {
+  position: relative;
+  color: var(--secondary-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.tooltip-info .tooltip-text {
+  visibility: hidden;
+  position: absolute;
+  bottom: 125%;
+  right: 50%;
+  transform: translateX(50%);
+  background-color: rgba(var(--primary-rgb), 0.95);
+  color: white;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  width: max-content;
+  max-width: 200px;
+  font-size: 0.8rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.tooltip-info:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(50%) translateY(-5px);
+}
+
+.percentage-value-container {
+  display: flex;
+  align-items: baseline;
+  margin-top: 10px;
+}
+
+.percentage-value {
+  font-weight: 800;
+  font-size: 1.5rem;
+  display: inline-block;
+  position: relative;
+}
+
+.hotel-card .percentage-value::after,
+.residential-card .percentage-value::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  right: 0;
+  width: 100%;
+  height: 3px;
+  border-radius: 3px;
+}
+
+.hotel-card .percentage-value::after {
+  background-color: #E35A45;
+}
+
+.residential-card .percentage-value::after {
+  background-color: #4D7C0F;
+}
+
+.percentage-metric {
   font-size: 0.85rem;
-  color: var(--text-muted, #888);
+  opacity: 0.7;
+  margin-right: 10px;
+  align-self: flex-end;
+  margin-bottom: 3px;
 }
 
 .percentage-bar {
@@ -259,6 +342,17 @@
   border-radius: 10px;
   transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1);
   width: 0;
+}
+
+/* Add background gradient styling for percentage fills */
+.hotel-card .percentage-fill {
+  background: linear-gradient(90deg, #E35A45, #E97A67);
+  box-shadow: 0 2px 8px rgba(233, 122, 103, 0.3);
+}
+
+.residential-card .percentage-fill {
+  background: linear-gradient(90deg, #4D7C0F, #65A30D);
+  box-shadow: 0 2px 8px rgba(77, 124, 15, 0.3);
 }
 
 .comparison-section.visible .percentage-fill {
@@ -724,17 +818,6 @@
   }
   
   .comparison-title {
-    font-size: 1.5rem;
-  }
-  
-  .icon-wrapper {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
-  }
-  
-  .comparison-summary {
-    flex-direction: column;
     align-items: center;
     text-align: center;
   }
@@ -867,4 +950,207 @@
 
 [data-theme='dark'] .comparison-cases {
   border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .percentage-visual.enhanced {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .percentage-visual.enhanced:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .tooltip-info .tooltip-text {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+[data-theme='dark'] .metric-card {
+  background-color: #252525;
+}
+
+[data-theme='dark'] .metric-header {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .metric-label {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .indicator-bar {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* إضافة قسم مؤشرات أداء تحويل الرخص */
+.conversion-metrics {
+  padding: 40px 0;
+  margin-top: 40px;
+  border-top: 1px dashed rgba(var(--primary-rgb), 0.1);
+}
+
+.metrics-title {
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.metrics-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  right: 50%;
+  transform: translateX(50%);
+  width: 80px;
+  height: 3px;
+  background-color: var(--secondary-color);
+  border-radius: 3px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.metric-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.metric-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.metric-header i {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  width: 45px;
+  height: 45px;
+  background-color: rgba(var(--primary-rgb), 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metric-header h4 {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  margin: 0;
+  font-weight: 600;
+}
+
+.metric-comparison {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.metric-item {
+  text-align: center;
+  flex: 1;
+}
+
+.metric-vs {
+  padding: 0 15px;
+  color: var(--text-muted, #888);
+  font-size: 1.1rem;
+}
+
+.metric-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.hotel .metric-value {
+  color: #E35A45;
+}
+
+.residence .metric-value {
+  color: #4D7C0F;
+}
+
+.metric-unit {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-color);
+  padding: 5px 12px;
+  border-radius: 30px;
+  background-color: rgba(0, 0, 0, 0.03);
+  display: inline-block;
+}
+
+.hotel .metric-label {
+  background-color: rgba(227, 90, 69, 0.1);
+  color: #E35A45;
+}
+
+.residence .metric-label {
+  background-color: rgba(77, 124, 15, 0.1);
+  color: #4D7C0F;
+}
+
+.metric-indicator {
+  margin-top: 20px;
+}
+
+.indicator-bar {
+  height: 12px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.indicator-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.indicator-fill.success {
+  background: linear-gradient(90deg, #4D7C0F, #65A30D);
+}
+
+.indicator-text {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4D7C0F;
+}
+
+/* تجاوب مع الشاشات المختلفة */
+@media (max-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .metric-value {
+    font-size: 2rem;
+  }
 }

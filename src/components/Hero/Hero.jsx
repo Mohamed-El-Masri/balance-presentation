@@ -12,13 +12,13 @@ const Hero = () => {
   
   // إضافة متغيرات حالة للعدادات
   const [plotCount, setPlotCount] = useState(0);
-  const [occupancyRate, setOccupancyRate] = useState(0);
+  const [occupancyRate, setOccupancyRate] = useState(0); // إضافة متغير حالة للنسبة
   const [workersCount, setWorkersCount] = useState(0);
   
   // القيم النهائية للعدادات
-  const finalPlotCount = 15;
-  const finalOccupancyRate = 87;
-  const finalWorkersCount = 15390;
+  const finalPlotCount = 281250;
+  const finalOccupancyRate = 95; // تعريف المتغير المفقود
+  const finalWorkersCount = 1406250;
   
   // مرجع للتحقق من بدء تشغيل العدادات
   const countersStarted = useRef(false);
@@ -117,7 +117,7 @@ const Hero = () => {
         // عداد عدد العمال (أسرع في البداية ثم يبطئ)
         const workersDuration = 2500;
         let workersCurrent = 0;
-        let step = 1;
+        let step = 1000; // زيادة كبيرة في البداية
         
         const workersInterval = setInterval(() => {
           // زيادة سرعة التغيير تدريجيًا ثم تقليلها قرب النهاية
@@ -219,21 +219,21 @@ const Hero = () => {
             <span className="metric-number counter">
               <span className="value">{plotCount}</span>
             </span>
-            <span className="metric-label">قطع أراضي</span>
+            <span className="metric-label">عدد العمال الحالى</span>
           </div>
           <div className="metric">
             <span className="metric-number counter">
               <span className="value">{occupancyRate}</span>
               <span className="percent">%</span>
             </span>
-            <span className="metric-label">نسبة الإشغال</span>
+            <span className="metric-label">نسبة إشغال السكن الجماعي</span>
           </div>
           <div className="metric">
             <span className="metric-number counter">
               <span className="value">{formatNumber(workersCount)}</span>
               <span className="plus">+</span>
             </span>
-            <span className="metric-label">عدد العمال</span>
+            <span className="metric-label">عدد العمال المتوقع بعد 2030</span>
           </div>
         </div> */}
       </div>
