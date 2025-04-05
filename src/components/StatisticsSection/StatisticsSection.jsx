@@ -31,40 +31,50 @@ ChartJS.register(
 );
 
 const StatisticsSection = () => {
+  // حالة إظهار العناصر
   const [statsVisible, setStatsVisible] = useState(false);
   const [chartVisible, setChartVisible] = useState(false);
   const [compareVisible, setCompareVisible] = useState(false);
   const [regionIndex, setRegionIndex] = useState(0);
+  const [activeInsight, setActiveInsight] = useState(null);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipData, setTooltipData] = useState({ content: '', position: { x: 0, y: 0 } });
   
+  // مراجع للعناصر
   const sectionRef = useRef();
   const statsRef = useRef();
   const chartRef = useRef();
   const compareRef = useRef();
   const regionRefs = useRef([]);
+  const tooltipRef = useRef(null);
 
   // بيانات إحصائيات المشاريع الصناعية
   const industrialStats = [
     { 
       icon: "fas fa-industry", 
       value: 4500, 
-      description: "منشأة صناعية في منطقة الرياض" 
+      description: "منشأة صناعية في منطقة الرياض",
+      additionalInfo: "وفقًا لإحصاءات الهيئة العامة للإحصاء، بلغ عدد المنشآت الصناعية في منطقة الرياض أكثر من 4500 منشأة صناعية متنوعة"
     },
     { 
       icon: "fas fa-hard-hat", 
       value: 450, 
       suffix: "ألف", 
-      description: "عامل في القطاع الصناعي" 
+      description: "عامل في القطاع الصناعي",
+      additionalInfo: "يعمل في القطاع الصناعي في منطقة الرياض أكثر من 450 ألف عامل وموظف في مختلف التخصصات والمجالات"
     },
     { 
       icon: "fas fa-building", 
       value: 1220, 
-      description: "مصنع في المدن الصناعية الثلاث" 
+      description: "مصنع في المدن الصناعية الثلاث",
+      additionalInfo: "تضم المدن الصناعية الثلاث في منطقة الرياض (الأولى والثانية والثالثة) أكثر من 1220 مصنعًا متنوعًا"
     },
     { 
       icon: "fas fa-bed", 
       value: 85, 
       suffix: "ألف", 
-      description: "فجوة في السكن الجماعي للعمال" 
+      description: "فجوة في السكن الجماعي للعمال",
+      additionalInfo: "هناك نقص كبير في السكن الجماعي للعمال يقدر بنحو 85 ألف سرير، مما يمثل فرصة استثمارية كبيرة"
     }
   ];
 
@@ -90,7 +100,8 @@ const StatisticsSection = () => {
       year: 1973,
       icon: "fas fa-industry",
       workers: 2500,
-      occupancy: 97
+      occupancy: 97,
+      additionalInfo: "تأسست المدينة الصناعية الأولى في الرياض عام 1973م وتعتبر من أقدم المدن الصناعية في المملكة"
     },
     {
       name: "المدينة الصناعية الثانية",
@@ -98,7 +109,8 @@ const StatisticsSection = () => {
       year: 1976,
       icon: "fas fa-industry",
       workers: 58000,
-      occupancy: 94
+      occupancy: 94,
+      additionalInfo: "تضم المدينة الصناعية الثانية أكبر عدد من المصانع في منطقة الرياض بإجمالي 1117 مصنعًا"
     },
     {
       name: "المدينة الصناعية الثالثة",
@@ -106,14 +118,69 @@ const StatisticsSection = () => {
       year: 2010,
       icon: "fas fa-industry",
       workers: 4200,
-      occupancy: 98
+      occupancy: 98,
+      additionalInfo: "المدينة الصناعية الثالثة هي الأحدث في منطقة الرياض وتتميز بالمصانع ذات التقنية العالية"
     },
     {
       name: "مدن صناعية أخرى",
       value: 3280,
       icon: "fas fa-map-marker-alt",
       workers: 385000,
-      occupancy: 92
+      occupancy: 92,
+      additionalInfo: "تشمل مدينة سدير الصناعية ومدينة الخرج الصناعية وعدة مناطق صناعية أخرى في أنحاء المملكة"
+    }
+  ];
+
+  // بيانات الرؤى والتحليلات
+  const insightsData = [
+    {
+      id: "housing-gap",
+      icon: "fas fa-chart-pie",
+      title: "الفجوة السكنية للعمال",
+      content: "تشير الإحصاءات إلى وجود فجوة كبيرة تقدر بـ <strong>85,000 سرير</strong> في السكن الجماعي للعمال في المناطق الصناعية بالرياض. تحويل الرخص من فندقي إلى سكن جماعي يمكن أن يساهم بشكل كبير في سد هذه الفجوة وتلبية الطلب المتزايد.",
+      chartData: {
+        type: "pie",
+        labels: ["السكن المتوفر", "الفجوة السكنية"],
+        datasets: [
+          {
+            data: [65, 35],
+            backgroundColor: ["#65A30D", "#E35A45"]
+          }
+        ]
+      }
+    },
+    {
+      id: "occupancy-diff",
+      icon: "fas fa-percentage",
+      title: "الفرق في معدل الإشغال",
+      content: "يصل الفرق في معدل الإشغال بين الفنادق والسكن الجماعي في المناطق الصناعية إلى <strong>60%</strong>، حيث أن معدل إشغال السكن الجماعي للعمال يتجاوز <strong>95%</strong> بينما لا تتعدى نسبة إشغال الفنادق <strong>35%</strong> في هذه المناطق.",
+      chartData: {
+        type: "bar",
+        labels: ["السكن الجماعي للعمال", "الفنادق التقليدية"],
+        datasets: [
+          {
+            data: [95, 35],
+            backgroundColor: ["#65A30D", "#E35A45"]
+          }
+        ]
+      }
+    },
+    {
+      id: "roi",
+      icon: "fas fa-hand-holding-usd",
+      title: "العائد الاستثماري",
+      content: "يوفر تحويل الرخص من فندقي إلى سكن جماعي عائداً استثمارياً أعلى بنسبة <strong>9.5%</strong> في المتوسط، مع انخفاض في تكاليف التشغيل بنسبة <strong>30%</strong> وفترة استرداد رأس المال أقصر بـ <strong>4 سنوات</strong>.",
+      chartData: {
+        type: "bar",
+        labels: ["السكن الجماعي للعمال", "الفنادق التقليدية"],
+        datasets: [
+          {
+            label: "العائد الاستثماري (%)",
+            data: [18, 8.5],
+            backgroundColor: ["#65A30D", "#E35A45"]
+          }
+        ]
+      }
     }
   ];
 
@@ -195,6 +262,25 @@ const StatisticsSection = () => {
     }
   };
 
+  // إعدادات الرسم البياني للرؤى
+  const insightChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        bodyFont: {
+          family: "'Tajawal', 'Arial', sans-serif"
+        },
+        titleFont: {
+          family: "'Tajawal', 'Arial', sans-serif"
+        }
+      }
+    }
+  };
+
   // مراقبة ظهور القسم في الشاشة
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -223,6 +309,28 @@ const StatisticsSection = () => {
     };
   }, [regionData.length]);
 
+  // التعامل مع مؤشرات المعلومات الإضافية
+  const handleInfoHover = (e, content) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltipData({
+      content,
+      position: {
+        x: rect.left + rect.width / 2,
+        y: rect.top - 10
+      }
+    });
+    setShowTooltip(true);
+  };
+
+  const handleInfoLeave = () => {
+    setShowTooltip(false);
+  };
+
+  // إظهار وإخفاء تفاصيل الرؤى
+  const toggleInsight = (insightId) => {
+    setActiveInsight(activeInsight === insightId ? null : insightId);
+  };
+
   return (
     <section id="statistics" className="statistics-section" ref={sectionRef}>
       <div className="container">
@@ -234,19 +342,30 @@ const StatisticsSection = () => {
           </p>
         </div>
 
-        {/* صف الإحصائيات الرئيسية باستخدام StatHighlight */}
+        {/* صف الإحصائيات الرئيسية */}
         <div className="stats-grid">
           {industrialStats.map((stat, index) => (
-            <StatHighlight
-              key={index}
-              value={stat.value.toString()}
-              suffix={stat.suffix || ""}
-              label={stat.description}
-              icon={stat.icon}
-              theme={index % 2 === 0 ? "primary" : "secondary"}
-              animationDelay={300 + (index * 200)}
-              size="large"
-            />
+            <div className="stat-box-wrapper" key={index}>
+              <StatHighlight
+                key={index}
+                value={stat.value.toString()}
+                suffix={stat.suffix || ""}
+                label={stat.description}
+                icon={stat.icon}
+                theme={index % 2 === 0 ? "primary" : "secondary"}
+                animationDelay={300 + (index * 200)}
+                size="large"
+              />
+              {stat.additionalInfo && (
+                <div 
+                  className="info-tooltip-trigger"
+                  onMouseEnter={(e) => handleInfoHover(e, stat.additionalInfo)}
+                  onMouseLeave={handleInfoLeave}
+                >
+                  <i className="fas fa-info-circle"></i>
+                </div>
+              )}
+            </div>
           ))}
         </div>
 
@@ -313,6 +432,20 @@ const StatisticsSection = () => {
           </div>
         </div>
 
+        <div className="comparison-stats">
+          <StatHighlight 
+            value="95" 
+            suffix="%" 
+            label="نسبة إشغال المجمعات السكنية للعمال" 
+            icon="fas fa-building"
+            theme="success"
+            description="تمثل معدل الإشغال المستدام للسكن الجماعي بسبب الطلب المرتفع من العمالة في المناطق الصناعية"
+            animationDelay={300}
+          />
+          
+          {/* ...باقي المكونات... */}
+        </div>
+
         {/* نظرة على المدن الصناعية في منطقة الرياض */}
         <div className="regional-distribution">
           <h3>المدن الصناعية في منطقة الرياض</h3>
@@ -348,49 +481,58 @@ const StatisticsSection = () => {
                 
                 <div className="region-bar" style={{ 
                   backgroundColor: 'rgba(200, 176, 154, 0.2)',
-                  scaleX: index < regionIndex ? 1 : 0
+                  transform: index < regionIndex ? 'scaleX(1)' : 'scaleX(0)'
                 }}></div>
+
+                {region.additionalInfo && (
+                  <div 
+                    className="info-tooltip-trigger region-info"
+                    onMouseEnter={(e) => handleInfoHover(e, region.additionalInfo)}
+                    onMouseLeave={handleInfoLeave}
+                  >
+                    <i className="fas fa-info-circle"></i>
+                  </div>
+                )}
               </div>
             ))}
           </div>
         </div>
 
-        {/* رؤى وتحليلات البيانات */}
-        <div className="data-insights">
-          <div className={`insight-card ${statsVisible ? 'visible' : ''}`}>
-            <div className="insight-header">
-              <div className="insight-icon">
-                <i className="fas fa-chart-pie"></i>
+        {/* رؤى وتحليلات البيانات - النسخة المحسنة */}
+        <div className="enhanced-data-insights">
+          <h3 className="insights-title">رؤى وتحليلات هامة</h3>
+          <div className="insights-grid">
+            {insightsData.map((insight) => (
+              <div 
+                key={insight.id} 
+                className={`insight-card enhanced ${statsVisible ? 'visible' : ''} ${activeInsight === insight.id ? 'expanded' : ''}`}
+                onClick={() => toggleInsight(insight.id)}
+              >
+                <div className="insight-header">
+                  <div className="insight-icon">
+                    <i className={insight.icon}></i>
+                  </div>
+                  <h4 className="insight-title">{insight.title}</h4>
+                  <div className="insight-expand">
+                    <i className={`fas fa-${activeInsight === insight.id ? 'minus' : 'plus'}`}></i>
+                  </div>
+                </div>
+                <div className="insight-content" dangerouslySetInnerHTML={{ __html: insight.content }}></div>
+                {activeInsight === insight.id && insight.chartData && (
+                  <div className="insight-chart">
+                    <Chart 
+                      type={insight.chartData.type} 
+                      data={{
+                        labels: insight.chartData.labels,
+                        datasets: insight.chartData.datasets
+                      }} 
+                      options={insightChartOptions} 
+                      height={200}
+                    />
+                  </div>
+                )}
               </div>
-              <h4 className="insight-title">الفجوة السكنية للعمال</h4>
-            </div>
-            <div className="insight-content">
-              تشير الإحصاءات إلى وجود فجوة كبيرة تقدر بـ <strong>85,000 سرير</strong> في السكن الجماعي للعمال في المناطق الصناعية بالرياض. تحويل الرخص من فندقي إلى سكن جماعي يمكن أن يساهم بشكل كبير في سد هذه الفجوة وتلبية الطلب المتزايد.
-            </div>
-          </div>
-          
-          <div className={`insight-card ${statsVisible ? 'visible' : ''}`}>
-            <div className="insight-header">
-              <div className="insight-icon">
-                <i className="fas fa-percentage"></i>
-              </div>
-              <h4 className="insight-title">الفرق في معدل الإشغال</h4>
-            </div>
-            <div className="insight-content">
-              يصل الفرق في معدل الإشغال بين الفنادق والسكن الجماعي في المناطق الصناعية إلى <strong>60%</strong>، حيث أن معدل إشغال السكن الجماعي للعمال يتجاوز <strong>95%</strong> بينما لا تتعدى نسبة إشغال الفنادق <strong>35%</strong> في هذه المناطق.
-            </div>
-          </div>
-          
-          <div className={`insight-card ${statsVisible ? 'visible' : ''}`}>
-            <div className="insight-header">
-              <div className="insight-icon">
-                <i className="fas fa-hand-holding-usd"></i>
-              </div>
-              <h4 className="insight-title">العائد الاستثماري</h4>
-            </div>
-            <div className="insight-content">
-              يوفر تحويل الرخص من فندقي إلى سكن جماعي عائداً استثمارياً أعلى بنسبة <strong>9.5%</strong> في المتوسط، مع انخفاض في تكاليف التشغيل بنسبة <strong>30%</strong> وفترة استرداد رأس المال أقصر بـ <strong>4 سنوات</strong>.
-            </div>
+            ))}
           </div>
         </div>
 
@@ -402,6 +544,25 @@ const StatisticsSection = () => {
           </a>
         </div>
       </div>
+
+      {/* Tooltip للمعلومات الإضافية */}
+      {showTooltip && (
+        <div 
+          className="custom-tooltip" 
+          ref={tooltipRef}
+          style={{
+            position: 'fixed',
+            top: `${tooltipData.position.y}px`,
+            left: `${tooltipData.position.x}px`,
+            transform: 'translate(-50%, -100%)'
+          }}
+        >
+          <div className="tooltip-content">
+            {tooltipData.content}
+          </div>
+          <div className="tooltip-arrow"></div>
+        </div>
+      )}
     </section>
   );
 };

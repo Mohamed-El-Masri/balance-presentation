@@ -2,36 +2,29 @@ import { useEffect, useState, useRef } from 'react';
 import './Hero.css';
 
 const Hero = () => {
+  // حالات المكون
   const [isVisible, setIsVisible] = useState(false);
-  const heroRef = useRef(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [typedText, setTypedText] = useState('');
-  const fullText = 'Balance Real Estate Company';  // Removed the extra space at the end
-  const typingSpeed = 100; // Slightly slower for better visibility
-  const typingDelay = 800; // Start typing sooner
   
-  // إضافة متغيرات حالة للعدادات
-  const [plotCount, setPlotCount] = useState(0);
-  const [occupancyRate, setOccupancyRate] = useState(0); // إضافة متغير حالة للنسبة
-  const [workersCount, setWorkersCount] = useState(0);
+  // المراجع
+  const heroRef = useRef(null);
   
-  // القيم النهائية للعدادات
-  const finalPlotCount = 281250;
-  const finalOccupancyRate = 95; // تعريف المتغير المفقود
-  const finalWorkersCount = 1406250;
-  
-  // مرجع للتحقق من بدء تشغيل العدادات
-  const countersStarted = useRef(false);
+  // النص الكامل للطباعة
+  const fullText = 'Balance Real Estate Company';
+  const typingSpeed = 100;
+  const typingDelay = 800;
 
   // تفعيل تأثيرات الظهور بعد تحميل الصفحة
   useEffect(() => {
+    // تعيين المكون مرئياً
     setIsVisible(true);
     
-    // إضافة مراقب التمرير لتأثيرات الشلل (Parallax)
+    // مراقب التمرير للتأثيرات المتوازية
     const handleScroll = () => {
       setScrollPosition(window.scrollY);
       
-      // تعديل الشفافية للموجة عند التمرير للأسفل
+      // تعديل شفافية الموجة عند التمرير
       const wave = document.querySelector('.wave');
       if (wave) {
         const opacity = Math.max(0.3, 1 - window.scrollY / 500);
@@ -41,9 +34,8 @@ const Hero = () => {
 
     window.addEventListener('scroll', handleScroll);
     
-    // Fixed typing animation without undefined issues
+    // تأثير الكتابة المتحركة
     const startTypingTimeout = setTimeout(() => {
-      // Reset typed text to make sure we start fresh
       setTypedText('');
       
       const textArray = fullText.split('');
@@ -51,109 +43,32 @@ const Hero = () => {
       
       const typingInterval = setInterval(() => {
         if (currentIndex < textArray.length) {
-          // Add each character one by one
-          setTypedText(prevText => textArray.slice(0, currentIndex + 1).join(''));
+          setTypedText(prev => textArray.slice(0, currentIndex + 1).join(''));
           currentIndex++;
         } else {
           clearInterval(typingInterval);
         }
       }, typingSpeed);
       
+      // تنظيف الفترة الزمنية عند الخروج
       return () => clearInterval(typingInterval);
     }, typingDelay);
 
-    // التأكد من أن المسافة بين الهيدر والمحتوى مناسبة
+    // ضبط المسافة بين الهيدر والمحتوى
     const header = document.querySelector('.header');
-    
     if (header && heroRef.current) {
       const headerHeight = header.offsetHeight;
       heroRef.current.style.paddingTop = `${headerHeight}px`;
     }
 
+    // تنظيف المستمعين عند الخروج
     return () => {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(startTypingTimeout);
     };
   }, []);
 
-  // تفعيل العدادات عند ظهور القسم
-  useEffect(() => {
-    // لا نشغل العدادات إلا مرة واحدة وبعد أن يصبح المحتوى مرئيًا
-    if (isVisible && !countersStarted.current) {
-      countersStarted.current = true;
-      
-      // تأخير بدء العدادات للحصول على تأثير متسلسل
-      setTimeout(() => {
-        // عداد قطع الأراضي (أبطأ قليلاً)
-        const plotDuration = 1500; // مدة العد
-        const plotIncrement = finalPlotCount / (plotDuration / 50); // الزيادة في كل خطوة
-        let plotCurrent = 0;
-        
-        const plotInterval = setInterval(() => {
-          plotCurrent += plotIncrement;
-          if (plotCurrent >= finalPlotCount) {
-            setPlotCount(finalPlotCount);
-            clearInterval(plotInterval);
-          } else {
-            setPlotCount(Math.floor(plotCurrent));
-          }
-        }, 50);
-        
-        // عداد نسبة الإشغال (متوسط السرعة)
-        const occupancyDuration = 2000;
-        const occupancyIncrement = finalOccupancyRate / (occupancyDuration / 30);
-        let occupancyCurrent = 0;
-        
-        const occupancyInterval = setInterval(() => {
-          occupancyCurrent += occupancyIncrement;
-          if (occupancyCurrent >= finalOccupancyRate) {
-            setOccupancyRate(finalOccupancyRate);
-            clearInterval(occupancyInterval);
-          } else {
-            setOccupancyRate(Math.floor(occupancyCurrent));
-          }
-        }, 30);
-        
-        // عداد عدد العمال (أسرع في البداية ثم يبطئ)
-        const workersDuration = 2500;
-        let workersCurrent = 0;
-        let step = 1000; // زيادة كبيرة في البداية
-        
-        const workersInterval = setInterval(() => {
-          // زيادة سرعة التغيير تدريجيًا ثم تقليلها قرب النهاية
-          if (workersCurrent < finalWorkersCount / 3) {
-            step = Math.min(15, step + 1);
-          } else if (workersCurrent > finalWorkersCount * 0.8) {
-            step = Math.max(1, step - 1);
-          }
-          
-          workersCurrent += step;
-          
-          if (workersCurrent >= finalWorkersCount) {
-            setWorkersCount(finalWorkersCount);
-            clearInterval(workersInterval);
-          } else {
-            setWorkersCount(workersCurrent);
-          }
-        }, 10);
-      }, 1800); // تأخير بدء العدادات بعد ظهور المحتوى
-    }
-  }, [isVisible]);
-
-  // دالة لتنسيق العدد مع إضافة فواصل الآلاف للأرقام الكبيرة
-  const formatNumber = (num) => {
-    if (num >= 1000) {
-      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-    return num;
-  };
-
-  // حساب تأثير الشلل للخلفية وبعض العناصر
-  const parallaxStyle = {
-    backgroundPosition: `center ${50 + (scrollPosition * 0.05)}%`
-  };
-  
-  // التمرير السلس للأسفل
+  // دالة التمرير السلس للأسفل
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -166,6 +81,11 @@ const Hero = () => {
         behavior: "smooth"
       });
     }
+  };
+
+  // حساب تأثير الشلل للخلفية
+  const parallaxStyle = {
+    backgroundPosition: `center ${50 + (scrollPosition * 0.05)}%`
   };
 
   return (
@@ -184,7 +104,7 @@ const Hero = () => {
       <div className="grid-overlay"></div>
       <div className="glow-overlay"></div>
       
-      {/* محتوى الهيرو الرئيسي - تم تبسيطه */}
+      {/* محتوى الهيرو الرئيسي */}
       <div className={`hero-content ${isVisible ? 'visible' : ''} simplified`}>
         <div className="badge animate fade-in badge-container">
           <div className="badge-logo-container">
@@ -200,7 +120,6 @@ const Hero = () => {
         
         <div className="typed-container animate fade-in delay-1">
           <p className="typed-text">
-            {/* Clean rendering of just the typed text */}
             {typedText}
             <span className="cursor" style={{ animation: 'blink 1s step-end infinite' }}>|</span>
           </p>
@@ -210,32 +129,6 @@ const Hero = () => {
           منصة تحليلية متكاملة لدراسة وتقييم المواقع المثالية للسكن في المناطق الصناعية
           <br />تساعد المستثمرين على اتخاذ القرارات الأمثل لتحويل المباني الفندقية إلى وحدات سكنية
         </p>
-        
-        {/* تم حذف hero-features */}
-        {/* تم حذف أزرار hero-cta */}
-
-        {/* <div className="metrics animate fade-in delay-3">
-          <div className="metric">
-            <span className="metric-number counter">
-              <span className="value">{plotCount}</span>
-            </span>
-            <span className="metric-label">عدد العمال الحالى</span>
-          </div>
-          <div className="metric">
-            <span className="metric-number counter">
-              <span className="value">{occupancyRate}</span>
-              <span className="percent">%</span>
-            </span>
-            <span className="metric-label">نسبة إشغال السكن الجماعي</span>
-          </div>
-          <div className="metric">
-            <span className="metric-number counter">
-              <span className="value">{formatNumber(workersCount)}</span>
-              <span className="plus">+</span>
-            </span>
-            <span className="metric-label">عدد العمال المتوقع بعد 2030</span>
-          </div>
-        </div> */}
       </div>
       
       {/* مؤشر التمرير للأسفل */}

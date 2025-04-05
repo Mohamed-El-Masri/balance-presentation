@@ -480,9 +480,9 @@
   right: 0;
   height: 100%;
   border-radius: 12px;
-  transition: width 2s cubic-bezier(0.22, 1, 0.36, 1); /* جعل الحركة أكثر سلاسة */
+  transition: width 2s cubic-bezier(0.22, 1, 0.36, 1);
   background-size: 35px 35px;
-  background-position: right center; /* تعديل موضع الخلفية */
+  background-position: right center;
 }
 
 .past .compare-progress-bar {
@@ -498,7 +498,7 @@
     transparent
   );
   animation: progress-animation-past 3s linear infinite;
-  box-shadow: 0 0 10px rgba(86, 95, 88, 0.4); /* إضافة توهج خفيف */
+  box-shadow: 0 0 10px rgba(86, 95, 88, 0.4);
 }
 
 .future .compare-progress-bar {
@@ -514,7 +514,7 @@
     transparent
   );
   animation: progress-animation-future 3s linear infinite;
-  box-shadow: 0 0 10px rgba(200, 176, 154, 0.5); /* إضافة توهج خفيف */
+  box-shadow: 0 0 10px rgba(200, 176, 154, 0.5);
 }
 
 /* تحسين الأنيميشن للنوعين من الأشرطة */
@@ -545,19 +545,19 @@
   position: relative;
   overflow: hidden;
   box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-  direction: ltr; /* نجعل اتجاه الشريط من اليمين لليسار */
+  direction: ltr;
 }
 
 .compare-progress-bar {
   position: absolute;
   top: 0;
-  right: 0; /* تغيير من left: 0 إلى right: 0 لبدء الشريط من اليمين */
+  right: 0;
   height: 100%;
   border-radius: 10px;
   transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   background-size: 30px 30px;
   background-image: linear-gradient(
-    -45deg, /* تعديل اتجاه التدرج ليكون متوافقًا مع الاتجاه الجديد */
+    -45deg,
     rgba(255, 255, 255, 0.15) 25%,
     transparent 25%,
     transparent 50%,
@@ -701,25 +701,25 @@
   box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
-  direction: ltr; /* نجعل اتجاه الشريط من اليمين لليسار */
-  transform-origin: right center; /* نغير نقطة بداية التحويل */
+  direction: ltr;
+  transform-origin: right center;
 }
 
 .region-bar::before {
   content: '';
   position: absolute;
   top: 0;
-  right: 0; /* تغيير من left: 0 إلى right: 0 */
+  right: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    -90deg, /* تعديل اتجاه التدرج */
+    -90deg,
     rgba(255, 255, 255, 0.2),
     rgba(255, 255, 255, 0.4),
     rgba(255, 255, 255, 0.2)
   );
   animation: shimmer-rtl 2s infinite;
-  transform: translateX(100%); /* تغيير اتجاه التحويل */
+  transform: translateX(100%);
 }
 
 @keyframes shimmer-rtl {
@@ -1074,7 +1074,7 @@
 /* تنسيق شبكة الإحصائيات الرئيسية */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 25px;
   margin: 50px 0;
 }
@@ -1158,4 +1158,359 @@
 
 [data-theme='dark'] .stat-text {
   color: rgba(255, 255, 255, 0.8);
+}
+
+/* تحسينات قسم الإحصائيات الرئيسية */
+.stat-box-wrapper {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.stat-box-wrapper:hover {
+  transform: translateY(-8px);
+}
+
+.info-tooltip-trigger {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(var(--secondary-rgb), 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+  transition: all 0.3s ease;
+  z-index: 5;
+}
+
+.info-tooltip-trigger:hover {
+  background: var(--secondary-color);
+  color: white;
+  transform: scale(1.1);
+}
+
+.region-info {
+  top: 15px;
+  right: 15px;
+  left: auto;
+}
+
+.custom-tooltip {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  max-width: 300px;
+  font-size: 0.9rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  line-height: 1.6;
+  text-align: start;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid var(--primary-color);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -90%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -100%);
+  }
+}
+
+/* تحسينات قسم الرؤى والتحليلات */
+.enhanced-data-insights {
+  margin-bottom: 60px;
+}
+
+.insights-title {
+  text-align: center;
+  color: var(--primary-color);
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.insights-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  right: 50%;
+  transform: translateX(50%);
+  width: 80px;
+  height: 3px;
+  background-color: var(--secondary-color);
+  border-radius: 3px;
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
+}
+
+.insight-card.enhanced {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+
+.insight-card.enhanced:hover {
+  transform: translateY(-5px);
+}
+
+.insight-card.expanded {
+  grid-column: 1 / -1;
+  transform: translateY(-5px);
+}
+
+.insight-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.insight-expand {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  background-color: rgba(var(--secondary-rgb), 0.1);
+}
+
+.insight-card:hover .insight-expand {
+  background-color: rgba(var(--secondary-rgb), 0.2);
+}
+
+.insight-chart {
+  margin-top: 20px;
+  height: 250px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.5s ease forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.insight-card.expanded .insight-content {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+/* تحسين أشرطة تقدم المناطق */
+.region-bar {
+  height: 5px;
+  width: 100%;
+  border-radius: 3px;
+  margin-top: 20px;
+  transform-origin: right center;
+  position: relative;
+  overflow: hidden;
+}
+
+.region-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer-rtl 2s infinite;
+  transform: translateX(100%);
+}
+
+/* تحسينات لدعم الأجهزة المحمولة */
+@media (max-width: 768px) {
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .insight-card.enhanced {
+    width: 100%;
+  }
+  
+  .stat-box-wrapper {
+    width: 100%;
+  }
+  
+  .custom-tooltip {
+    max-width: 250px;
+    padding: 10px 15px;
+    font-size: 0.85rem;
+  }
+}
+
+/* تحسينات للوضع الداكن */
+[data-theme='dark'] .info-tooltip-trigger {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme='dark'] .info-tooltip-trigger:hover {
+  background: var(--secondary-color);
+  color: white;
+}
+
+[data-theme='dark'] .custom-tooltip {
+  background-color: #2d2d2d;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .tooltip-arrow {
+  border-top-color: #2d2d2d;
+}
+
+[data-theme='dark'] .insight-expand {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme='dark'] .insight-card:hover .insight-expand {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* تحسين حاوية بطاقة الإحصائيات */
+.stat-box-wrapper {
+  position: relative;
+  transition: all 0.3s ease;
+  height: 100%;
+  min-height: 220px;
+  display: flex;
+}
+
+/* تحسين بطاقات الإحصائية وضمان الحجم المتناسق */
+.stat-box-wrapper > div {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* أنيميشن تدريجي لظهور الأرقام */
+@keyframes fadeNumberIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* تطبيق الأنيميشن على الأرقام */
+.highlight-value {
+  opacity: 0;
+  animation: fadeNumberIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.stat-box-wrapper:nth-child(1) .highlight-value {
+  animation-delay: 0.3s;
+}
+
+.stat-box-wrapper:nth-child(2) .highlight-value {
+  animation-delay: 0.5s;
+}
+
+.stat-box-wrapper:nth-child(3) .highlight-value {
+  animation-delay: 0.7s;
+}
+
+.stat-box-wrapper:nth-child(4) .highlight-value {
+  animation-delay: 0.9s;
+}
+
+/* تحسينات استجابة التصميم */
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
+@media (max-width: 992px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+  }
+  
+  .stat-box-wrapper {
+    min-height: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-box-wrapper {
+    min-height: 180px;
+  }
+}
+
+/* تنسيق خاص للأجهزة الصغيرة جدًا */
+@media (max-width: 360px) {
+  .highlight-value {
+    font-size: 1.8rem !important;
+  }
+  
+  .highlight-value .suffix {
+    font-size: 1.2rem !important;
+  }
+  
+  .highlight-icon {
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 1.8rem !important;
+  }
 }

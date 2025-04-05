@@ -1,163 +1,108 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './StatHighlight.css';
 
-// مكون متعدد الاستخدامات لعرض الإحصائيات والأرقام بتأثيرات بصرية متقدمة
-const StatHighlight = ({ 
+const StatHighlight = ({
   value,               // القيمة الرقمية للعرض
   suffix = '',         // لاحقة (مثل % أو +)
-  prefix = '',         // سابقة (مثل نحو أو ~)
   label,               // وصف الرقم
-  icon,                // أيقونة فونت أوسم (اختياري)
-  theme = 'primary',   // النمط اللوني - primary, secondary, success, danger, info, warning
+  icon,                // أيقونة فونت أوسم
+  theme = 'primary',   // النمط اللوني
   animationDelay = 0,  // تأخير بدء الحركة بالمللي ثانية
-  animationDuration = 2000, // مدة الحركة بالمللي ثانية
-  description,         // وصف توضيحي اختياري
-  size = 'medium',     // حجم المكون - small, medium, large
-  hoverEffect = true,  // تأثير عند المرور بالمؤشر
-  sourceInfo,          // معلومات مصدر البيانات (اختياري)
+  size = 'medium',     // small, medium, large
+  description = '',    // وصف توضيحي إضافي
   className = '',      // أي أصناف إضافية
-  comparison,          // قيمة مقارنة (اختياري) مثل { value: "15%", trend: "up", label: "عن العام السابق" }
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
   const [displayValue, setDisplayValue] = useState('0');
-  const ref = useRef(null);
-  const countRef = useRef(null);
+  const highlightRef = useRef(null);
 
-  // تحديد ما إذا كانت القيمة رقمية
-  const isNumber = !isNaN(parseFloat(value)) && isFinite(value);
-  const numericValue = isNumber ? parseFloat(value) : 0;
-  const formattedValue = isNumber 
-    ? Number(value).toLocaleString('ar-SA')
-    : value;
-
-  // مراقبة ظهور العنصر في الشاشة
+  // مراقبة ظهور المكون في الشاشة
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
+          // تأخير ليتوافق مع التأثيرات الأخرى
+          setTimeout(() => {
+            setIsVisible(true);
+          }, animationDelay);
+          observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    if (highlightRef.current) {
+      observer.observe(highlightRef.current);
     }
 
-    return () => observer.disconnect();
-  }, []);
-
-  // تنفيذ حركة العداد عند ظهور العنصر
-  useEffect(() => {
-    if (isVisible && isNumber && !isAnimating) {
-      setIsAnimating(true);
-      
-      const startTime = Date.now();
-      const startValue = 0;
-      const changeValue = numericValue;
-      
-      // تحديث قيمة العرض
-      const updateCounterValue = () => {
-        const currentTime = Date.now();
-        const elapsed = currentTime - startTime;
-        
-        if (elapsed < animationDuration) {
-          // استخدام دالة easing لجعل الحركة أكثر طبيعية
-          const progress = easeOutQuart(elapsed / animationDuration);
-          const currentValue = startValue + changeValue * progress;
-          
-          // تنسيق طريقة عرض القيمة
-          if (numericValue % 1 !== 0) {
-            // للأرقام العشرية
-            setDisplayValue(currentValue.toFixed(1));
-          } else {
-            // للأرقام الصحيحة
-            setDisplayValue(Math.floor(currentValue).toLocaleString('ar-SA'));
-          }
-          
-          requestAnimationFrame(updateCounterValue);
-        } else {
-          // عند انتهاء الحركة، استخدم القيمة النهائية الدقيقة
-          setDisplayValue(formattedValue);
-        }
-      };
-      
-      // دالة easing للحصول على حركة سلسة عند نهاية العد
-      function easeOutQuart(x) {
-        return 1 - Math.pow(1 - x, 4);
+    return () => {
+      if (highlightRef.current) {
+        observer.unobserve(highlightRef.current);
       }
+    };
+  }, [animationDelay]);
+
+  // تأثير عد الرقم تصاعدياً
+  useEffect(() => {
+    if (isVisible) {
+      // تحويل القيمة إلى رقم صحيح
+      const finalValue = parseInt(value.replace(/,/g, ''));
+      if (isNaN(finalValue)) {
+        setDisplayValue(value); // إذا كانت القيمة ليست رقمية، نعرضها مباشرة
+        return;
+      }
+
+      const duration = 1500; // مدة الانتقال بالمللي ثانية
+      const frameRate = 1000 / 60; // 60 فريم/ثانية
+      const totalFrames = Math.round(duration / frameRate);
       
-      // بدء الحركة بعد التأخير المحدد
-      setTimeout(() => {
-        requestAnimationFrame(updateCounterValue);
-      }, animationDelay);
-    } else if (!isNumber) {
-      // إذا كانت القيمة ليست رقمية، عرضها كما هي
-      setDisplayValue(value);
+      let currentFrame = 0;
+      const valueIncrement = finalValue / totalFrames;
+      
+      const timer = setInterval(() => {
+        currentFrame += 1;
+        const currentValue = Math.min(Math.round(currentFrame * valueIncrement), finalValue);
+        
+        // تنسيق العدد مع فواصل الآلاف
+        setDisplayValue(currentValue.toLocaleString('en-US')); // يستخدم نمط أرقام عالمي
+        
+        if (currentFrame >= totalFrames) {
+          clearInterval(timer);
+        }
+      }, frameRate);
+      
+      return () => clearInterval(timer);
     }
-  }, [isVisible, value, animationDelay, isNumber, formattedValue, numericValue, isAnimating, animationDuration]);
-
-  // تحديد الأصناف بناءً على الخصائص المختلفة
-  const statClass = `stat-highlight ${theme} ${size} ${className} ${hoverEffect ? 'hover-effect' : ''}`;
-
-  // عرض اتجاه المقارنة
-  const renderTrendIcon = () => {
-    if (!comparison || !comparison.trend) return null;
-    
-    return (
-      <span className={`trend-icon ${comparison.trend}`}>
-        <i className={`fas fa-arrow-${comparison.trend === 'up' ? 'up' : 'down'}`}></i>
-      </span>
-    );
-  };
+  }, [isVisible, value]);
 
   return (
-    <div className={statClass} ref={ref}>
-      <div className="stat-highlight-content">
+    <div 
+      ref={highlightRef}
+      className={`stat-highlight-component theme-${theme} size-${size} ${isVisible ? 'animated' : ''} ${className}`}
+      style={{ animationDelay: `${animationDelay}ms` }}
+    >
+      <div className="stat-highlight-inner">
         {icon && (
-          <div className="stat-icon">
+          <div className="stat-highlight-icon">
             <i className={icon}></i>
           </div>
         )}
         
-        <div className="stat-value-container">
-          <div className="stat-value">
-            {prefix && <span className="stat-prefix">{prefix}</span>}
-            <span ref={countRef} className="value">
-              {isVisible ? displayValue : '0'}
-            </span>
-            {suffix && <span className="stat-suffix">{suffix}</span>}
-            {renderTrendIcon()}
+        <div className="stat-highlight-value-wrapper">
+          <div className="stat-highlight-value">
+            {displayValue}
+            {suffix && <span className="suffix">{suffix}</span>}
           </div>
-          
-          {label && <h4 className="stat-label">{label}</h4>}
-          
-          {comparison && comparison.label && (
-            <div className="stat-comparison">
-              <span className={`comparison-value ${comparison.trend}`}>
-                {comparison.value}
-              </span>
-              <span className="comparison-label">{comparison.label}</span>
-            </div>
-          )}
         </div>
+        
+        {label && (
+          <div className="stat-highlight-label">{label}</div>
+        )}
+
+        {description && (
+          <div className="stat-highlight-description">{description}</div>
+        )}
       </div>
-      
-      {description && (
-        <div className="stat-description">
-          <p>{description}</p>
-        </div>
-      )}
-      
-      {sourceInfo && (
-        <div className="stat-source">
-          <span className="source-label">المصدر:</span>
-          <span className="source-value">{sourceInfo}</span>
-        </div>
-      )}
     </div>
   );
 };
