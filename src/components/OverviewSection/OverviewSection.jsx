@@ -29,7 +29,7 @@ function OverviewSection() {
             <h3>المعطيات الإحصائية</h3>
             <p>
               بناءً على تقارير الهيئة العامة للإحصاء ووزارة الموارد البشرية لعام 2023، يبلغ عدد العاملين 
-              في منطقة الرياض 4.3 مليون عامل، منهم حوالي 450 ألف في قطاع الصناعة وما يقارب 1.1 مليون في 
+              في منطقة الرياض 4.3 مليون عامل، منهم حوالي 3,500 في قطاع الصناعة وما يقارب 1.1 مليون في 
               قطاع التشييد والبناء. هذه الكثافة العمالية الهائلة تشكل طلباً حقيقياً على السكن الجماعي 
               وليس على الفنادق، مما يؤكد الحاجة لتحويل الرخص.
             </p>
@@ -74,12 +74,13 @@ function OverviewSection() {
 
           <div className="Overview-benefit-item">
             <div className="benefit-icon">
-              <i className="fas fa-sack-dollar"></i>
+              <i className="fas fa-dollar-sign"></i>
+           
             </div>
             <h4>عائد استثماري مستدام</h4>
             <p>
-              العقود طويلة الأمد مع الشركات والمصانع توفر استقراراً في الدخل وعائداً 
-              استثمارياً أعلى بنسبة 55% مقارنة بالفنادق في المناطق غير السياحية.
+            العقود طويلة الأمد مع الشركات والمصانع توفر استقراراً في الدخل وعائداً 
+            استثمارياً سنوياً يصل إلى 18% مقارنة بنسبة 8.5% للفنادق في المناطق غير السياحية.
             </p>
           </div>
 
@@ -94,110 +95,6 @@ function OverviewSection() {
             </p>
           </div>
         </div>
-
-        {/* <div className="workforce-stats">
-          <h3 className="workforce-title">
-            <i className="fas fa-chart-line"></i> إحصائيات القوى العاملة والمنشآت الصناعية
-          </h3>
-           */}
-          {/* <div className="stats-grid">
-            <StatHighlight 
-              value="4.3" 
-              suffix=" مليون" 
-              label="إجمالي القوى العاملة في منطقة الرياض" 
-              icon="fas fa-users"
-              theme="primary"
-              size="large"
-              description="المصدر: الهيئة العامة للإحصاء، تقرير سوق العمل 2023"
-            />
-            
-            <div className="stats-group">
-              <StatHighlight 
-                value="450" 
-                suffix=" ألف" 
-                label="العاملين في القطاع الصناعي" 
-                icon="fas fa-industry"
-                theme="secondary"
-                size="medium"
-              />
-              
-              <StatHighlight 
-                value="1.1" 
-                suffix=" مليون" 
-                label="العاملين في قطاع التشييد والبناء" 
-                icon="fas fa-hard-hat"
-                theme="secondary"
-                size="medium"
-              />
-            </div>
-            
-            <div className="stats-group">
-              <StatHighlight 
-                value="65" 
-                suffix="%" 
-                label="نسبة العمال الذين يحتاجون لسكن قريب" 
-                icon="fas fa-home"
-                theme="success"
-                size="medium"
-              />
-              
-              <StatHighlight 
-                value="78" 
-                suffix="%" 
-                label="نسبة المصانع الباحثة عن حلول سكنية" 
-                icon="fas fa-search"
-                theme="success"
-                size="medium"
-              />
-            </div>
-          </div> */}
-{/*           
-          <div className="stats-highlights">
-            <div className="stat-highlight-item">
-              <div className="highlight-icon">
-                <i className="fas fa-bed"></i>
-              </div>
-              <div className="highlight-content">
-                <div className="highlight-number">85,000+</div>
-                <div className="highlight-label">سرير</div>
-                <div className="highlight-description">فجوة في السكن الجماعي للعمال</div>
-              </div>
-            </div>
-            
-            <div className="stat-highlight-item">
-              <div className="highlight-icon">
-                <i className="fas fa-building"></i>
-              </div>
-              <div className="highlight-content">
-                <div className="highlight-number">1,220</div>
-                <div className="highlight-label">مصنع</div>
-                <div className="highlight-description">في المدن الصناعية الثلاث بالرياض</div>
-              </div>
-            </div>
-            
-            <div className="stat-highlight-item">
-              <div className="highlight-icon">
-                <i className="fas fa-percentage"></i>
-              </div>
-              <div className="highlight-content">
-                <div className="highlight-number">8-12%</div>
-                <div className="highlight-label">نمو سنوي</div>
-                <div className="highlight-description">معدل نمو سوق سكن العمال المتوقع حتى 2030</div>
-              </div>
-            </div>
-            
-            <div className="stat-highlight-item">
-              <div className="highlight-icon">
-                <i className="fas fa-money-bill-wave"></i>
-              </div>
-              <div className="highlight-content">
-                <div className="highlight-number">3.5</div>
-                <div className="highlight-label">مليار ريال</div>
-                <div className="highlight-description">قيمة سوق سكن العمال في منطقة الرياض</div>
-              </div>
-            </div>
-          </div>
-        </div> */}
 
         <div className="ov-district-showcase">
           <div className="ov-district-header">
@@ -257,7 +154,7 @@ function OverviewSection() {
                 <h4><i className="fas fa-users"></i> القوى العاملة في الرياض</h4>
                 <ul className="ov-service-list">
                   <li>إجمالي القوى العاملة في منطقة الرياض: 4.3 مليون عامل</li>
-                  <li>العاملين في القطاع الصناعي: 400 - 450 ألف عامل</li>
+                  <li>العاملين في القطاع الصناعي: 3,500 عامل</li>
                   <li>العاملين في قطاع التشييد والبناء: 900 ألف - 1.1 مليون عامل</li>
                   <li>نسبة العمالة التي تحتاج إلى سكن قريب من مواقع العمل: 65%</li>
                 </ul>
@@ -267,7 +164,7 @@ function OverviewSection() {
                 <h4><i className="fas fa-industry"></i> المنشآت الصناعية</h4>
                 <ul className="ov-service-list">
                   <li>إجمالي عدد المصانع في المدن الصناعية الثلاث: 1,220 مصنعاً</li>
-                  <li>إجمالي المنشآت الصناعية في منطقة الرياض: أكثر من 4,500 منشأة</li>
+                  <li>إجمالي المنشآت الصناعية في منطقة الرياض: 4,500 منشأة</li>
                   <li>متوسط عدد العمال في المصنع الواحد: 80-120 عاملاً</li>
                   <li>نسبة المصانع التي تبحث عن حلول سكنية للعمال: 78%</li>
                 </ul>
@@ -286,10 +183,10 @@ function OverviewSection() {
               <div className="ov-service-category">
                 <h4><i className="fas fa-chart-pie"></i> الفرص الاستثمارية</h4>
                 <ul className="ov-service-list">
-                  <li>عائد استثماري مرتفع للسكن الجماعي (15-20% سنوياً)</li>
+                  <li>عائد استثماري مرتفع للسكن الجماعي (15-18% سنوياً)</li>
                   <li>قيمة سوق سكن العمال في منطقة الرياض: 3.5 مليار ريال سعودي</li>
                   <li>معدل نمو سنوي متوقع: 8-12% حتى عام 2030</li>
-                  <li>عقود طويلة الأجل وتكاليف تشغيل أقل بنسبة 45% من الفنادق</li>
+                  <li>عقود طويلة الأجل وتكاليف تشغيل أقل بنسبة 30% من الفنادق</li>
                 </ul>
               </div>
             </div>

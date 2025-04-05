@@ -14,24 +14,24 @@
   "residential": {
     "complexes": 35,
     "capacity": 4500,
-    "occupancy": 92,
+    "occupancy": 95,
     "demand": 88,
     "area": 87500,
     "chartData": {
       "land": [20, 24, 27, 30, 32, 35],
-      "usage": [78, 82, 85, 89, 91, 92],
+      "usage": [78, 82, 85, 89, 91, 95],
       "years": ["2018", "2019", "2020", "2021", "2022", "2023"]
     }
   },
   "hotels": {
     "total": 45,
     "averageRating": 3.4,
-    "occupancy": 65,
+    "occupancy": 35,
     "demand": "low",
     "area": 65000,
     "chartData": {
       "land": [55, 52, 50, 48, 46, 45],
-      "usage": [85, 82, 75, 72, 68, 65],
+      "usage": [55, 50, 45, 40, 35, 35],
       "years": ["2018", "2019", "2020", "2021", "2022", "2023"]
     }
   }

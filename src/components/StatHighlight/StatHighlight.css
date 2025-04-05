@@ -43,7 +43,7 @@
 }
 
 /* أيقونة الإحصائية */
-.stat-highlight-icon {
+/* .stat-highlight-icon {
   width: 70px;
   height: 70px;
   border-radius: 50%;
@@ -57,7 +57,7 @@
 
 .stat-highlight-component:hover .stat-highlight-icon {
   transform: scale(1.1) rotate(5deg);
-}
+} */
 
 /* حاوية القيمة الرقمية */
 .stat-highlight-value-wrapper {

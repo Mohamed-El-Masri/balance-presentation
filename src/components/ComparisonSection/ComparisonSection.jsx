@@ -9,76 +9,75 @@ const ComparisonSection = () => {
   const comparisonCardsRef = useRef(null);
 
   // بيانات المقارنة - تم تحديثها لتركز على الفرق بين الفنادق والسكن الجماعي للعمال
-  const comparisonData = {
-    targetAudience: {
-      title: "الفئة المستهدفة",
-      hotelPercent: 10, // نسبة منخفضة لتوضيح عدم ملاءمة الفنادق للعمال
-      residentialPercent: 95,
-      hotelDescription: "الفنادق تستهدف السياح والزوار المؤقتين، وهي فئة نادرة في المناطق الصناعية",
-      residentialDescription: "السكن الجماعي مصمم خصيصاً لاحتياجات العمال والموظفين بالمناطق الصناعية",
-      icon: "fas fa-users",
-      difference: "+85%",
-      differenceText: "زيادة في ملاءمة الفئة المستهدفة",
-      color: "#4D7C0F"
-    },
-    occupancy: {
-      title: "معدل الإشغال",
-      hotelPercent: 35, // تخفيض النسبة لتوضيح واقع الفنادق في المناطق الصناعية
-      residentialPercent: 95,
-      hotelDescription: "معدل إشغال منخفض للفنادق في المناطق الصناعية لعدم وجود سياحة",
-      residentialDescription: "إشغال شبه كامل للسكن الجماعي مع قوائم انتظار للعمال",
-      icon: "fas fa-chart-line",
-      difference: "+60%",
-      differenceText: "زيادة في معدل الإشغال",
-      color: "#4D7C0F"
-    },
-    operationalCosts: {
-      title: "تكاليف التشغيل",
-      hotelPercent: 85,
-      residentialPercent: 40,
-      hotelDescription: "تكاليف مرتفعة لخدمات فندقية غير ضرورية للعمال",
-      residentialDescription: "تكاليف مخفضة تركز على احتياجات العمال الأساسية",
-      icon: "fas fa-hand-holding-usd",
-      difference: "-45%",
-      differenceText: "انخفاض في تكاليف التشغيل",
-      color: "#4D7C0F"
-    },
-    roi: {
-      title: "العائد على الاستثمار",
-      hotelPercent: 25, // تخفيض النسبة لإظهار التحدي الحقيقي للفنادق
-      residentialPercent: 80, // زيادة النسبة لتوضيح فرصة الاستثمار
-      hotelDescription: "عائد منخفض بسبب قلة الإشغال وارتفاع التكاليف التشغيلية",
-      residentialDescription: "عائد مستقر ومرتفع مع عقود طويلة الأمد للشركات والمصانع",
-      icon: "fas fa-percentage",
-      difference: "+55%",
-      differenceText: "زيادة في العائد الاستثماري",
-      color: "#4D7C0F"
-    },
-    proximity: {
-      title: "القرب من مكان العمل",
-      hotelPercent: 30,
-      residentialPercent: 90,
-      hotelDescription: "الفنادق غالباً ما تكون في مواقع بعيدة عن المناطق الصناعية",
-      residentialDescription: "السكن الجماعي يوفر إقامة قريبة من المصانع مما يقلل وقت التنقل",
-      icon: "fas fa-map-marker-alt",
-      difference: "+60%",
-      differenceText: "تحسين في القرب من أماكن العمل",
-      color: "#4D7C0F"
-    },
-    workerPreference: {
-      title: "تفضيلات العمال",
-      hotelPercent: 15,
-      residentialPercent: 95,
-      hotelDescription: "العمال لا يفضلون الإقامة في الفنادق بسبب التكلفة والتصميم غير المناسب",
-      residentialDescription: "العمال يفضلون السكن الجماعي المصمم خصيصاً لاحتياجاتهم",
-      icon: "fas fa-thumbs-up",
-      difference: "+80%",
-      differenceText: "زيادة في رضا العاملين",
-      color: "#4D7C0F"
-    }
-  };
-
-
+ // تعديل متغير comparisonData
+const comparisonData = {
+  targetAudience: {
+    title: "الفئة المستهدفة",
+    hotelPercent: 15,
+    residentialPercent: 85, // تم تخفيضها من 95% للتوافق
+    hotelDescription: "الفنادق تستهدف السياح والزوار المؤقتين، وهي فئة نادرة في المناطق الصناعية",
+    residentialDescription: "السكن الجماعي مصمم خصيصاً لاحتياجات العمال والموظفين بالمناطق الصناعية",
+    icon: "fas fa-users",
+    difference: "+70%",
+    differenceText: "زيادة في ملاءمة الفئة المستهدفة",
+    color: "#4D7C0F"
+  },
+  occupancy: {
+    title: "معدل الإشغال",
+    hotelPercent: 35,
+    residentialPercent: 95,
+    hotelDescription: "معدل إشغال منخفض للفنادق في المناطق الصناعية لعدم وجود سياحة",
+    residentialDescription: "إشغال شبه كامل للسكن الجماعي مع قوائم انتظار للعمال",
+    icon: "fas fa-chart-line",
+    difference: "+60%",
+    differenceText: "زيادة في معدل الإشغال",
+    color: "#4D7C0F"
+  },
+  operationalCosts: {
+    title: "تكاليف التشغيل",
+    hotelPercent: 65,
+    residentialPercent: 35,
+    hotelDescription: "تكاليف مرتفعة لخدمات فندقية غير ضرورية للعمال",
+    residentialDescription: "تكاليف مخفضة تركز على احتياجات العمال الأساسية",
+    icon: "fas fa-hand-holding-usd",
+    difference: "-30%",
+    differenceText: "انخفاض في تكاليف التشغيل",
+    color: "#4D7C0F"
+  },
+  roi: {
+    title: "العائد على الاستثمار",
+    hotelPercent: 8.5,
+    residentialPercent: 18,
+    hotelDescription: "عائد منخفض بسبب قلة الإشغال وارتفاع التكاليف التشغيلية",
+    residentialDescription: "عائد مستقر ومرتفع مع عقود طويلة الأمد للشركات والمصانع",
+    icon: "fas fa-percentage",
+    difference: "+9.5%",
+    differenceText: "زيادة في العائد الاستثماري",
+    color: "#4D7C0F"
+  },
+  proximity: {
+    title: "القرب من مكان العمل",
+    hotelPercent: 40,
+    residentialPercent: 90,
+    hotelDescription: "الفنادق غالباً ما تكون في مواقع بعيدة عن المناطق الصناعية",
+    residentialDescription: "السكن الجماعي يوفر إقامة قريبة من المصانع مما يقلل وقت التنقل",
+    icon: "fas fa-map-marker-alt",
+    difference: "+50%",
+    differenceText: "تحسين في القرب من أماكن العمل",
+    color: "#4D7C0F"
+  },
+  workerPreference: {
+    title: "تفضيلات العمال",
+    hotelPercent: 15,
+    residentialPercent: 85,
+    hotelDescription: "العمال لا يفضلون الإقامة في الفنادق بسبب التكلفة والتصميم غير المناسب",
+    residentialDescription: "العمال يفضلون السكن الجماعي المصمم خصيصاً لاحتياجاتهم",
+    icon: "fas fa-thumbs-up",
+    difference: "+70%",
+    differenceText: "زيادة في رضا العاملين",
+    color: "#4D7C0F"
+  }
+};
   // مراقبة ظهور القسم في الشاشة للتحريك
   useEffect(() => {
     const observer = new IntersectionObserver(

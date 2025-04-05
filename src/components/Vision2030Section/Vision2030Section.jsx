@@ -67,7 +67,7 @@ const Vision2030Section = () => {
             </p>
             <div className="goal-metrics">
               <div className="metric">
-                <span className="target">45%</span>
+                <span className="target">30%</span>
                 <span className="unit">تخفيض</span>
                 <span className="label">في الانبعاثات الكربونية</span>
               </div>

@@ -8,12 +8,12 @@ import {
   PointElement,
   LineElement,
   BarElement,
-  PieElement,
+  // إزالة PieElement لأنه غير موجود في مكتبة Chart.js
   ArcElement,
-  LineController, // إضافة هذا السطر
-  BarController, // إضافة هذا السطر
-  PieController, // إضافة هذا السطر
-  DoughnutController, // إضافة هذا السطر 
+  LineController,
+  BarController, 
+  PieController,
+  DoughnutController,
   Title,
   Tooltip,
   Legend,
@@ -21,18 +21,18 @@ import {
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 
-// تسجيل مكونات Chart.js بالطريقة الصحيحة
+// تسجيل مكونات Chart.js
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
   BarElement,
-  ArcElement,
-  LineController, // مهم جداً لمخططات الخط
-  BarController, // مهم لمخططات الأعمدة
-  PieController, // مهم لمخططات الدائرة
-  DoughnutController, // مهم لمخططات الدائرة المجوفة
+  ArcElement, // هذا هو المكون المستخدم لمخططات الدائرة (Pie) و (Doughnut)
+  LineController,
+  BarController,
+  PieController,
+  DoughnutController,
   Title,
   Tooltip,
   Legend,
@@ -57,49 +57,49 @@ const StatisticsSection = () => {
   const regionRefs = useRef([]);
   const tooltipRef = useRef(null);
 
-  // بيانات إحصائيات المشاريع الصناعية
-  const industrialStats = [
-    { 
-      icon: "fas fa-industry", 
-      value: 4500, 
-      description: "منشأة صناعية في منطقة الرياض",
-      additionalInfo: "وفقًا لإحصاءات الهيئة العامة للإحصاء، بلغ عدد المنشآت الصناعية في منطقة الرياض أكثر من 4500 منشأة صناعية متنوعة"
-    },
-    { 
-      icon: "fas fa-hard-hat", 
-      value: 450, 
-      suffix: "ألف", 
-      description: "عامل في القطاع الصناعي",
-      additionalInfo: "يعمل في القطاع الصناعي في منطقة الرياض أكثر من 450 ألف عامل وموظف في مختلف التخصصات والمجالات"
-    },
-    { 
-      icon: "fas fa-building", 
-      value: 1220, 
-      description: "مصنع في المدن الصناعية الثلاث",
-      additionalInfo: "تضم المدن الصناعية الثلاث في منطقة الرياض (الأولى والثانية والثالثة) أكثر من 1220 مصنعًا متنوعًا"
-    },
-    { 
-      icon: "fas fa-bed", 
-      value: 85, 
-      suffix: "ألف", 
-      description: "فجوة في السكن الجماعي للعمال",
-      additionalInfo: "هناك نقص كبير في السكن الجماعي للعمال يقدر بنحو 85 ألف سرير، مما يمثل فرصة استثمارية كبيرة"
-    }
-  ];
+// تعديل بيانات إحصائيات المشاريع الصناعية
+const industrialStats = [
+  { 
+    icon: "fas fa-industry", 
+    value: 4500, 
+    description: "منشأة صناعية في منطقة الرياض",
+    additionalInfo: "وفقًا لإحصاءات الهيئة العامة للإحصاء، بلغ عدد المنشآت الصناعية في منطقة الرياض 4,500 منشأة صناعية متنوعة"
+  },
+  { 
+    icon: "fas fa-hard-hat", 
+    value: 3500,
+    description: "عامل في القطاع الصناعي",
+    additionalInfo: "يعمل في القطاع الصناعي في منطقة الرياض 3,500 عامل وموظف في مختلف التخصصات والمجالات"
+  },
+  { 
+    icon: "fas fa-building", 
+    value: 1220, 
+    description: "مصنع في المدن الصناعية الثلاث",
+    additionalInfo: "تضم المدن الصناعية الثلاث في منطقة الرياض (الأولى والثانية والثالثة) 1,220 مصنعًا متنوعًا"
+  },
+  { 
+    icon: "fas fa-bed", 
+    value: 85, 
+    suffix: "ألف", 
+    description: "فجوة في السكن الجماعي للعمال",
+    additionalInfo: "هناك نقص كبير في السكن الجماعي للعمال يقدر بنحو 85 ألف سرير، مما يمثل فرصة استثمارية كبيرة"
+  }
+];
 
-  // بيانات المقارنة بين السكن الفندقي والسكن الجماعي
-  const comparisonData = {
-    past: [
-      { label: "نسبة الإشغال", value: 35, max: 100 },
-      { label: "العائد الاستثماري السنوي", value: 8.5, max: 20 },
-      { label: "تكاليف التشغيل", value: 65, max: 100 }
-    ],
-    future: [
-      { label: "نسبة الإشغال", value: 95, max: 100 },
-      { label: "العائد الاستثماري السنوي", value: 18, max: 20 },
-      { label: "تكاليف التشغيل", value: 35, max: 100 }
-    ]
-  };
+// تعديل بيانات المقارنة بين السكن الفندقي والسكن الجماعي
+const comparisonData = {
+  past: [
+    { label: "نسبة الإشغال", value: 35, max: 100 },
+    { label: "العائد الاستثماري السنوي", value: 8.5, max: 20 },
+    { label: "تكاليف التشغيل", value: 65, max: 100 }
+  ],
+  future: [
+    { label: "نسبة الإشغال", value: 95, max: 100 },
+    { label: "العائد الاستثماري السنوي", value: 18, max: 20 },
+    { label: "تكاليف التشغيل", value: 35, max: 100 }
+  ]
+};
+
 
   // بيانات المناطق الصناعية
   const regionData = [
@@ -117,7 +117,7 @@ const StatisticsSection = () => {
       value: 1117,
       year: 1976,
       icon: "fas fa-industry",
-      workers: 58000,
+      workers: 1240, // تعديل لتوافق ملف statistics-detailed.json
       occupancy: 94,
       additionalInfo: "تضم المدينة الصناعية الثانية أكبر عدد من المصانع في منطقة الرياض بإجمالي 1117 مصنعًا"
     },
@@ -318,21 +318,27 @@ const StatisticsSection = () => {
     };
   }, [regionData.length]);
 
-  // التعامل مع مؤشرات المعلومات الإضافية
+  // التعامل مع مؤشرات المعلومات الإضافية بتحسين التفاعلية
   const handleInfoHover = (e, content) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setTooltipData({
       content,
       position: {
         x: rect.left + rect.width / 2,
-        y: rect.top - 10
+        y: rect.top - 5 // ضبط المسافة بين التلميح وزر المعلومات
       }
     });
+    // تطبيق تأثير نبض على الزر عند التحويم عليه
+    e.currentTarget.classList.add('tooltip-active');
     setShowTooltip(true);
   };
 
-  const handleInfoLeave = () => {
+  const handleInfoLeave = (e) => {
     setShowTooltip(false);
+    // إزالة التأثير عند مغادرة التحويم
+    if (e.currentTarget) {
+      e.currentTarget.classList.remove('tooltip-active');
+    }
   };
 
   // إظهار وإخفاء تفاصيل الرؤى
@@ -351,10 +357,14 @@ const StatisticsSection = () => {
           </p>
         </div>
 
-        {/* صف الإحصائيات الرئيسية */}
+        {/* صف الإحصائيات الرئيسية - محسّن */}
         <div className="stats-grid">
           {industrialStats.map((stat, index) => (
-            <div className="stat-box-wrapper" key={index}>
+            <div 
+              className="stat-box-wrapper" 
+              key={index}
+              style={{ '--animation-delay': `${300 + (index * 150)}ms` }} // تطبيق تأخير متدرج للظهور
+            >
               <StatHighlight
                 key={index}
                 value={stat.value.toString()}
@@ -362,7 +372,7 @@ const StatisticsSection = () => {
                 label={stat.description}
                 icon={stat.icon}
                 theme={index % 2 === 0 ? "primary" : "secondary"}
-                animationDelay={300 + (index * 200)}
+                animationDelay={450 + (index * 150)} // زيادة قليلة في التأخير لإظهار المحتوى بعد الحاوية
                 size="large"
               />
               {stat.additionalInfo && (
@@ -370,8 +380,19 @@ const StatisticsSection = () => {
                   className="info-tooltip-trigger"
                   onMouseEnter={(e) => handleInfoHover(e, stat.additionalInfo)}
                   onMouseLeave={handleInfoLeave}
+                  onClick={(e) => handleInfoHover(e, stat.additionalInfo)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleInfoHover(e, stat.additionalInfo);
+                    }
+                  }}
+                  tabIndex="0"
+                  role="button"
+                  aria-label="عرض المزيد من المعلومات"
+                  title="انقر لعرض المزيد من المعلومات"
                 >
-                  <i className="fas fa-info-circle"></i>
+                  <i className="fas fa-info"></i>
                 </div>
               )}
             </div>
@@ -479,7 +500,7 @@ const StatisticsSection = () => {
                     </div>
                   )}
                   <div className="region-stat">
-                    <div className="stat-icon"><i className="fas fa-user-hard-hat"></i></div>
+                    <div className="stat-icon"><i className="fas fa-hard-hat"></i></div>
                     <div className="stat-text">~{region.workers.toLocaleString('ar-SA')} عامل</div>
                   </div>
                   <div className="region-stat">
@@ -498,8 +519,19 @@ const StatisticsSection = () => {
                     className="info-tooltip-trigger region-info"
                     onMouseEnter={(e) => handleInfoHover(e, region.additionalInfo)}
                     onMouseLeave={handleInfoLeave}
+                    onClick={(e) => handleInfoHover(e, region.additionalInfo)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleInfoHover(e, region.additionalInfo);
+                      }
+                    }}
+                    tabIndex="0"
+                    role="button"
+                    aria-label="عرض المزيد من المعلومات عن المنطقة"
+                    title="انقر لعرض المزيد من المعلومات"
                   >
-                    <i className="fas fa-info-circle"></i>
+                    <i className="fas fa-info"></i>
                   </div>
                 )}
               </div>
@@ -546,12 +578,7 @@ const StatisticsSection = () => {
         </div>
 
         {/* دعوة للعمل */}
-        <div className="cta-container">
-          <a href="#contact" className="cta-button">
-            <i className="fas fa-arrow-left ml-2"></i>
-            احصل على دراسة جدوى مفصلة
-          </a>
-        </div>
+
       </div>
 
       {/* Tooltip للمعلومات الإضافية */}
@@ -565,11 +592,13 @@ const StatisticsSection = () => {
             left: `${tooltipData.position.x}px`,
             transform: 'translate(-50%, -100%)'
           }}
+          role="tooltip"
+          aria-hidden="false"
         >
           <div className="tooltip-content">
             {tooltipData.content}
           </div>
-          <div className="tooltip-arrow"></div>
+          <div className="tooltip-arrow" aria-hidden="true"></div>
         </div>
       )}
     </section>
