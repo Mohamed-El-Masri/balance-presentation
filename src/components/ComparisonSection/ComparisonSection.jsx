@@ -124,7 +124,7 @@ const comparisonData = {
           <h2 className="section-title">مقارنة بين الفنادق والسكن الجماعي للعمال</h2>
           <p className="section-description">
             تحليل مفصل يوضح لماذا تعتبر عملية تحويل الرخصة من فندقي إلى سكن جماعي للعمال استثماراً مُجدياً 
-            في المناطق الصناعية، حيث أن احتياجات وتفضيلات العاملين في هذه المناطق تختلف تماماً عن الفئة المستهدفة للفنادق التقليدية.
+            في المناطق الصناعية، حيث أن احتياجات وتفضيلات العمال تختلف تماماً عن الفئة المستهدفة للفنادق التقليدية.
           </p>
         </header>
 
@@ -291,8 +291,8 @@ const comparisonData = {
             />
             
             <StatHighlight 
-              value="55" 
-              suffix="%" 
+              value="9.5" 
+              suffix="%+" 
               label="زيادة في العائد الاستثماري بعد التحويل" 
               icon="fas fa-money-bill-wave"
               theme="secondary"
@@ -301,7 +301,7 @@ const comparisonData = {
             />
             
             <StatHighlight 
-              value="3250" 
+              value="1,450" 
               suffix="+" 
               label="عدد المصانع التي تحتاج لسكن عمال قريب" 
               icon="fas fa-industry"
@@ -324,7 +324,7 @@ const comparisonData = {
               
               <div className="metric-comparison">
                 <div className="metric-item hotel">
-                  <div className="metric-value">7-9</div>
+                  <div className="metric-value">7 : 9</div>
                   <div className="metric-unit">سنوات</div>
                   <div className="metric-label">الفنادق</div>
                 </div>
@@ -334,7 +334,7 @@ const comparisonData = {
                 </div>
                 
                 <div className="metric-item residence">
-                  <div className="metric-value">3-5</div>
+                  <div className="metric-value">3 : 5</div>
                   <div className="metric-unit">سنوات</div>
                   <div className="metric-label">السكن الجماعي</div>
                 </div>
@@ -356,7 +356,7 @@ const comparisonData = {
               
               <div className="metric-comparison">
                 <div className="metric-item hotel">
-                  <div className="metric-value">8-12</div>
+                  <div className="metric-value">8 : 12</div>
                   <div className="metric-unit">%</div>
                   <div className="metric-label">الفنادق</div>
                 </div>
@@ -366,7 +366,7 @@ const comparisonData = {
                 </div>
                 
                 <div className="metric-item residence">
-                  <div className="metric-value">18-25</div>
+                  <div className="metric-value">18 : 25</div>
                   <div className="metric-unit">%</div>
                   <div className="metric-label">السكن الجماعي</div>
                 </div>

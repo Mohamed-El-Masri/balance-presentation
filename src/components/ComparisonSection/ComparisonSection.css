@@ -1155,3 +1155,200 @@
     font-size: 2rem;
   }
 }
+
+/* تحسين متكامل للوضع الداكن */
+[data-theme='dark'] .comparison-section {
+  background-color: var(--alt-bg);
+}
+
+/* تحسين توافق بطاقات المقارنة مع الوضع الداكن */
+[data-theme='dark'] .comparison-card {
+  background-color: #242424;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme='dark'] .comparison-card:hover {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.12);
+  background-color: #2a2a2a;
+}
+
+/* تحسين رؤوس البطاقات في الوضع الداكن */
+[data-theme='dark'] .hotel-card .card-header {
+  background: linear-gradient(135deg, #E35A45, #c24836);
+  box-shadow: 0 4px 12px rgba(227, 90, 69, 0.25);
+}
+
+[data-theme='dark'] .residential-card .card-header {
+  background: linear-gradient(135deg, #4D7C0F, #3a5e0b);
+  box-shadow: 0 4px 12px rgba(77, 124, 15, 0.25);
+}
+
+/* تحسين نمط النصوص في الوضع الداكن */
+[data-theme='dark'] .description,
+[data-theme='dark'] .feature-item span,
+[data-theme='dark'] .difference-text,
+[data-theme='dark'] .result-conclusion,
+[data-theme='dark'] .card-body {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+/* تحسين البطاقات البصرية للنسب المئوية في الوضع الداكن */
+[data-theme='dark'] .percentage-visual.enhanced {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='dark'] .percentage-visual.enhanced:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* تحسين أشرطة النسب المئوية في الوضع الداكن */
+[data-theme='dark'] .percentage-bar {
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* تحسين لون قيم النسب المئوية في الوضع الداكن */
+[data-theme='dark'] .hotel-card .percentage-value {
+  color: #E97A67;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='dark'] .residential-card .percentage-value {
+  color: #7fb72b;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='dark'] .percentage-metric {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* تحسين قائمة المميزات في الوضع الداكن */
+[data-theme='dark'] .feature-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .feature-item.positive i {
+  color: #7fb72b;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .feature-item.negative i {
+  color: #E97A67;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* تحسين بطاقة النتائج في الوضع الداكن */
+[data-theme='dark'] .result-card {
+  background: linear-gradient(180deg, #2a2a2a, #232323);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='dark'] .result-icon {
+  background-color: var(--secondary-color);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .divider {
+  background-color: rgba(var(--secondary-rgb), 0.5);
+}
+
+/* تحسين أزرار التبويب في الوضع الداكن */
+[data-theme='dark'] .tab-button {
+  color: rgba(255, 255, 255, 0.8);
+  border-color: transparent;
+}
+
+[data-theme='dark'] .tab-button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+[data-theme='dark'] .tab-button.active {
+  background-color: rgba(255, 255, 255, 0.07);
+  color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+[data-theme='dark'] .tab-icon {
+  background-color: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme='dark'] .tab-button.active .tab-icon {
+  background-color: rgba(var(--secondary-rgb), 0.2);
+  color: var(--secondary-color);
+}
+
+/* تحسين مؤشرات الأداء في الوضع الداكن */
+[data-theme='dark'] .metric-card {
+  background-color: #242424;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='dark'] .metric-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='dark'] .metric-header i {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--secondary-color);
+}
+
+[data-theme='dark'] .hotel .metric-value {
+  color: #E97A67;
+}
+
+[data-theme='dark'] .residence .metric-value {
+  color: #7fb72b;
+}
+
+[data-theme='dark'] .hotel .metric-label {
+  background-color: rgba(227, 90, 69, 0.15);
+}
+
+[data-theme='dark'] .residence .metric-label {
+  background-color: rgba(77, 124, 15, 0.15);
+}
+
+[data-theme='dark'] .indicator-bar {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* تحسين حالات التحويل في الوضع الداكن */
+[data-theme='dark'] .case-item {
+  background-color: #242424;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='dark'] .case-item:hover {
+  background-color: #2a2a2a;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme='dark'] .case-icon {
+  background-color: rgba(var(--secondary-rgb), 0.15);
+}
+
+/* تحسين التأثيرات الحركية في الوضع الداكن */
+[data-theme='dark'] .comparison-section.visible .counter,
+[data-theme='dark'] .comparison-section.visible .percentage-fill {
+  animation-duration: 2.5s; /* إبطاء الحركة قليلاً للوضوح */
+}
+
+/* تحسين الزخارف الخلفية */
+[data-theme='dark'] .comparison-bg-pattern {
+  opacity: 0.3; /* تقليل الشفافية للزخرفة في الخلفية الداكنة */
+  background-image: 
+    radial-gradient(circle at 20% 25%, rgba(200, 176, 154, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 75%, rgba(86, 95, 88, 0.04) 0%, transparent 50%);
+}
+
+/* تحسين الملخص */
+[data-theme='dark'] .comparison-summary {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+}

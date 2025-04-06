@@ -108,7 +108,7 @@ const comparisonData = {
       value: 66,
       year: 1973,
       icon: "fas fa-industry",
-      workers: 2500,
+      workers: 6600,
       occupancy: 97,
       additionalInfo: "تأسست المدينة الصناعية الأولى في الرياض عام 1973م وتعتبر من أقدم المدن الصناعية في المملكة"
     },
@@ -117,7 +117,7 @@ const comparisonData = {
       value: 1117,
       year: 1976,
       icon: "fas fa-industry",
-      workers: 1240, // تعديل لتوافق ملف statistics-detailed.json
+      workers: 106115,
       occupancy: 94,
       additionalInfo: "تضم المدينة الصناعية الثانية أكبر عدد من المصانع في منطقة الرياض بإجمالي 1117 مصنعًا"
     },
@@ -126,15 +126,15 @@ const comparisonData = {
       value: 37,
       year: 2010,
       icon: "fas fa-industry",
-      workers: 4200,
+      workers: 3450,
       occupancy: 98,
       additionalInfo: "المدينة الصناعية الثالثة هي الأحدث في منطقة الرياض وتتميز بالمصانع ذات التقنية العالية"
     },
     {
-      name: "مدن صناعية أخرى",
+      name: "منشات صناعية خارج المدن الصناعية", 
       value: 3280,
       icon: "fas fa-map-marker-alt",
-      workers: 385000,
+      workers: 346835,
       occupancy: 92,
       additionalInfo: "تشمل مدينة سدير الصناعية ومدينة الخرج الصناعية وعدة مناطق صناعية أخرى في أنحاء المملكة"
     }
@@ -358,7 +358,7 @@ const comparisonData = {
         </div>
 
         {/* صف الإحصائيات الرئيسية - محسّن */}
-        <div className="stats-grid">
+        {/* <div className="stats-grid">
           {industrialStats.map((stat, index) => (
             <div 
               className="stat-box-wrapper" 
@@ -397,7 +397,7 @@ const comparisonData = {
               )}
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* رسم بياني يوضح مقارنة معدلات الإشغال */}
         <div className={`chart-container ${chartVisible ? 'visible' : ''}`} ref={chartRef}>
@@ -503,10 +503,10 @@ const comparisonData = {
                     <div className="stat-icon"><i className="fas fa-hard-hat"></i></div>
                     <div className="stat-text">~{region.workers.toLocaleString('ar-SA')} عامل</div>
                   </div>
-                  <div className="region-stat">
+                  {/* <div className="region-stat">
                     <div className="stat-icon"><i className="fas fa-percentage"></i></div>
                     <div className="stat-text">معدل الإشغال {region.occupancy}%</div>
-                  </div>
+                  </div> */}
                 </div>
                 
                 <div className="region-bar" style={{ 

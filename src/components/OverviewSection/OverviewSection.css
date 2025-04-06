@@ -54,6 +54,47 @@
   background: linear-gradient(135deg, #B06AB3, #4568DC);
 }
 
+/* Stat Highlight Styling */
+.stat-highlight {
+  color: #007bff;
+  font-weight: 700;
+  font-size: 1.05em;
+  background-color: rgba(0, 123, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+
+.stat-highlight-link {
+  color: #65a30d !important;
+  font-weight: 700;
+  font-size: 1.05em;
+  background-color: rgba(0, 123, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+
+
+.overview-card a:hover .stat-highlight {
+  background-color: rgba(0, 123, 255, 0.15);
+  box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Ensure the entire clickable area shows the pointer */
+.overview-card a {
+  cursor: pointer;
+}
+
+/* Add slight animation on hover */
+.overview-card a:active .stat-highlight {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 123, 255, 0.15);
+}
+
 .overview-card h3 {
   margin-bottom: 20px;
   font-size: 1.4rem;
